@@ -12,8 +12,6 @@ export default async function handler(
     const { userId } = req.query;
 
     if (userId) { 
-      const factories = await Factory.find()
-      
       const factory = await Factory.findOne({
         user: userId
       })

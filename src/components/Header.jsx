@@ -12,23 +12,26 @@ function Header() {
 
   const startPagesByRole = {
     ENGINEER: '/customers',
-    ADMIN: '/dashboard',
+    ADMIN: '/customers',
     CUSTOMER: '/departments'
   }
 
   const isBackButtonRender = startPagesByRole[session?.data?.user?.role] !== router.pathname;
 
   return (
-    <div className="flex justify-between items-center mb-8">
-      {isBackButtonRender && (
-        <Button onClick={router.back}>
-          Назад
+    <>
+      <div className={`flex items-center mb-8 ${isBackButtonRender ? 'justify-between' : 'justify-end'}`}>
+        {isBackButtonRender && (
+          <Button onClick={router.back}>
+            Назад
+          </Button>
+        )}
+        <Button className="border-red-600 text-red-600" onClick={signOut}>
+          Выйти
         </Button>
-      )}
-      <Button className="border-red-600 text-red-600" onClick={() => signOut()}>
-        Выйти
-      </Button>
-    </div>
+      </div>
+      <hr className="bg-gray-500 h-0.5 mb-4"/>
+    </>
   )
 }
 

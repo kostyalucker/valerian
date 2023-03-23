@@ -36,6 +36,10 @@ export default function DepartmentPage(props) {
   )
 }
 
+DepartmentPage.auth = {
+  loading: 'loading'
+}
+
 export async function getServerSideProps(context) {
   const { id } = context.query;
 

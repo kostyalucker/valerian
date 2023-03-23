@@ -3,3 +3,7 @@ export default function EngineerHomePage() {
     <h1>Engineer</h1>
   )
 }
+
+EngineerHomePage.auth = {
+  loading: "loading",
+};

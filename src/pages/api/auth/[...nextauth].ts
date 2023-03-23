@@ -35,7 +35,7 @@ export const authOptions = {
                 });
 
                 const user = await res.json();
-
+                console.log(user, res.ok)
                 if (res.ok && user) {
                     return user;
                 }

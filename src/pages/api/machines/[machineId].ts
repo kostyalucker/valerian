@@ -16,9 +16,25 @@ export default async function handler(
 
     if (isValidObjectId) { 
       const machineInfo = await MachineModel.findById(machineId).populate({ path: "department", model: DepartmentModel });
-      const indicators = await IndicatorsModel.findOne({
+      const indicators = await IndicatorsModel.find({
         machine: machineInfo._id
       }).sort({ createdAt: -1 });
+      // await IndicatorsModel.insertMany([
+      //   {
+      //     machine: "6409fb1be740456dfb15645c",
+      //     ph: 25,
+      //     concentration: 5,
+      //     capacity: 30,
+      //     creatorInfo: { firstName: 'Вася', lastName: 'Пупкин', patronymic: 'Федорович' },
+      //   },
+      //   {
+      //     machine: "6409fb1be740456dfb15645c",
+      //     ph: 2,
+      //     concentration: 30,
+      //     capacity: 5,
+      //     creatorInfo: { firstName: 'Вася', lastName: 'Пупкин', patronymic: 'Федорович' },
+      //   },
+      // ])
 
       res.json({
         info: machineInfo,

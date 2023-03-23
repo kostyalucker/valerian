@@ -13,9 +13,10 @@ type Props = {
 
 function Input(props: Props) {
   const classes = `text-black form-input px-4 py-3 mb-4 ${props.className || ''}`
+  const typeNumberAttr = props.type === 'number' ? { min: 0 } : {};
 
   return (
-    <input {...props} ref={props.inputref} type={props.type} className={classes}></input>
+    <input {...props} ref={props.inputref} type={props.type} className={classes} {...typeNumberAttr}></input>
   );
 }
 

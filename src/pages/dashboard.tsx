@@ -5,7 +5,7 @@ export default function Dashboard(props) {
   const user = session?.user;
 
   //@ts-ignore
-  if (user?.role !== "admin") {
+  if (user?.role !== "ADMIN") {
     return (
       <section className="grid h-screen place-items-center">
         <div className="w-25">
@@ -47,7 +47,7 @@ export default function Dashboard(props) {
 }
 
 Dashboard.auth = {
-  role: "admin",
+  role: "ADMIN",
   loading: "loading",
 };
 
@@ -55,7 +55,7 @@ export async function getServerSideProps(context: any) {
   const { req } = context;
   const session = await getSession({ req });
 
-  if (session?.user?.role === "ENGINEER") {
+  if (session?.user?.role === "ENGINEER" || session?.user?.role === "ADMIN") {
     return {
       redirect: { destination: "/customers" },
     };

@@ -3,11 +3,15 @@ import Link from "next/link";
 export default function CustomersPage({ customers }) {
   return (
     <>
-      <h1>Заказчики</h1>
+      <p className="text-xl font-bold mb-4">Заказчики</p>
       <ul>
         {customers?.map(customer => {
           return (
-            <Link href={`/departments?userId=${customer._id}`} key={customer._id} className="block">
+            <Link
+              href={`/departments?userId=${customer._id}`} 
+              key={customer._id} 
+              className="block text-lg hover:text-sky-500"
+            >
               {customer.name}
             </Link>
           )
@@ -18,7 +22,6 @@ export default function CustomersPage({ customers }) {
 }
 
 CustomersPage.auth = {
-  role: "ENGINEER",
   loading: "loading",
 };
 
