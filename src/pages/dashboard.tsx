@@ -3,9 +3,10 @@ import { getSession, signOut, useSession } from "next-auth/react";
 export default function Dashboard(props) {
   const { data: session } = useSession();
   const user = session?.user;
-
   //@ts-ignore
-  if (user?.role !== "ADMIN") {
+  const isAdmin = user?.role === "ADMIN" || user?.role === "SUPERADMIN";
+
+  if (!isAdmin) {
     return (
       <section className="grid h-screen place-items-center">
         <div className="w-25">
@@ -25,7 +26,7 @@ export default function Dashboard(props) {
         {props.users?.length &&
           props.users?.map((user) => {
             return (
-              <li className="dark:text-white">
+              <li key={user.id} className="dark:text-white">
                 {user.name} {user.id}
               </li>
             );
@@ -63,6 +64,24 @@ export async function getServerSideProps(context: any) {
     return {
       redirect: { destination: "/departments" },
     };
+  } else if (session?.user?.role === "SUPERADMIN") {
+    const response = await fetch('http://localhost:3000/api/user')
+    
+    if (!response.ok) {
+      return {
+        props: {
+          users: [],
+        },
+      };
+    }
+
+    const users = await response.json();
+
+    return {
+      props: {
+        users
+      }
+    }
   }
 
   return {

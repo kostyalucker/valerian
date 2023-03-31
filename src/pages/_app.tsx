@@ -10,6 +10,7 @@ export default function App({
 }: AppProps & {
   Component: {
     auth: boolean;
+    role: string;
     children: React.ReactNode
   }
 }) {

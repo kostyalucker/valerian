@@ -2,32 +2,57 @@ import { useRouter } from "next/router"
 import { CreateIndicatorsForm } from "@/components/CreateIndicatorsForm";
 import { useSession } from "next-auth/react";
 import { IndicatorChart } from '@/components/Chart'
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
 export default function MachinePage({ machine }) {
   const session = useSession();
+  const router = useRouter();
+
+  const { id } = router.query;
+
   const [lastCreatedIndicator, setLastCreatedIndicator] = useState({});
-  const { info, indicators } = machine;
   const [indicatorsWithGraphics, setIndicatorsWithGraphics] = useState([]);
   const [toggledIndicators, setToggledIndicators] = useState({});
- 
-  useState(() => {
+  const [indicators, setIndicators] = useState([]);
+  const [info, setInfo] = useState([]);
+
+  const getMachineData = useCallback(async function () {
+    if (!id) {
+      router.push('/machines')
+    }
+
+    const response = await fetch(`http://localhost:3000/api/machines/${id}`);
+    const data = await response.json();
+
+    setIndicators(data.indicators);
+    setInfo(data.info);
+  }, [id, router])
+
+  useEffect(() => {
+    getMachineData();
+  }, [id, getMachineData])
+
+  useEffect(() => {
     const indicatorsClone = [...indicators];
     indicatorsClone.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
 
     setLastCreatedIndicator(indicatorsClone[indicatorsClone.length - 1]);
 
     const indicatorsObj = indicatorsClone?.reduce((acc, curr) => {
-      const { ph, capacity, concentration } = curr;
+      const { ph, conductivity, concentration, fungi, bacteriaAmount } = curr;
       
       if (!acc.ph) {
         acc.ph = [ph];
-        acc.capacity = [capacity];
+        acc.conductivity = [conductivity];
+        acc.fungi = [fungi];
+        acc.bacteriaAmount = [bacteriaAmount];
         acc.concentration = [concentration];
       } else {
         acc.ph.push(ph);
-        acc.capacity.push(capacity);
+        acc.bacteriaAmount.push(bacteriaAmount);
+        acc.fungi.push(fungi);
+        acc.conductivity.push(conductivity);
         acc.concentration.push(concentration);
       }
 
@@ -40,8 +65,10 @@ export default function MachinePage({ machine }) {
 
     const indicatorsNames = {
       ph: 'pH',
-      capacity: 'Долив',
+      conductivity: 'Электропроводность',
       concentration: 'Концентрация',
+      fungi: 'Грибки',
+      bacteriaAmount: 'Бактерии',
     }
 
     const formattedIndicators = Object.keys(indicatorsObj).map(key => {
@@ -76,34 +103,31 @@ export default function MachinePage({ machine }) {
     })
   }
 
-  const creatorFullName = useMemo(() => {
-    if (lastCreatedIndicator?.creatorInfo) {
-      const { firstName, lastName, patronymic } = lastCreatedIndicator.creatorInfo;
-      
-      return ` ${firstName} ${patronymic} ${lastName}`
-    }
-
-    return '';
-  }, [lastCreatedIndicator])
-
   function onIndicatorsCreateSuccess() {
     console.log('created')
+    getMachineData();
   }
 
   return (
     <>
       <p><span className="font-bold">Номер станка:</span> {info?.machineNumber}</p>
-      <p><span className="font-bold">Цех:</span> {info?.department.departmentNumber}</p>
+      <p><span className="font-bold">Цех:</span> {info?.department?.departmentNumber}</p>
       <p><span className="font-bold">Модель станка:</span> {info?.model}</p>
       <p className="mb-4"><span className="font-bold">Дата последних изменений станка:</span> {info?.createdAt}</p>
-      <hr className="bg-gray-500 h-0.5 mb-4" />
-      <p className="text-xl font-bold mb-4">Последние показания</p>
+      {lastCreatedIndicator && (
+        <>
+          <hr className="bg-gray-500 h-0.5 mb-4" />
+          <p className="text-xl font-bold mb-4">Последние показания</p>
+        </>
+      )}
       <ul>
-        <li className="mb-4">
-          <p>
-            <span span className="font-bold">Инженер:</span>{creatorFullName}
-          </p>
-        </li>
+        {lastCreatedIndicator && (
+          <li className="mb-4">
+            <p>
+              <span span className="font-bold">Инженер:</span> {lastCreatedIndicator?.creatorName}
+            </p>
+          </li>
+        )}
         {indicatorsWithGraphics.map(({ datasets, key, labels }) => {
           return (
             <li key={key} className="mb-4" onClick={() => onIndicatorsToggle(key)}>
@@ -126,8 +150,8 @@ export default function MachinePage({ machine }) {
           <p><span className="font-bold">Долив эмульсии, л:</span>{lastCreatedIndicator.capacity}</p>
           <p><span className="font-bold">Дата добавления:</span>{lastCreatedIndicator.createdAt}</p> */}
       </ul>
-      <Link href={`/machines/indicators/${info._id}`}>Список показателей</Link>
-      {session.data?.user.role === 'ENGINEER' &&  (
+      {lastCreatedIndicator && <Link href={`/machines/indicators/${info?._id}`}>Список показателей</Link>}
+      {(session.data?.user.role === 'ENGINEER' || session.data?.user.role === 'SUPERADMIN') &&  (
         <>
           <hr className="bg-gray-500 h-0.5 mb-4" />
           <CreateIndicatorsForm onIndicatorsCreateSuccess={onIndicatorsCreateSuccess} />
@@ -140,35 +164,4 @@ export default function MachinePage({ machine }) {
 MachinePage.auth = {
   loading: "loading",
 };
-
-export async function getServerSideProps(context) {
-  const { id } = context.params;
-
-  try {
-    const response = await fetch(`http://localhost:3000/api/machines/${id}`);
-
-    if (!response.ok) {
-      throw new Error('server error')
-    }
-
-    const json = await response.json();
-
-    return {
-      props: {
-        machine: {
-          info: json.info,
-          indicators: json.indicators
-        },
-      }
-    }
-  } catch (error) {
-    console.log(error);
-
-    return {
-      props: {
-        machine: {}
-      }
-    }
-  }
-}
 

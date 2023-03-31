@@ -1,16 +1,27 @@
 import { useForm } from "react-hook-form";
 import Input from '@/components/Input'
 import Button from '@/components/Button'
+import { useRouter } from "next/router";
 
 export default function IndicatorPage({ indicator }) {
-  const { concentration, ph, capacity } = indicator;
+  const router = useRouter();
+  const { 
+      concentration,
+      fungi,
+      ph,
+      conductivity,
+      bacteriaAmount,
+      reason 
+  } = indicator;
   
-  const { register, getValues, formState: { isValid }, reset, handleSubmit } = useForm({
+  const { register, getValues, formState: { isValid }, handleSubmit } = useForm({
     defaultValues: {
       concentration,
+      fungi,
       ph,
-      capacity,
-      reason: 's'
+      conductivity,
+      bacteriaAmount,
+      reason
     }
   });
 
@@ -22,7 +33,7 @@ export default function IndicatorPage({ indicator }) {
 
   async function onIndicatorsEdit() {
     const values = getValues()
-
+    console.log(values, isValid);
     if (!isValid) {
       return
     }
@@ -34,7 +45,7 @@ export default function IndicatorPage({ indicator }) {
       })
 
       if (response.ok) {
-        reset();
+        router.back();
       }
     } catch (error) {
       console.log(error)
@@ -43,7 +54,9 @@ export default function IndicatorPage({ indicator }) {
 
   const phField = registerRequiredField("ph");
   const concentrationField = registerRequiredField("concentration");
-  const capacityField = registerRequiredField("capacity");
+  const conductivityField = registerRequiredField("conductivity");
+  const bacteriaAmoutField = registerRequiredField("bacteriaAmount");
+  const fungiField = registerRequiredField("fungi");
   const reasonField = registerRequiredField("reason");
 
   return (
@@ -51,19 +64,27 @@ export default function IndicatorPage({ indicator }) {
       <p className="text-xl font-bold mb-4">Редактирование показаний</p>
       <div>
         <p className="mb-2">pH</p>
-        <Input {...phField} inputref={phField.ref} type="number" />
+        <Input className="w-full" {...phField} inputref={phField.ref} type="number" />
       </div>
       <div>
         <p className="mb-2">Концентрация</p>
-        <Input {...concentrationField} inputref={concentrationField.ref} type="number" />
+        <Input className="w-full" {...concentrationField} inputref={concentrationField.ref} type="number" />
       </div>
       <div>
-        <p className="mb-2">Долив</p>
-        <Input {...capacityField} inputref={capacityField.ref} type="number" />
+        <p className="mb-2">Электропроводность, мкмСм/см </p>
+        <Input className="w-full" {...conductivityField} inputref={conductivityField.ref} type="number" />
+      </div>
+      <div>
+        <p className="mb-2">Количество бактерий, КОЕ/мл</p>
+        <Input className="w-full" {...bacteriaAmoutField} inputref={bacteriaAmoutField.ref} type="text" />
+      </div>
+      <div>
+        <p className="mb-2">Грибки, уровень</p>
+        <Input className="w-full" {...fungiField} inputref={fungiField.ref} type="text" />
       </div>
       <div>
         <p className="mb-2">Причина изменений</p>
-        <Input {...reasonField} inputref={reasonField.ref} type="text" />
+        <Input className="w-full" {...reasonField} inputref={reasonField.ref} type="text" />
       </div>
       <Button className="disabled:pointer-events-none" onClick={handleSubmit(onIndicatorsEdit)} disabled={!isValid}>
         Подтвердить

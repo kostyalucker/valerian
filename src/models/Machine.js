@@ -3,6 +3,10 @@ import mongoose from 'mongoose'
 const MachineSchema = new mongoose.Schema({
   machineNumber: String,
   model: String,
+  machineType: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'MachineType'
+  },
   department: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Department'

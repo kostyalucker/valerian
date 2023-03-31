@@ -40,9 +40,9 @@ export async function getServerSideProps(context) {
   const { role, id } = session?.user;
   let url;
 
-  console.log(role)
+  const isAdmin = role === "ADMIN" || role === "SUPERADMIN";
 
-  if (role === "ENGINEER" || role === "ADMIN") {
+  if (role === "ENGINEER" || isAdmin) {
     const { userId } = query
 
     if (!userId) {

@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth/next';
 import clientPromise from '../../../lib/mongodb';
 import { authOptions } from './auth/[...nextauth]';
+import UserModel from '@/models/User';
 
 export default async function handler(req: any, res: any) {
     try {
@@ -23,6 +24,10 @@ export default async function handler(req: any, res: any) {
           }
             res.status(405).send({ message: 'Only POST requests allowed' })
             return
+        } else if (req.method === 'GET') {
+          const users = await UserModel.find()
+
+          res.json(users);
         }
     } catch (error) {
         res.status(405).send({ message: `{error.message}` })

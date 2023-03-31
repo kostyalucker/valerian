@@ -8,12 +8,11 @@ export default function IndicatorsPage({ indicators }) {
 
   console.log(indicators);
   const tableData = indicators.indicators?.map((indicator, idx) => {
-    const { ph, capacity, concentration, createdAt, _id } = indicator;
-    const { firstName, lastName, patronymic } = indicator.creatorInfo;
+    const { ph, capacity, concentration, createdAt, _id, creatorName } = indicator;
 
     return {
       id: idx + 1,
-      creator: `${firstName} ${lastName} ${patronymic}`,
+      creator: creatorName,
       ph,
       concentration,
       capacity,

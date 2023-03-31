@@ -5,28 +5,29 @@ import Input from '@/components/Input'
 import Button from '@/components/Button'
 
 import styles from './styles.module.css'
-import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
-  const { control, register, getValues, formState: { errors }, reset, handleSubmit } = useForm({
+  const { register, getValues, formState: { errors }, reset, handleSubmit } = useForm({
     defaultValues: {
       concentration: '',
+      fungi: '',
       ph: '',
-      capacity: '',
-      firstName: '',
-      lastName: '',
-      patronymic: '',
+      conductivity: '',
+      bacteriaAmount: '',
     }
   });
 
   const router = useRouter()
+  const session = useSession()
 
   async function onIndicatorsCreate() {
     const values = getValues()
 
     values.machineId = router.query.id;
-
-    if (!values.ph || !values.capacity || !values.firstName || !values.lastName || !values.patronymic || !values.concentration) {
+    values.creatorName = session?.data?.user?.name;
+    console.log(values)
+    if (!values.ph || !values.conductivity || !values.creatorName || !values.concentration || !values.bacteriaAmount || !values.fungi) {
       return
     }
 
@@ -51,12 +52,11 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
     })
   }
 
-  const ph = registerRequiredField("ph");
-  const concentration = registerRequiredField("concentration");
-  const capacity = registerRequiredField("capacity");
-  const firstName = registerRequiredField("firstName");
-  const lastName = registerRequiredField("lastName");
-  const patronymic = registerRequiredField("patronymic");
+  const phField = registerRequiredField("ph");
+  const concentrationField = registerRequiredField("concentration");
+  const conductivityField = registerRequiredField("conductivity");
+  const bacteriaAmount = registerRequiredField("bacteriaAmount");
+  const fungi = registerRequiredField("fungi");
 
   const isErrors = Object.keys(errors).length > 0;
 
@@ -65,27 +65,23 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
       <p className="text-xl font-bold mb-4">Добавление показаний</p>
       <div>
         <p className="mb-2">pH</p>
-        <Input {...ph} inputref={ph.ref} className={styles.input} type="number" />
+        <Input {...phField} inputref={phField.ref} className={styles.input} type="number" />
       </div>
       <div>
         <p className="mb-2">Концентрация</p>
-        <Input {...concentration} inputref={concentration.ref} className={styles.input} type="number" />
+        <Input {...concentrationField} inputref={concentrationField.ref} className={styles.input} type="number" />
       </div>
       <div>
-        <p className="mb-2">Долив</p>
-        <Input {...capacity} inputref={capacity.ref} className={styles.input}  type="number" />
+        <p className="mb-2">Электропроводность, мкмСм/см </p>
+        <Input className="w-full" {...conductivityField} inputref={conductivityField.ref} type="number" />
       </div>
       <div>
-        <p className="mb-2">Имя</p>
-        <Input {...firstName} inputref={firstName.ref} className={styles.input} type="text" />
+        <p className="mb-2">Количество бактерий, КОЕ/мл</p>
+        <Input className="w-full" {...bacteriaAmount} inputref={bacteriaAmount.ref} type="text" />
       </div>
       <div>
-        <p className="mb-2">Фамилия</p>
-        <Input {...lastName} inputref={lastName.ref} className={styles.input}  type="text" />
-      </div>
-      <div>
-        <p className="mb-2">Отчество</p>
-        <Input {...patronymic} inputref={patronymic.ref} className={styles.input} type="text" />
+        <p className="mb-2">Грибки, уровень</p>
+        <Input className="w-full" {...fungi} inputref={fungi.ref} type="text" />
       </div>
       <Button className="disabled:pointer-events-none" onClick={handleSubmit(onIndicatorsCreate)} disabled={isErrors}>
         Добавить показания

@@ -5,14 +5,13 @@ const IndicatorsSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Machine'
   },
-  ph: Number,
-  concentration: Number,
-  capacity: Number,
-  creatorInfo: {
-    firstName: String,
-    lastName: String,
-    patronymic: String,
-  }
+  ph: String,
+  concentration: String,
+  conductivity: String,
+  bacteriaAmount: String,
+  fungi: String,
+  reason: String,
+  creatorName: String,
 }, {
   timestamps: true,
 })

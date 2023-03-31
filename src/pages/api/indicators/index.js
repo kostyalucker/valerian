@@ -10,24 +10,30 @@ export default async function handler(
   if (req.method === 'POST') {
     try {
       const json = JSON.parse(req.body)
-      const { capacity, ph, concentration, firstName, lastName, patronymic, machineId } = json;
+      const { 
+        creatorName,
+        concentration,
+        fungi,
+        ph,
+        conductivity,
+        bacteriaAmount,
+        machineId
+      } = json;
 
-      if (!capacity || !ph || !firstName || !lastName || !patronymic || !concentration || !machineId) {
+      if (!fungi || !bacteriaAmount || !conductivity || !ph || !creatorName|| !concentration || !machineId) {
         res.status(400).json({
           error: 'Неккоректно введены данные' 
         })
       }
 
       await IndicatorsModel.insertMany([{
-        capacity,
         ph,
-        creatorInfo: {
-          firstName,
-          lastName,
-          patronymic,
-        },
+        creatorName,
         machine: machineId,
-        concentration
+        concentration,
+        fungi,
+        conductivity,
+        bacteriaAmount
       }])
 
       res.status(200).json({ ok: true});
