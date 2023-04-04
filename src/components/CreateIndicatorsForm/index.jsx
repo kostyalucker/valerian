@@ -21,7 +21,6 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
 
   const router = useRouter()
   const session = useSession()
-  console.log(session?.data?.user)
 
   async function onIndicatorsCreate() {
     const values = getValues()

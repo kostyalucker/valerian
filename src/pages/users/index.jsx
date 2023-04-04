@@ -1,8 +1,6 @@
 import { baseApiUrl } from '@/config'
 
 export default function UsersPage({ users }) {
-  console.log(users);
-
   return (
     <>
       <h1>

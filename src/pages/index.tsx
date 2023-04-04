@@ -6,18 +6,23 @@ import { useRouter } from "next/router";
 import { baseUrl } from "@/config";
 
 const Signin = ({ providers }: any) => {
-  const [email, setEmail] = useState("engineer@gmail.com");
-  const [password, setPassword] = useState("1111");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
 
   async function onLogin(event) {
     event.preventDefault();
     
-    await signIn('credentials', {
-      callbackUrl: baseUrl + '/dashboard',
+    const res = await signIn('credentials', {
+      redirect: false,
       email,
       password,
     });
+
+    if (res.ok) {
+      router.push('/dashboard')
+    }
+
   }
 
   function onEmailChange(event: any) {

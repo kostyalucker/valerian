@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 async function validateUser(user) { 
   const { firstName, lastName, email, patronomyc, password } = user;
   const findedUserWithEmail = await UserModel.findOne({ email });
-  console.log(findedUserWithEmail, 'validate')
+
   return new Promise((resolve, reject) => {
     if (firstName && lastName && patronomyc && email && password && !findedUserWithEmail) {
       resolve(true)
@@ -44,7 +44,6 @@ export default async function handler(req, res) {
 
       if (session?.user?.role === 'SUPERADMIN' && isCreatedUserValid) {
         bcrypt.hash(user.password, saltRounds, async function(err, hash) {
-          console.log(err, hash)
           if (err) {
             throw new Error(err)
           }

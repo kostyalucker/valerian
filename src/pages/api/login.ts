@@ -24,10 +24,7 @@ export default async function handler(req: any, res: any) {
             return
         }
 
-        console.log(user, users)
-
         await bcrypt.compare(req.body.password, user.password, (err, result) => {
-            console.log(err, result)
             if (result) {
                 res.status(200).json(user);
 
