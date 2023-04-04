@@ -100,6 +100,8 @@ export default function IndicatorPage({ indicator }) {
 }
 
 export async function getServerSideProps(context) {
+
+  
   try {
     const { id } = context.params;
     const response = await fetch(`${baseApiUrl}/indicators/${id}`);
