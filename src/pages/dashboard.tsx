@@ -59,7 +59,7 @@ export async function getServerSideProps(context: any) {
 
   if (session?.user?.role === "ENGINEER" || session?.user?.role === "ADMIN") {
     return {
-      redirect: { destination: "/customers" },
+      redirect: { destination: `${baseUrl}/customers` },
     };
   } else if (session?.user?.role === "CUSTOMER") {
     return {
