@@ -18,8 +18,6 @@ export default async function handler(
         user: userId
       })
 
-      console.log(factory, userId)
-
       if (!factory?._id) {
         throw new Error('User factory not found')
       }
@@ -39,11 +37,9 @@ export default async function handler(
 
         res.json(departments)
       }
-    }
 
-    res.status(400).json({
-      error: 'Цеха не найдены' 
-    })
+      throw new Error()
+    }
   } catch (e) {
     console.error(e);
     res.status(400).json({ error: 'Server error' });
