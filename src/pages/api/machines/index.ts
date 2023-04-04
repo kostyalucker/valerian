@@ -39,6 +39,8 @@ export default async function handler(
         res.json(
           machines
         );
+
+        return;
       }
 
       res.status(400).json({

@@ -40,6 +40,8 @@ export default async function handler(
         info: machineInfo,
         indicators: indicators,
       });
+
+      return;
     }
 
     res.status(400).json({

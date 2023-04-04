@@ -35,7 +35,6 @@ export async function getServerSideProps() {
     }
 
     const customers = await response.json();
-
     return {
       props: {
         customers
