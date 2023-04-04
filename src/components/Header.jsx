@@ -19,9 +19,7 @@ function Header() {
   const isBackButtonRender = startPagesByRole[session?.data?.user?.role] !== router.pathname;
 
   async function onSignOut() {
-    await signOut({
-      callbackUrl: '/'
-    })
+    await signOut()
   }
 
   return (
