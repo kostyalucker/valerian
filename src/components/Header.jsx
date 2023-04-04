@@ -1,6 +1,7 @@
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Button from "./Button";
+import { baseUrl } from "@/config";
 
 function Header() {
   const router = useRouter();
@@ -19,11 +20,10 @@ function Header() {
   const isBackButtonRender = startPagesByRole[session?.data?.user?.role] !== router.pathname;
 
   async function onSignOut() {
-    const res = await signOut({
-      redirect: false
+    await signOut({
+      redirect: true,
+      callbackUrl: baseUrl + '/'
     })
-
-    router.push('/')
   }
 
   return (
