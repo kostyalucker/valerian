@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { getSession } from "next-auth/react";
 import { Title } from '@/components/Title'
-import { baseApiUrl } from '@/config'
+import { baseApiUrl, baseUrl } from '@/config'
 
 export default function Departments(props) {
   const { departments } = props;
