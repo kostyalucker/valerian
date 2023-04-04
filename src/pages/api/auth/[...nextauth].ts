@@ -1,6 +1,6 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
-import { baseApiUrl } from '@/config'
+import { baseApiUrl, baseUrl } from '@/config'
 
 export const authOptions = {
     secret: 'SECRET',
@@ -65,10 +65,10 @@ export const authOptions = {
         }
     },
     pages: {
-        signIn: '/',
-        signout: '/',
-        callback: '/',
-        error: '/'
+        signIn: baseUrl + '/',
+        signout: baseUrl + '/',
+        callback: baseUrl + '/',
+        error: baseUrl + '/'
     }
 }
 export default NextAuth(authOptions)

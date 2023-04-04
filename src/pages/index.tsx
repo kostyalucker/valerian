@@ -14,7 +14,7 @@ const Signin = ({ providers }: any) => {
     event.preventDefault();
     
     await signIn('credentials', {
-      callbackUrl: '/dashboard',
+      callbackUrl: baseUrl + '/dashboard',
       email,
       password,
     });
