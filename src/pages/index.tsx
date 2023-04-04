@@ -13,7 +13,6 @@ const Signin = ({ providers }: any) => {
     event.preventDefault();
     
     await signIn('credentials', {
-      redirect: false,
       callbackUrl: '/dashboard',
       email,
       password,
