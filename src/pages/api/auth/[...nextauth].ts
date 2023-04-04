@@ -63,12 +63,6 @@ export const authOptions = {
 
             return token
         }
-    },
-    pages: {
-        signIn: baseUrl + '/',
-        signout: baseUrl + '/',
-        callback: baseUrl + '/',
-        error: baseUrl + '/'
     }
 }
 export default NextAuth(authOptions)

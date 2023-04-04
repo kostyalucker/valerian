@@ -1,16 +1,17 @@
 import UserModel from '@/models/User';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
+import bcrypt from 'bcrypt';
 
 async function validateUser(user) { 
   const { firstName, lastName, email, patronomyc, password } = user;
   const findedUserWithEmail = await UserModel.findOne({ email });
-
+  console.log(findedUserWithEmail, 'validate')
   return new Promise((resolve, reject) => {
     if (firstName && lastName && patronomyc && email && password && !findedUserWithEmail) {
       resolve(true)
     } else {
-      reject(false)
+      reject('Неверно введены данные или пользователь существует')
     }
   })
 }
@@ -35,24 +36,35 @@ export default async function handler(req, res) {
       const session = await getServerSession(req, res, authOptions);
       const user = JSON.parse(req.body);
       const isCreatedUserValid = await validateUser(user);
+      const saltRounds = 10;
       const userWithFullName = {
         ...user,
         name: `${user.lastName} ${user.firstName} ${user.patronomyc}`
       }
 
       if (session?.user?.role === 'SUPERADMIN' && isCreatedUserValid) {
-        const insertedUser = await UserModel.insertMany([
-          userWithFullName
-        ])
+        bcrypt.hash(user.password, saltRounds, async function(err, hash) {
+          console.log(err, hash)
+          if (err) {
+            throw new Error(err)
+          }
 
-        res.status(200).json({
-          user: insertedUser[0],
-        })
+          const userWithHash = {
+            ...userWithFullName,
+            password: hash
+          }
 
-        return
+          const insertedUser = await UserModel.insertMany([
+            userWithHash
+          ])
+
+          res.status(200).json({
+            user: insertedUser[0],
+          })
+
+          return;
+        });
       }
-
-      throw new Error('error')
     }
   } catch (error) {
     console.log('server error: ' + error)

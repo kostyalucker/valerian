@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form"
 import { useRouter } from "next/router";
 
 import Input from '@/components/Input'
+import Select from '@/components/Select'
 import Button from '@/components/Button'
 
 import styles from './styles.module.css'
@@ -11,7 +12,7 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
   const { register, getValues, formState: { errors }, reset, handleSubmit } = useForm({
     defaultValues: {
       concentration: '',
-      fungi: '',
+      fungi: 'отсутствуют',
       ph: '',
       conductivity: '',
       bacteriaAmount: '',
@@ -20,13 +21,13 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
 
   const router = useRouter()
   const session = useSession()
+  console.log(session?.data?.user)
 
   async function onIndicatorsCreate() {
     const values = getValues()
 
     values.machineId = router.query.id;
     values.creatorName = session?.data?.user?.name;
-    console.log(values)
     if (!values.ph || !values.conductivity || !values.creatorName || !values.concentration || !values.bacteriaAmount || !values.fungi) {
       return
     }
@@ -60,6 +61,14 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
 
   const isErrors = Object.keys(errors).length > 0;
 
+  const fungiOptions = [{
+    label: 'отсутствуют',
+    value: 'отсутствуют'
+  }, {
+    label: 'присутствуют',
+    value: 'присутствуют'
+  }]
+
   return (
     <div>
       <p className="text-xl font-bold mb-4">Добавление показаний</p>
@@ -81,7 +90,7 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
       </div>
       <div>
         <p className="mb-2">Грибки, уровень</p>
-        <Input className="w-full" {...fungi} inputref={fungi.ref} type="text" />
+        <Select options={fungiOptions} defaultValue={false} className="w-full" {...fungi} inputref={fungi.ref} />
       </div>
       <Button className="disabled:pointer-events-none" onClick={handleSubmit(onIndicatorsCreate)} disabled={isErrors}>
         Добавить показания

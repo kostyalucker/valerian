@@ -3,13 +3,14 @@ import { Title  } from '@/components/Title';
 import { Table } from '@/components/Table';
 import { useRouter } from 'next/router';
 import { baseApiUrl } from '@/config'
+import { getSession, useSession } from "next-auth/react";
 
 export default function IndicatorsPage({ indicators }) {
   const router = useRouter()
+  const session = useSession()
 
-  console.log(indicators);
   const tableData = indicators.indicators?.map((indicator, idx) => {
-    const { ph, capacity, concentration, createdAt, _id, creatorName } = indicator;
+    const { ph, capacity, concentration, createdAt, bacteriaAmount, conductivity, fungi, _id, creatorName } = indicator;
 
     return {
       id: idx + 1,
@@ -18,13 +19,20 @@ export default function IndicatorsPage({ indicators }) {
       concentration,
       capacity,
       date: createdAt,
-      link: `/indicators/${_id}`
+      link: `/indicators/${_id}`,
+      bacteriaAmount,
+      conductivity,
+      fungi,
     }
   })
 
-  const tableHead = ['Дата', 'Имя', 'pH', 'Долив', 'Концентрация'];
+  const tableHead = ['Дата', 'Имя', 'pH', 'Долив', 'Концентрация', 'Количество бактерий', 'Электропроводность', 'Грибки'];
 
   function pushToIndicator(link) {
+    if (session?.data?.user?.role === 'CUSTOMER') {
+      return
+    }
+
     router.push(link)
   }
 
@@ -47,12 +55,12 @@ export async function getServerSideProps(context) {
 
   try {
     const response = await fetch(`${baseApiUrl}/indicators?id=${id}`);
-
     if (!response.ok) {
       throw new Error(`Server error`);
     }
-
+    
     const indicators = await response.json();
+    console.log(indicators)
     
     return {
       props: {

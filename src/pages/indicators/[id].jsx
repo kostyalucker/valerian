@@ -2,7 +2,8 @@ import { useForm } from "react-hook-form";
 import Input from '@/components/Input'
 import Button from '@/components/Button'
 import { useRouter } from "next/router";
-import { baseApiUrl } from '@/config';
+import { baseApiUrl, baseUrl } from '@/config';
+import { getSession } from "next-auth/react";
 
 export default function IndicatorPage({ indicator }) {
   const router = useRouter();
@@ -99,9 +100,22 @@ export default function IndicatorPage({ indicator }) {
   )
 }
 
-export async function getServerSideProps(context) {
+IndicatorPage.auth = {
+  loading: 'loading'
+}
 
-  
+export async function getServerSideProps(context) {
+  const { req } = context;
+  const session = await getSession({ req });
+
+  if (session?.user?.role === "CUSTOMER" ) {
+    return {
+      redirect: {
+        destination: baseUrl + '/dashboard'
+      }
+    }
+  }
+
   try {
     const { id } = context.params;
     const response = await fetch(`${baseApiUrl}/indicators/${id}`);

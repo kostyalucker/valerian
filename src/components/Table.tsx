@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 type TableRow = {
   id: string;
   capacity: number;
@@ -7,6 +5,9 @@ type TableRow = {
   ph: number;
   date: string;
   creator: string;
+  bacteriaAmount: string;
+  fungi: string;
+  conductivity: string;
   link: string;
 };
 
@@ -40,6 +41,9 @@ export function Table({ rows, head, onRowClick }: TableProps) {
                   <td className="px-6 py-4">{row.ph}</td>
                   <td className="px-6 py-4">{row.capacity}</td>
                   <td className="px-6 py-4">{row.concentration}</td>
+                  <td className="px-6 py-4">{row.bacteriaAmount}</td>
+                  <td className="px-6 py-4">{row.conductivity}</td>
+                  <td className="px-6 py-4">{row.fungi}</td>
                 </tr>
               );
             })}
