@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { baseUrl } from '@/config'
+import { baseApiUrl } from '@/config'
 
 export default function CustomersPage({ customers }) {
   return (
@@ -28,7 +28,7 @@ CustomersPage.auth = {
 
 export async function getServerSideProps() {
   try {
-    const response = await fetch(`${baseUrl}/customers`)
+    const response = await fetch(`${baseApiUrl}/customers`)
 
     if (!response.ok) {
       throw new Error('Error')

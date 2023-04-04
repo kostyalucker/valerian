@@ -2,12 +2,12 @@ import { createUserFields } from "@/constants/forms";
 import { getSession } from "next-auth/react";
 import { FormMaster } from "@/components/FormMaster";
 import { useEffect, useState } from "react";
+import { baseUrl } from '@/config'
 
 export default function CreateUserPage() {
   const [userFields, setUserFields] = useState([]);
 
   async function onUserCreate(values) {
-    console.log('create')
     const response = await fetch(`/api/users`, {
       method: 'POST',
       body: JSON.stringify(values)
@@ -44,7 +44,7 @@ export async function getServerSideProps(context) {
 
   if (session?.user?.role !== "SUPERADMIN") {
     return {
-      redirect: { destination: "/dashboard" },
+      redirect: { destination: `${baseUrl}/dashboard` },
     };
   }
 

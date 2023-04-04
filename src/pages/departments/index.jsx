@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { getSession } from "next-auth/react";
 import { Title } from '@/components/Title'
-import { baseUrl } from '@/config'
+import { baseApiUrl } from '@/config'
 
 export default function Departments(props) {
   const { departments } = props;
@@ -33,7 +33,7 @@ export async function getServerSideProps(context) {
   if (!session?.user) {
     return {
       redirect: {
-        destination: "/"
+        destination: `${baseUrl}/`
       }
     }
   }
@@ -49,14 +49,14 @@ export async function getServerSideProps(context) {
     if (!userId) {
       return {
         redirect: {
-          destination: '/customers'
+          destination: `${baseUrl}/customers`
         }
       }
     }
 
-    url = `${baseUrl}/departments?userId=${userId}`
+    url = `${baseApiUrl}/departments?userId=${userId}`
   } else {
-    url = `${baseUrl}/departments?userId=${id}`
+    url = `${baseApiUrl}/departments?userId=${id}`
   }
   
   const response = await fetch(url)

@@ -3,6 +3,7 @@ import { getProviders, getSession, signIn } from "next-auth/react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useRouter } from "next/router";
+import { baseUrl } from "@/config";
 
 const Signin = ({ providers }: any) => {
   const [email, setEmail] = useState("engineer@gmail.com");
@@ -47,7 +48,7 @@ export async function getServerSideProps(context: any) {
 
   if (session) {
     return {
-      redirect: { destination: "/dashboard" },
+      redirect: { destination: `${baseUrl}/dashboard` },
     };
   }
 

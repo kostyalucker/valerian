@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Title } from "@/components/Title"
-import { baseUrl } from '@/config'
+import { baseApiUrl } from '@/config'
 
 export default function DepartmentPage(props) {
   const { machines } = props;
@@ -45,7 +45,7 @@ export async function getServerSideProps(context) {
   const { id } = context.query;
 
   try {
-    const response = await fetch(`${baseUrl}/machines?department=${id}`)
+    const response = await fetch(`${baseApiUrl}/machines?department=${id}`)
 
     if (!response.ok) {
       throw new Error('Error')

@@ -2,7 +2,7 @@
 import { Title  } from '@/components/Title';
 import { Table } from '@/components/Table';
 import { useRouter } from 'next/router';
-import { baseUrl } from '@/config'
+import { baseApiUrl } from '@/config'
 
 export default function IndicatorsPage({ indicators }) {
   const router = useRouter()
@@ -46,7 +46,7 @@ export async function getServerSideProps(context) {
   const { id } = context.query;
 
   try {
-    const response = await fetch(`${baseUrl}/indicators?id=${id}`);
+    const response = await fetch(`${baseApiUrl}/indicators?id=${id}`);
 
     if (!response.ok) {
       throw new Error(`Server error`);
