@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { IndicatorChart } from '@/components/Chart'
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { baseUrl } from '@/config'
 
 export default function MachinePage({ machine }) {
   const session = useSession();
@@ -22,7 +23,7 @@ export default function MachinePage({ machine }) {
       router.push('/machines')
     }
 
-    const response = await fetch(`http://localhost:3000/api/machines/${id}`);
+    const response = await fetch(`${baseUrl}/machines/${id}`);
     const data = await response.json();
 
     setIndicators(data.indicators);

@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth';
-import dbConnect from '../../../lib/mongoose';
+import dbConnect from '../../lib/mongoose';
 import Department from '../../models/Department';
 import Factory from '../../models/Factory';
 import { authOptions } from './auth/[...nextauth]';

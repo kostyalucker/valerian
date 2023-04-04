@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth/next';
-import clientPromise from '../../../lib/mongodb';
+import clientPromise from '../../lib/mongodb';
 import { authOptions } from './auth/[...nextauth]';
 import UserModel from '@/models/User';
 

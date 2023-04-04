@@ -1,7 +1,8 @@
 import Link from "next/link";
 
 import { getSession } from "next-auth/react";
-import { Title } from '@/components/Title' 
+import { Title } from '@/components/Title'
+import { baseUrl } from '@/config'
 
 export default function Departments(props) {
   const { departments } = props;
@@ -53,9 +54,9 @@ export async function getServerSideProps(context) {
       }
     }
 
-    url = `http://localhost:3000/api/departments?userId=${userId}`
+    url = `${baseUrl}/departments?userId=${userId}`
   } else {
-    url = `http://localhost:3000/api/departments?userId=${id}`
+    url = `${baseUrl}/departments?userId=${id}`
   }
   
   const response = await fetch(url)

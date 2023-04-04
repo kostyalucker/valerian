@@ -1,5 +1,6 @@
 import { useSession, signIn, signOut } from "next-auth/react";
-import clientPromise from "../../lib/mongodb";
+import clientPromise from "../lib/mongodb";
+import { baseUrl } from '@/config'
 
 export async function getServerSideProps(context) {
   try {
@@ -12,7 +13,7 @@ export async function getServerSideProps(context) {
     //
     // Then you can execute queries against your database like so:
     // db.find({}) or any of the MongoDB Node Driver commands
-    const response = await fetch("http://localhost:3000/api/db").then((res) => {
+    const response = await fetch(`${baseUrl}/db`).then((res) => {
       return res.json();
     });
 
@@ -35,7 +36,7 @@ export default function Home(props) {
       name: "Customer", email: "customer@gmail.com", password: 1111, role: "customer"
     }
 
-    await fetch("http://localhost:3000/api/user", {
+    await fetch(`${baseUrl}/user`, {
       method: "POST",
       body: JSON.stringify(data)
     }).then((res) => {
@@ -51,7 +52,7 @@ export default function Home(props) {
           {props.users?.length &&
             props.users.map((user) => {
               return (
-                <li>
+                <li key={user._id}>
                   {user.name} {user.id}
                 </li>
               );

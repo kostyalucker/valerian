@@ -1,3 +1,5 @@
+import { baseUrl } from '@/config'
+
 export default function UsersPage({ users }) {
   console.log(users);
 
@@ -23,7 +25,7 @@ export async function getServerSideProps(ctx){
   let users = [];
 
   try {
-    const response = await fetch('http://localhost:3000/api/users');
+    const response = await fetch(`${baseUrl}/users`);
     const json = await response.json();
 
     if (!response.ok) {

@@ -1,4 +1,5 @@
 import { getSession, signOut, useSession } from "next-auth/react";
+import { baseUrl } from '@/config'
 
 export default function Dashboard(props) {
   const { data: session } = useSession();
@@ -65,7 +66,7 @@ export async function getServerSideProps(context: any) {
       redirect: { destination: "/departments" },
     };
   } else if (session?.user?.role === "SUPERADMIN") {
-    const response = await fetch('http://localhost:3000/api/user')
+    const response = await fetch(`${baseUrl}/user`)
     
     if (!response.ok) {
       return {

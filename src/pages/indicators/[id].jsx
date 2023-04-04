@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import Input from '@/components/Input'
 import Button from '@/components/Button'
 import { useRouter } from "next/router";
+import { baseUrl } from '@/config';
 
 export default function IndicatorPage({ indicator }) {
   const router = useRouter();
@@ -101,7 +102,7 @@ export default function IndicatorPage({ indicator }) {
 export async function getServerSideProps(context) {
   try {
     const { id } = context.params;
-    const response = await fetch(`http://localhost:3000/api/indicators/${id}`);
+    const response = await fetch(`${baseUrl}/indicators/${id}`);
     const indicator = await response.json();
 
     return {

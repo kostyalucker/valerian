@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { baseUrl } from '@/config'
 
 export default function CustomersPage({ customers }) {
   return (
@@ -27,7 +28,7 @@ CustomersPage.auth = {
 
 export async function getServerSideProps() {
   try {
-    const response = await fetch(`http://localhost:3000/api/customers`)
+    const response = await fetch(`${baseUrl}/customers`)
 
     if (!response.ok) {
       throw new Error('Error')

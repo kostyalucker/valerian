@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import dbConnect from '../../../../lib/mongoose';
+import dbConnect from '../../../lib/mongoose';
 import MachineModel from '../../../models/Machine';
 import DepartmentModel from '../../../models/Department';
 import { getServerSession } from 'next-auth';

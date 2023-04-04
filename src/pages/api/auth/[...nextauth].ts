@@ -1,5 +1,6 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
+import { baseUrl } from '@/config'
 
 export const authOptions = {
     secret: 'SECRET',
@@ -23,7 +24,8 @@ export const authOptions = {
 
             async authorize(credentials: any, req) {
                 const { email, password } = credentials
-                const res = await fetch("http://localhost:3000/api/login", {
+                console.log(baseUrl)
+                const res = await fetch(`${baseUrl}/login`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -35,7 +37,7 @@ export const authOptions = {
                 });
 
                 const user = await res.json();
-                console.log(user, res.ok)
+
                 if (res.ok && user) {
                     return user;
                 }
