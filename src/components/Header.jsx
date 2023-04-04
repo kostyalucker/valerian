@@ -22,10 +22,12 @@ function Header() {
   async function onSignOut() {
     const data = await signOut({
       redirect: false,
-      callbackUrl: baseUrl + '/'
+      callbackUrl: '/'
     })
 
-    router.push(data.url)
+    return
+
+    router.push(baseUrl + '/')
   }
 
   return (
