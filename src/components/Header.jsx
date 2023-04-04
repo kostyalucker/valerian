@@ -18,6 +18,12 @@ function Header() {
 
   const isBackButtonRender = startPagesByRole[session?.data?.user?.role] !== router.pathname;
 
+  async function onSignOut() {
+    await signOut({
+      callbackUrl: '/'
+    })
+  }
+
   return (
     <>
       <div className={`flex items-center mb-8 ${isBackButtonRender ? 'justify-between' : 'justify-end'}`}>
@@ -26,7 +32,7 @@ function Header() {
             Назад
           </Button>
         )}
-        <Button className="border-red-600 text-red-600" onClick={signOut}>
+        <Button className="border-red-600 text-red-600" onClick={onSignOut}>
           Выйти
         </Button>
       </div>

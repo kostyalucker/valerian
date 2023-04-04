@@ -24,7 +24,7 @@ export const authOptions = {
 
             async authorize(credentials: any, req) {
                 const { email, password } = credentials
-                console.log(baseUrl)
+
                 const res = await fetch(`${baseUrl}/login`, {
                     method: "POST",
                     headers: {

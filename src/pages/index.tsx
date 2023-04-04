@@ -5,15 +5,16 @@ import Input from "@/components/Input";
 import { useRouter } from "next/router";
 
 const Signin = ({ providers }: any) => {
-  const [email, setEmail] = useState("roben1006@gmail.com");
+  const [email, setEmail] = useState("engineer@gmail.com");
   const [password, setPassword] = useState("1111");
   const router = useRouter();
 
   async function onLogin(event) {
     event.preventDefault();
     
-    const res = await signIn('credentials', {
-      redirect: true,
+    await signIn('credentials', {
+      redirect: false,
+      callbackUrl: '/dashboard',
       email,
       password,
     });
