@@ -1,8 +1,8 @@
 import { ObjectId } from 'mongodb';
-import dbConnect from '../../../lib/mongoose';
-import MachineModel from '../../../models/Machine';
-import DepartmentModel from '../../../models/Department';
-import IndicatorsModel from '../../../models/Indicators';
+import dbConnect from '@/lib/mongoose';
+import MachineModel from '@/models/Machine';
+import DepartmentModel from '@/models/Department';
+import IndicatorsModel from '@/models/Indicators';
 
 export default async function handler(
   req,

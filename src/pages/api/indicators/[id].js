@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
-import dbConnect from '../../../../lib/mongoose';
-import IndicatorsModel from '../../../models/Indicators';
+import dbConnect from '@/lib/mongoose';
+import IndicatorsModel from '@/models/Indicators';
 
 export default async function handler(req, res) { 
   try {

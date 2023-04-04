@@ -1,6 +1,5 @@
-import dbConnect from '../../../lib/mongoose';
-import MachineTypeModel from '../../models/MachineType';
-import MachineOperation from '../../models/MachineOperation';
+import dbConnect from '@/lib/mongoose';
+import MachineTypeModel from '@/models/MachineType';
 
 export default async function handler(
   req,
