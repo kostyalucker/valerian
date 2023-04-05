@@ -28,8 +28,8 @@ CustomersPage.auth = {
 };
 
 export async function getServerSideProps({ req }) {
-  const session = getSession({ req })
-  console.log(session)
+  const session = await getSession({ req })
+
   if (!session) {
     return { 
       redirect: {
