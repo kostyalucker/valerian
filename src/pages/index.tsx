@@ -9,15 +9,28 @@ const Signin = ({ providers }: any) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const [error, setError] = useState('');
 
   async function onLogin(event) {
     event.preventDefault();
     
     const res = await signIn('credentials', {
+      redirect: false,
       email,
-      password,
-      callbackUrl: window.location.origin + '/dashboard'
+      password
     });
+
+    if (res.ok) {
+      router.push('/dashboard')
+    } else {
+      setError('Ошибка при вводе данных')
+
+      setTimeout(() => {
+        setError('')
+      }, 5000);
+
+      return  
+    }
   }
 
   function onEmailChange(event: any) {
@@ -34,6 +47,9 @@ const Signin = ({ providers }: any) => {
         <Input value={email} onChange={onEmailChange} type="email" className="form-input px-4 py-3 mb-4"></Input>
         <Input value={password} onChange={onPasswordChange} type="password" className="form-input px-4 py-3 mb-4"></Input>
         <Button onClick={(event) => onLogin(event)}>Войти</Button>
+        {error && <p className="text-red-400 mt-2">
+          {error}
+        </p>}
       </form>
     </div>
   );

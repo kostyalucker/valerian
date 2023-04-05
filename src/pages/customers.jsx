@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { baseApiUrl } from '@/config'
-import { getSession } from "next-auth/react";
-import { requireAuthentication } from "../utils/requireAuthentication";
 
 export default function CustomersPage({ customers }) {
   return (
@@ -28,28 +26,25 @@ CustomersPage.auth = {
   loading: "loading",
 };
 
-export async function getServerSideProps(context) {
-  return requireAuthentication(context, async () => {
-    try {
-      const response = await fetch(`${baseApiUrl}/customers`)
-  
-      if (!response.ok) {
-        throw new Error('Error')
-      }
-  
-      const customers = await response.json();
+export async function getServerSideProps({ req }) {
+  try {
+    const response = await fetch(`${baseApiUrl}/customers`)
 
-      return {
-        props: {
-          customers
-        }
-      }
-    } catch (error) {
-      return {
-        props: {
-          customers: []
-        }
+    if (!response.ok) {
+      throw new Error('Error')
+    }
+
+    const customers = await response.json();
+    return {
+      props: {
+        customers
       }
     }
-  })
+  } catch (error) {
+    return {
+      props: {
+        customers: []
+      }
+    }
+  }
 }
