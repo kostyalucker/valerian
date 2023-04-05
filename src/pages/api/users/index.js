@@ -3,7 +3,7 @@ import FactoryModel from '@/models/Factory';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import bcrypt from 'bcrypt';
-import dbConnect from '../../lib/mongoose';
+import dbConnect from '@/lib/mongoose';
 
 async function validateUser(user) { 
   const { firstName, lastName, email, patronomyc, password } = user;
