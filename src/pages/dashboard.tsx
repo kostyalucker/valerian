@@ -57,6 +57,12 @@ export async function getServerSideProps(context: any) {
   const { req } = context;
   const session = await getSession({ req });
 
+  if (!session) {
+    return { 
+      redirect: '/'
+    }
+  }
+
   if (session?.user?.role === "ENGINEER" || session?.user?.role === "ADMIN") {
     return {
       redirect: { destination: `${baseUrl}/customers` },
