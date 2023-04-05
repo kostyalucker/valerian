@@ -14,15 +14,10 @@ const Signin = ({ providers }: any) => {
     event.preventDefault();
     
     const res = await signIn('credentials', {
-      redirect: false,
       email,
       password,
+      callbackUrl: window.location.origin + '/dashboard'
     });
-
-    if (res.ok) {
-      router.push('/dashboard')
-    }
-
   }
 
   function onEmailChange(event: any) {
