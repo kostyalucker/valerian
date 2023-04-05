@@ -54,9 +54,9 @@ export async function getServerSideProps(context) {
       }
     }
 
-    url = `${baseApiUrl}/departments?userId=${userId}`
+    url = `/api/departments?userId=${userId}`
   } else {
-    url = `${baseApiUrl}/departments?userId=${id}`
+    url = `/api/departments?userId=${id}`
   }
   
   const response = await fetch(url)
