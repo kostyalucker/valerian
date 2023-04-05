@@ -22,6 +22,7 @@ function Header() {
   const isBackButtonRender = startPagesByRole[session?.data?.user?.role] !== router.pathname;
 
   const isNotCustomer = session?.data?.user?.role !== 'CUSTOMER';
+  const isSuperAdmin = session?.data?.user?.role === 'SUPERADMIN';
   const isCustomerPage = router.pathname === '/customers';
 
   async function onSignOut() {
@@ -39,10 +40,18 @@ function Header() {
               Назад
             </Button>
           )}
-          {(isNotCustomer && !isCustomerPage )&& (
+          {isNotCustomer && (
             <nav>
               <ul>
-                <Link className="text-blue-400 ml-8" href='/customers'>Заказчики</Link>
+                {!isCustomerPage && (
+                  <Link className="text-blue-400 ml-8" href='/customers'>Заказчики</Link>
+                )}
+                {isSuperAdmin && (
+                  <>
+                    <Link className="text-blue-400 ml-8" href='/users/create'>Создать пользователя</Link>
+                    <Link className="text-blue-400 ml-8" href='/machines/create'>Добавить станок</Link>
+                  </>
+                )}
               </ul>
             </nav>
           )}
