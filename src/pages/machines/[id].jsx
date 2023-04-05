@@ -2,11 +2,12 @@ import { useRouter } from "next/router"
 import { CreateIndicatorsForm } from "@/components/CreateIndicatorsForm";
 import { useSession } from "next-auth/react";
 import { IndicatorChart } from '@/components/Chart'
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { baseApiUrl } from '@/config'
+import { format } from 'date-fns'
 
-export default function MachinePage({ machine }) {
+
+export default function MachinePage({ baseUrl }) {
   const session = useSession();
   const router = useRouter();
 
@@ -16,6 +17,7 @@ export default function MachinePage({ machine }) {
   const [indicatorsWithGraphics, setIndicatorsWithGraphics] = useState([]);
   const [toggledIndicators, setToggledIndicators] = useState({});
   const [indicators, setIndicators] = useState([]);
+  const [standards, setStandards] = useState({});
   const [info, setInfo] = useState([]);
 
   const getMachineData = useCallback(async function () {
@@ -23,10 +25,13 @@ export default function MachinePage({ machine }) {
       router.push('/machines')
     }
 
-    const response = await fetch(`${baseApiUrl}/machines/${id}`, {
-      mode: 'cors'
-    });
+    const response = await fetch(`${baseUrl}/api/machines/${id}`);
     const data = await response.json();
+    
+    const responseMachineStandards = await fetch(`${baseUrl}/api/machineOperations?machineType=${data.info.machineType}`);
+    const machineStandards = await responseMachineStandards.json();
+
+    setStandards(machineStandards[0].standards)
 
     setIndicators(data.indicators);
     setInfo(data.info);
@@ -43,7 +48,13 @@ export default function MachinePage({ machine }) {
     setLastCreatedIndicator(indicatorsClone[indicatorsClone.length - 1]);
 
     const indicatorsObj = indicatorsClone?.reduce((acc, curr) => {
-      const { ph, conductivity, concentration, fungi, bacteriaAmount } = curr;
+      const { 
+        ph, conductivity, concentration, fungi, bacteriaAmount,
+        addedOilAmount,
+        foreignOil,
+        biocide,
+        serviceAdditives,
+      } = curr;
       
       if (!acc.ph) {
         acc.ph = [ph];
@@ -51,12 +62,20 @@ export default function MachinePage({ machine }) {
         acc.fungi = [fungi];
         acc.bacteriaAmount = [bacteriaAmount];
         acc.concentration = [concentration];
+        acc.addedOilAmount = [addedOilAmount]
+        acc.foreignOil = [foreignOil]
+        acc.biocide = [biocide]
+        acc.serviceAdditives = [serviceAdditives]
       } else {
         acc.ph.push(ph);
         acc.bacteriaAmount.push(bacteriaAmount);
         acc.fungi.push(fungi);
         acc.conductivity.push(conductivity);
         acc.concentration.push(concentration);
+        acc.addedOilAmount.push(addedOilAmount);
+        acc.foreignOil.push(foreignOil);
+        acc.biocide.push(biocide);
+        acc.serviceAdditives.push(serviceAdditives);
       }
 
       return acc;
@@ -72,6 +91,10 @@ export default function MachinePage({ machine }) {
       concentration: 'Концентрация',
       fungi: 'Грибки',
       bacteriaAmount: 'Бактерии',
+      addedOilAmount: 'Долив',
+      foreignOil: 'Постороннее масло',
+      biocide: 'Добавлено биоцида',
+      serviceAdditives: 'Добавлено сервисных присадок',
     }
 
     const formattedIndicators = Object.keys(indicatorsObj).map(key => {
@@ -106,17 +129,43 @@ export default function MachinePage({ machine }) {
     })
   }
 
+  function getIndicatorStatus(indicatorName) {
+    if (indicatorName === 'fungi') {
+      if (lastCreatedIndicator[indicatorName] === 'отсутствуют') {
+        return true
+      } else {
+        return false
+      }
+    } 
+
+    if (Number(lastCreatedIndicator[indicatorName]) > Number(standards[indicatorName].max) || Number(lastCreatedIndicator[indicatorName]) < Number(standards[indicatorName].min)) {
+      return false;
+    }
+
+    return true;
+  }
+
   function onIndicatorsCreateSuccess() {
     console.log('created')
     getMachineData();
   }
+
+  function getFormattedDate(date) {
+    if (!date) {
+      return '';
+    }
+
+    return format(new Date(date), 'yyyy-MM-dd')
+  }
+
+  const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', min: 'numeric', sec: 'numeric' };
 
   return (
     <>
       <p><span className="font-bold">Номер станка:</span> {info?.machineNumber}</p>
       <p><span className="font-bold">Цех:</span> {info?.department?.departmentNumber}</p>
       <p><span className="font-bold">Модель станка:</span> {info?.model}</p>
-      <p className="mb-4"><span className="font-bold">Дата последних изменений станка:</span> {info?.createdAt}</p>
+      <p className="mb-4"><span className="font-bold">Дата внесения последних показателей:</span> {getFormattedDate(lastCreatedIndicator?.createdAt)}</p>
       {lastCreatedIndicator && (
         <>
           <hr className="bg-gray-500 h-0.5 mb-4" />
@@ -134,8 +183,8 @@ export default function MachinePage({ machine }) {
         {indicatorsWithGraphics.map(({ datasets, key, labels }) => {
           return (
             <li key={key} className="mb-4" onClick={() => onIndicatorsToggle(key)}>
-              <p className="cursor-pointer hover:text-blue-400">
-                <span span className="font-bold">{datasets[0].label}:</span>{lastCreatedIndicator[key]}
+              <p className="cursor-pointer hover:text-blue-400 flex items-center">
+                <span span className="font-bold">{datasets[0].label}:</span>{lastCreatedIndicator[key]} {standards[key] && (<div className={`ml-4 w-4 h-4 rounded-full ${getIndicatorStatus(key) ? 'bg-green-400' : 'bg-red-400'}`}></div>)}
               </p>
               <div style={{
                 height: '300px',
@@ -168,3 +217,10 @@ MachinePage.auth = {
   loading: "loading",
 };
 
+export function getServerSideProps() {
+  return {
+    props: {
+      baseUrl: process.env.NEXTAUTH_URL
+    }
+  }
+}

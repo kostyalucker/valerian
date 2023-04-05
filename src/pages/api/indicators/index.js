@@ -1,6 +1,18 @@
 import dbConnect from '@/lib/mongoose';
 import IndicatorsModel from '@/models/Indicators';
 
+function validateIndicator(indicatorData) {
+  const isValidIndicator = Object.keys(indicatorData).reduce((acc, curr ) => {
+    if (!indicatorData[curr]) {
+      acc = false;
+    }
+
+    return acc;
+  }, true);
+
+  return isValidIndicator;
+}
+
 export default async function handler(
   req,
   res
@@ -9,41 +21,26 @@ export default async function handler(
 
   if (req.method === 'POST') {
     try {
-      const json = JSON.parse(req.body)
-      const { 
-        creatorName,
-        concentration,
-        fungi,
-        ph,
-        conductivity,
-        bacteriaAmount,
-        machineId
-      } = json;
+      const indicator = JSON.parse(req.body)
 
-      if (!fungi || !bacteriaAmount || !conductivity || !ph || !creatorName|| !concentration || !machineId) {
+      const isValidIndicator = validateIndicator(indicator)
+
+      if (!isValidIndicator) {
         res.status(400).json({
           error: 'Неккоректно введены данные' 
         })
       }
 
-      await IndicatorsModel.insertMany([{
-        ph,
-        creatorName,
-        machine: machineId,
-        concentration,
-        fungi,
-        conductivity,
-        bacteriaAmount
-      }])
+      await IndicatorsModel.insertMany([indicator])
 
-      res.status(200).json({ ok: true});
+      res.status(200).json({ ok: true });
     } catch (e) {
       console.error(e);
       res.status(400).json({ error: 'Server error' });
     }
   } else if (req.method === 'GET') {
     const { id } = req.query;
-
+    console.log(id);
     try {
       const indicators = await IndicatorsModel.find({ machine: id}).sort({ createdAt: -1 });
 

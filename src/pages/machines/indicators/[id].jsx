@@ -10,7 +10,11 @@ export default function IndicatorsPage({ indicators }) {
   const session = useSession()
 
   const tableData = indicators.indicators?.map((indicator, idx) => {
-    const { ph, capacity, concentration, createdAt, bacteriaAmount, conductivity, fungi, _id, creatorName } = indicator;
+    const { ph, capacity, concentration, createdAt, bacteriaAmount, conductivity, fungi, _id, creatorName,
+      addedOilAmount,
+      foreignOil,
+      biocide,
+      serviceAdditives } = indicator;
 
     return {
       id: idx + 1,
@@ -23,10 +27,14 @@ export default function IndicatorsPage({ indicators }) {
       bacteriaAmount,
       conductivity,
       fungi,
+      addedOilAmount,
+      foreignOil,
+      biocide,
+      serviceAdditives
     }
   })
 
-  const tableHead = ['Дата', 'Имя', 'pH', 'Долив', 'Концентрация', 'Количество бактерий', 'Электропроводность', 'Грибки'];
+  const tableHead = ['Дата', 'Имя', 'pH', 'Долив', 'Концентрация', 'Количество бактерий', 'Электропроводность', 'Грибки',  'Долив', 'Постороннее масло', 'Добавлено биоцида', 'Добавлено сервисных присадок' ];
 
   function pushToIndicator(link) {
     if (session?.data?.user?.role === 'CUSTOMER') {

@@ -13,7 +13,6 @@ export default async function handler(
 
     const { machineId } = req.query;
     const isValidObjectId = ObjectId.isValid(machineId);
-
     if (isValidObjectId) { 
       const machineInfo = await MachineModel.findById(machineId).populate({ path: "department", model: DepartmentModel });
       const indicators = await IndicatorsModel.find({

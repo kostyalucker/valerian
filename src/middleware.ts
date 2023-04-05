@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
       req: request,
       secret: process.env.NEXTAUTH_SECRET,
     });
-    console.log(token);
+
     //check not logged in
     if (!token) {
       const url = new URL(`/`, request.url);

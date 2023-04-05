@@ -12,6 +12,10 @@ const IndicatorsSchema = new mongoose.Schema({
   fungi: String,
   reason: String,
   creatorName: String,
+  addedOilAmount: String,
+  foreignOil: String,
+  biocide: String,
+  serviceAdditives: String,
 }, {
   timestamps: true,
 })

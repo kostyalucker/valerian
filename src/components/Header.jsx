@@ -2,6 +2,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Button from "./Button";
 import { baseUrl } from "@/config";
+import Link from "next/link";
 
 function Header() {
   const router = useRouter();
@@ -14,10 +15,14 @@ function Header() {
   const startPagesByRole = {
     ENGINEER: '/customers',
     ADMIN: '/customers',
-    CUSTOMER: '/departments'
+    CUSTOMER: '/departments',
+    SUPERADMIN: '/dashboard',
   }
 
   const isBackButtonRender = startPagesByRole[session?.data?.user?.role] !== router.pathname;
+
+  const isNotCustomer = session?.data?.user?.role !== 'CUSTOMER';
+  const isCustomerPage = router.pathname === '/customers';
 
   async function onSignOut() {
     await signOut({
@@ -27,12 +32,21 @@ function Header() {
 
   return (
     <>
-      <div className={`flex items-center mb-8 ${isBackButtonRender ? 'justify-between' : 'justify-end'}`}>
-        {isBackButtonRender && (
-          <Button onClick={router.back}>
-            Назад
-          </Button>
-        )}
+      <div className={`flex items-center mb-8 justify-between`}>
+        <div className="flex items-center">
+          {isBackButtonRender && (
+            <Button onClick={router.back}>
+              Назад
+            </Button>
+          )}
+          {(isNotCustomer && !isCustomerPage )&& (
+            <nav>
+              <ul>
+                <Link className="text-blue-400 ml-8" href='/customers'>Заказчики</Link>
+              </ul>
+            </nav>
+          )}
+        </div>
         <Button className="border-red-600 text-red-600" onClick={onSignOut}>
           Выйти
         </Button>

@@ -13,7 +13,11 @@ export default function IndicatorPage({ indicator }) {
       ph,
       conductivity,
       bacteriaAmount,
-      reason 
+      reason,
+      addedOilAmount,
+      foreignOil,
+      biocide,
+      serviceAdditives,
   } = indicator;
   
   const { register, getValues, formState: { isValid }, handleSubmit } = useForm({
@@ -23,7 +27,11 @@ export default function IndicatorPage({ indicator }) {
       ph,
       conductivity,
       bacteriaAmount,
-      reason
+      reason,
+      addedOilAmount,
+      foreignOil,
+      biocide,
+      serviceAdditives,
     }
   });
 
@@ -60,6 +68,10 @@ export default function IndicatorPage({ indicator }) {
   const bacteriaAmoutField = registerRequiredField("bacteriaAmount");
   const fungiField = registerRequiredField("fungi");
   const reasonField = registerRequiredField("reason");
+  const addedOilAmountField = registerRequiredField("addedOilAmount");
+  const foreignOilField = registerRequiredField("foreignOil");
+  const biocideField = registerRequiredField("biocide");
+  const serviceAdditivesField = registerRequiredField("serviceAdditives");
 
   return (
     <>
@@ -79,6 +91,22 @@ export default function IndicatorPage({ indicator }) {
       <div>
         <p className="mb-2">Количество бактерий, КОЕ/мл</p>
         <Input className="w-full" {...bacteriaAmoutField} inputref={bacteriaAmoutField.ref} type="text" />
+      </div>
+      <div>
+        <p className="mb-2">Долив, л</p>
+        <Input className="w-full" {...addedOilAmountField} inputref={addedOilAmountField.ref} type="text" />
+      </div>
+      <div>
+        <p className="mb-2">Постороннее масло, л</p>
+        <Input className="w-full" {...foreignOilField} inputref={foreignOilField.ref} type="text" />
+      </div>
+      <div>
+        <p className="mb-2">Добавлено биоцида, л</p>
+        <Input className="w-full" {...biocideField} inputref={biocideField.ref} type="text" />
+      </div>
+      <div>
+        <p className="mb-2">Добавлено сервисных присадок, л</p>
+        <Input className="w-full" {...serviceAdditivesField} inputref={serviceAdditivesField.ref} type="text" />
       </div>
       <div>
         <p className="mb-2">Грибки, уровень</p>
