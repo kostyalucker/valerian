@@ -1,4 +1,5 @@
 import UserModel from '@/models/User';
+import FactoryModel from '@/models/Factory';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import bcrypt from 'bcrypt';
@@ -56,6 +57,13 @@ export default async function handler(req, res) {
           const insertedUser = await UserModel.insertMany([
             userWithHash
           ])
+
+          if (userWithHash.role === 'CUSTOMER' && insertedUser && insertedUser[0]) {
+            await FactoryModel.insertMany([{
+              name: `Компания: ${userWithHash.name}`,
+              user: insertedUser[0]._id
+            }])
+          }
 
           res.status(200).json({
             user: insertedUser[0],
