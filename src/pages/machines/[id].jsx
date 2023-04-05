@@ -23,7 +23,9 @@ export default function MachinePage({ machine }) {
       router.push('/machines')
     }
 
-    const response = await fetch(`${baseApiUrl}/machines/${id}`);
+    const response = await fetch(`${baseApiUrl}/machines/${id}`, {
+      credentials: 'include'
+    });
     const data = await response.json();
 
     setIndicators(data.indicators);
