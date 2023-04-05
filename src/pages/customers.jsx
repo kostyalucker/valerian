@@ -29,7 +29,7 @@ CustomersPage.auth = {
 
 export async function getServerSideProps({ req }) {
   const session = getSession({ req })
-  
+  console.log(session)
   if (!session) {
     return { 
       redirect: {
