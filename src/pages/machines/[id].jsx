@@ -24,7 +24,7 @@ export default function MachinePage({ machine }) {
     }
 
     const response = await fetch(`${baseApiUrl}/machines/${id}`, {
-      credentials: 'include'
+      mode: 'cors'
     });
     const data = await response.json();
 
