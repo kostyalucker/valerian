@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 async function validateUser(user) { 
   const { firstName, lastName, email, patronomyc, password } = user;
   const findedUserWithEmail = await UserModel.findOne({ email });
-
+  console.log(findedUserWithEmail, 'founded user')
   return new Promise((resolve, reject) => {
     if (firstName && lastName && patronomyc && email && password && !findedUserWithEmail) {
       resolve(true)
