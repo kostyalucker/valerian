@@ -38,6 +38,7 @@ export async function getServerSideProps(context) {
       }
   
       const customers = await response.json();
+
       return {
         props: {
           customers

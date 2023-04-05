@@ -13,5 +13,5 @@ export const requireAuthentication = async (context, cb) => {
     }
   }
 
-  cb();
+  return cb();
 }
