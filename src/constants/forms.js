@@ -59,6 +59,10 @@ export const createUserFields = () => {
           value: 'MANAGER',
           label: 'Менеджер',
         },
+        {
+          value: 'CUSTOMER',
+          label: 'Заказчик',
+        },
       ]
     }
   ]

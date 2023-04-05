@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { getProviders, getSession, signIn } from "next-auth/react";
+import { getProviders, getSession, signIn, useSession } from "next-auth/react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useRouter } from "next/router";
@@ -10,6 +10,7 @@ const Signin = ({ providers }: any) => {
   const [password, setPassword] = useState("");
   const router = useRouter();
   const [error, setError] = useState('');
+  const session = useSession()
 
   async function onLogin(event) {
     event.preventDefault();
@@ -43,14 +44,14 @@ const Signin = ({ providers }: any) => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <form className="flex flex-col max-w-lg w-full">
+      {!session.data && <form className="flex flex-col max-w-lg w-full">
         <Input value={email} onChange={onEmailChange} type="email" className="form-input px-4 py-3 mb-4"></Input>
         <Input value={password} onChange={onPasswordChange} type="password" className="form-input px-4 py-3 mb-4"></Input>
         <Button onClick={(event) => onLogin(event)}>Войти</Button>
         {error && <p className="text-red-400 mt-2">
           {error}
         </p>}
-      </form>
+      </form>}
     </div>
   );
 };
