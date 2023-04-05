@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { baseApiUrl } from '@/config'
+import { getSession } from "next-auth/react";
 
 export default function CustomersPage({ customers }) {
   return (
@@ -26,7 +27,17 @@ CustomersPage.auth = {
   loading: "loading",
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req }) {
+  const session = getSession({ req })
+  
+  if (!session) {
+    return { 
+      redirect: {
+        destination: '/'
+      }
+    }
+  }
+
   try {
     const response = await fetch(`${baseApiUrl}/customers`)
 
