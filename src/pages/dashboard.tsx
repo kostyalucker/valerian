@@ -59,7 +59,9 @@ export async function getServerSideProps(context: any) {
 
   if (!session) {
     return { 
-      redirect: '/'
+      redirect: {
+        destination: '/'
+      }
     }
   }
 
