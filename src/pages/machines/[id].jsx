@@ -155,10 +155,8 @@ export default function MachinePage({ baseUrl }) {
       return '';
     }
 
-    return format(new Date(date), 'yyyy-MM-dd')
+    return format(new Date(date), 'yyyy-MM-dd HH:MM:SS')
   }
-
-  const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', min: 'numeric', sec: 'numeric' };
 
   return (
     <>
