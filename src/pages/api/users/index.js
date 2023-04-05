@@ -3,6 +3,7 @@ import FactoryModel from '@/models/Factory';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 import bcrypt from 'bcrypt';
+import dbConnect from '../../lib/mongoose';
 
 async function validateUser(user) { 
   const { firstName, lastName, email, patronomyc, password } = user;
@@ -31,6 +32,8 @@ export default async function handler(req, res) {
 
   
   try {
+    await dbConnect();
+
     if (req.method === 'GET') {
       res.json(users)
     } else if (req.method === 'POST') { 
