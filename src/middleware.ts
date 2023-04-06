@@ -20,12 +20,10 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(url);
     }
     //check if not authorized
-    if (token.role !== "SUPERADMIN") {
-      console.log('oops');
-      
-      const url = new URL(`/dashboard`, request.url);
-      return NextResponse.rewrite(url);
-    }
+    // if (token.role !== "SUPERADMIN") {
+    //   const url = new URL(`/dashboard`, request.url);
+    //   return NextResponse.rewrite(url);
+    // }
   }
   return res;
 }
