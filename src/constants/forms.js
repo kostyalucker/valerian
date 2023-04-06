@@ -102,6 +102,22 @@ export const createUserFields = () => {
         options: types
       },
       {
+        name: 'emulsionFillingDate',
+        label: 'Дата заливки эмульсии',
+        required: true,
+        defaultValue: '',
+        component: 'input',
+        type: 'date',
+      },
+      {
+        name: 'machineCapacity',
+        label: 'Емкость системы',
+        required: true,
+        defaultValue: '',
+        component: 'input',
+        type: 'number',
+      },
+      {
         name: 'department',
         label: 'Цех',
         required: true,

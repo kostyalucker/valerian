@@ -6,13 +6,13 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]';
 
 async function validateMachine(machine: any) { 
-  const { machineNumber, model, machineType, department } = machine;
+  const { machineNumber, model, machineType, department, emulsionFillingDate, machineCapacity } = machine;
 
   const isValidDepartment = ObjectId.isValid(department);
   const isValidMachineType = ObjectId.isValid(machineType);
 
   return new Promise((resolve, reject) => {
-    if (model && machineNumber && isValidDepartment && isValidMachineType) {
+    if (model && machineNumber && isValidDepartment && isValidMachineType && emulsionFillingDate && machineCapacity) {
       resolve(true)
     } else {
       reject(false)

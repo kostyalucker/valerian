@@ -40,26 +40,26 @@ function Header() {
               Назад
             </Button>
           )}
-          {isNotCustomer && (
-            <nav>
-              <ul>
-                {!isCustomerPage && (
-                  <Link className="text-blue-400 ml-8" href='/customers'>Заказчики</Link>
-                )}
-                {isSuperAdmin && (
-                  <>
-                    <Link className="text-blue-400 ml-8" href='/users/create'>Создать пользователя</Link>
-                    <Link className="text-blue-400 ml-8" href='/machines/create'>Добавить станок</Link>
-                  </>
-                )}
-              </ul>
-            </nav>
-          )}
         </div>
         <Button className="border-red-600 text-red-600" onClick={onSignOut}>
           Выйти
         </Button>
       </div>
+      {isNotCustomer && (
+        <nav>
+          <ul className="flex flex-col md:flex-row">
+            {!isCustomerPage && (
+              <Link className="text-blue-400 mb-2" href='/customers'>Заказчики</Link>
+            )}
+            {isSuperAdmin && (
+              <>
+                <Link className="text-blue-400 md:ml-8 mb-2" href='/users/create'>Создать пользователя</Link>
+                <Link className="text-blue-400 md:ml-8" href='/machines/create'>Добавить станок</Link>
+              </>
+            )}
+          </ul>
+        </nav>
+      )}
       <hr className="bg-gray-500 h-0.5 mb-4"/>
     </>
   )

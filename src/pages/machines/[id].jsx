@@ -163,6 +163,8 @@ export default function MachinePage({ baseUrl }) {
       <p><span className="font-bold">Номер станка:</span> {info?.machineNumber}</p>
       <p><span className="font-bold">Цех:</span> {info?.department?.departmentNumber}</p>
       <p><span className="font-bold">Модель станка:</span> {info?.model}</p>
+      <p><span className="font-bold">Емкость системы:</span> {info?.machineCapacity}</p>
+      {getFormattedDate(info?.emulsionFillingDate) && <div><span className="font-bold">Дата заливки эмульсии:</span> {getFormattedDate(info?.emulsionFillingDate)}</div>}
       <p className="mb-4"><span className="font-bold">Дата внесения последних показателей:</span> {getFormattedDate(lastCreatedIndicator?.createdAt)}</p>
       {lastCreatedIndicator && (
         <>

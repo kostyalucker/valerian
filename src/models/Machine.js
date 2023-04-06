@@ -7,11 +7,8 @@ const MachineSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'MachineType'
   },
-  capacity: String,
+  machineCapacity: String,
   emulsionFillingDate: String,
-  foreignOil: String,
-  addedBiocide: String,
-  addingServiceAdditives: String,
   department: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Department'
