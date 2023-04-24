@@ -5,18 +5,25 @@ export default function CustomersPage({ customers }) {
   return (
     <>
       <p className="text-xl font-bold mb-4">Заказчики</p>
-      <ul>
-        {customers?.map(customer => {
-          return (
+      <ul className="overflow-y-auto">
+        <div className="flex text-center mb-2">
+          <div className="p-2 w-80 shrink-0">Имя</div>
+          <div className="p-2 w-40 shrink-0">ИНН</div>
+        </div>
+        {customers?.map(({ _id, name, inn }) => (
             <Link
-              href={`/departments?userId=${customer._id}`} 
-              key={customer._id} 
-              className="block text-lg hover:text-sky-500"
-            >
-              {customer.name}
+              className="
+                block
+              "
+              href={`/departments?userId=${_id}`} 
+              key={_id}>
+              <div className="inline-flex text-center mb-2 hover:bg-slate-50 hover:border-cyan-900 hover:border-2 border-2 border-transparent">
+                <div className="p-2 border-2 w-80 shrink-0">{name}</div>
+                <div className="p-2 border-2 w-40 shrink-0">{inn}</div>
+              </div>
             </Link>
           )
-        })}
+        )}
       </ul>
     </>
   )

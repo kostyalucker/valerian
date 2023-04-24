@@ -1,11 +1,12 @@
 import { useMasterForm } from "@/hooks/useMasterForm"
 import { FORM_COMPONENTS_MAP } from "@/constants";
 import Button from '@/components/Button'
-import { useState } from "react";
+import Input from '@/components/Input'
+import { useEffect, useState } from "react";
 
 // todo: problem with dynamic fields, reset doesn't work
 export function FormMaster({ title, fields, onSubmit }) {
-  const { getValues, formState: { isValid }, reset, handleSubmit, registeredFields } = useMasterForm(fields);
+  const { getValues, formState: { isValid }, reset, handleSubmit, registeredFields, watch } = useMasterForm(fields);
   const [error, setError] = useState(false);
 
   const onFormSubmit = () => {
@@ -19,13 +20,17 @@ export function FormMaster({ title, fields, onSubmit }) {
       handleSubmit(async () => {
         const response = await onSubmit(values);
         
-        if (response.ok) {
+        if (response?.ok) {
           reset();
 
           return;
         }
         
-        throw new Error('server error')
+        setError(true)
+
+        setTimeout(() => {
+          setError(false)
+        }, 10000);
       }, (err) => {
         console.log(err)
       })()
@@ -40,18 +45,34 @@ export function FormMaster({ title, fields, onSubmit }) {
     }
   }
 
+  const watchedRole = watch('role', 'ADMIN');
+
   return (
     <>
       <p className="text-xl font-bold mb-4">{title}</p>
       {registeredFields?.length && registeredFields.map(field =>  {
         const Component = FORM_COMPONENTS_MAP[field.component];
 
+        // TODO: remove hardcode
+        if (field.name === 'inn') {
+          if (watchedRole === 'CUSTOMER') {
+            return (
+              <div key={field.label + field.name}>
+                <p className="mb-2">{field.label}</p>
+                <Component {...field} inputref={field.ref} className="w-full" type={field.type} />
+              </div>
+            )
+          }
+
+          return;
+        }
+
         return (
           <div key={field.label + field.name}>
             <p className="mb-2">{field.label}</p>
             <Component {...field} inputref={field.ref} className="w-full" type={field.type} />
           </div>
-        )
+        );
       })}
       <Button className="disabled:pointer-events-none" onClick={onFormSubmit} disabled={!isValid}>
         Добавить

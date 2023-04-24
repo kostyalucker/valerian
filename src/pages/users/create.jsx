@@ -3,11 +3,23 @@ import { getSession } from "next-auth/react";
 import { FormMaster } from "@/components/FormMaster";
 import { useEffect, useState } from "react";
 import { baseUrl } from '@/config'
+import { validateInn } from "@/utils/validateInn";
 
 export default function CreateUserPage() {
   const [userFields, setUserFields] = useState([]);
 
   async function onUserCreate(values) {
+    // TODO: refactoring dependent field inn
+    if (values.role === 'CUSTOMER') {
+      const validateInnResult = validateInn(Number(values.inn), new Error())
+
+      if (!validateInnResult) {
+        console.log('error')
+
+        return;
+      }
+    }
+
     const response = await fetch(`/api/users`, {
       method: 'POST',
       body: JSON.stringify(values)

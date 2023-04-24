@@ -7,6 +7,7 @@ export const createUserFields = () => {
       defaultValue: '',
       component: 'input',
       type: 'text',
+      dependentExist: null,
     },
     {
       name: 'lastName',
@@ -15,6 +16,7 @@ export const createUserFields = () => {
       defaultValue: '',
       component: 'input',
       type: 'text',
+      dependentExist: null,
     },
     {
       name: 'patronomyc',
@@ -23,6 +25,7 @@ export const createUserFields = () => {
       defaultValue: '',
       component: 'input',
       type: 'text',
+      dependentExist: null,
     },
     {
       name: 'email',
@@ -30,6 +33,7 @@ export const createUserFields = () => {
       required: true,
       defaultValue: '',
       component: 'input',
+      dependentExist: null,
       type: 'email',
     },
     {
@@ -38,6 +42,7 @@ export const createUserFields = () => {
       required: true,
       defaultValue: '',
       component: 'input',
+      dependentExist: null,
       type: 'password',
     },
     {
@@ -46,6 +51,7 @@ export const createUserFields = () => {
       required: true,
       defaultValue: 'ADMIN',
       component: 'select',
+      dependentExist: null,
       options: [
         {
           value: 'ADMIN',
@@ -64,6 +70,13 @@ export const createUserFields = () => {
           label: 'Заказчик',
         },
       ]
+    },
+    {
+      name: 'inn',
+      label: 'ИНН',
+      defaultValue: '',
+      component: 'input',
+      dependentExist: ['role']
     }
   ]
 }

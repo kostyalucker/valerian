@@ -6,11 +6,11 @@ import bcrypt from 'bcrypt';
 import dbConnect from '@/lib/mongoose';
 
 async function validateUser(user) { 
-  const { firstName, lastName, email, patronomyc, password } = user;
+  const { firstName, lastName, email, patronomyc, password, companyName } = user;
   const findedUserWithEmail = await UserModel.findOne({ email });
-  console.log(findedUserWithEmail, 'founded user')
+
   return new Promise((resolve, reject) => {
-    if (firstName && lastName && patronomyc && email && password && !findedUserWithEmail) {
+    if (firstName && lastName && patronomyc && email && password && !findedUserWithEmail && !companyName) {
       resolve(true)
     } else {
       reject('Неверно введены данные или пользователь существует')

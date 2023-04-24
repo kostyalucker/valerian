@@ -2,6 +2,7 @@ import { useRouter } from "next/router"
 import { CreateIndicatorsForm } from "@/components/CreateIndicatorsForm";
 import { useSession } from "next-auth/react";
 import { IndicatorChart } from '@/components/Chart'
+import Button from '@/components/Button'
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { format } from 'date-fns'
@@ -184,7 +185,7 @@ export default function MachinePage({ baseUrl }) {
           return (
             <li key={key} className="mb-4" onClick={() => onIndicatorsToggle(key)}>
               <p className="cursor-pointer hover:text-blue-400 flex items-center">
-                <span span className="font-bold">{datasets[0].label}:</span>{lastCreatedIndicator[key]} {standards[key] && (<div className={`ml-4 w-4 h-4 rounded-full ${getIndicatorStatus(key) ? 'bg-green-400' : 'bg-red-400'}`}></div>)}
+                <span span className="font-bold mr-1">{datasets[0].label}:</span>{lastCreatedIndicator[key]} {standards[key] && (<div className={`ml-4 w-4 h-4 rounded-full ${getIndicatorStatus(key) ? 'bg-green-400' : 'bg-red-400'}`}></div>)}
               </p>
               <div style={{
                 height: '300px',
@@ -202,10 +203,13 @@ export default function MachinePage({ baseUrl }) {
           <p><span className="font-bold">Долив эмульсии, л:</span>{lastCreatedIndicator.capacity}</p>
           <p><span className="font-bold">Дата добавления:</span>{lastCreatedIndicator.createdAt}</p> */}
       </ul>
-      {lastCreatedIndicator && <Link href={`/machines/indicators/${info?._id}`}>Список показателей</Link>}
+      {lastCreatedIndicator && <Link href={`/machines/indicators/${info?._id}`}>
+          <Button className="mb-4">
+            Список показателей
+          </Button>
+      </Link>}
       {(session.data?.user.role === 'ENGINEER' || session.data?.user.role === 'SUPERADMIN') &&  (
         <>
-          <hr className="bg-gray-500 h-0.5 mb-4" />
           <CreateIndicatorsForm onIndicatorsCreateSuccess={onIndicatorsCreateSuccess} />
         </>
         )}
