@@ -54,7 +54,6 @@ function Header() {
             {isSuperAdmin && (
               <>
                 <Link className={`text-blue-400 mb-2 ${isCustomerPage ? '' : 'md:ml-8' }`} href='/users/create'>Создать пользователя</Link>
-                <Link className="text-blue-400 md:ml-8" href='/machines/create'>Добавить станок</Link>
               </>
             )}
           </ul>

@@ -31,9 +31,14 @@ export default async function handler(
       });
     } else {
       const session = await getServerSession(req, res, authOptions);
+      const departmentId = Object.keys(req.query)[0]
+
+      if (!departmentId) {
+        throw new Error('incorrect department')
+      }
 
       if (session?.user?.role === 'SUPERADMIN') {
-        const departments = await Department.find();
+        const departments = await Department.findById(departmentId);
 
         res.json(departments)
       }

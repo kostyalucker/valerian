@@ -1,15 +1,24 @@
 import Link from "next/link";
 import { Title } from "@/components/Title"
 import { baseApiUrl } from '@/config'
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 export default function DepartmentPage(props) {
+  const router = useRouter();
   const { machines } = props;
+  const session = useSession();
+
+  const isSuperAdmin = session?.data?.user?.role === 'SUPERADMIN';
 
   return (
     <>
-      <Title>
-        Выберите станок
-      </Title>
+      <div className="flex">
+        <Title>
+          Выберите станок
+        </Title>
+        {isSuperAdmin && <Link className="text-blue-400 ml-8" href={`/machines/create?${router.query.id}`}>Добавить станок</Link>}
+      </div>
       <ul className="overflow-y-auto">
         <div className="flex text-center mb-2">
           <div className="p-2 border-2 w-12 shrink-0">№</div>

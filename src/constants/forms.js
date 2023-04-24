@@ -81,13 +81,12 @@ export const createUserFields = () => {
   ]
 }
 
-  export const createMachineFields = (types, departments) => {
-    if (!types.length || !departments.length) {
+  export const createMachineFields = (types) => {
+    if (!types.length) {
       return [];
     }
 
     const defaultTypeValue= types[0].value;
-    const defaultDepartmentValue = departments[0].value;
 
     return [
       {
@@ -129,14 +128,6 @@ export const createUserFields = () => {
         defaultValue: '',
         component: 'input',
         type: 'number',
-      },
-      {
-        name: 'department',
-        label: 'Цех',
-        required: true,
-        defaultValue: defaultDepartmentValue,
-        component: 'select',
-        options: departments
       }
     ]
   };
