@@ -1,20 +1,32 @@
-
-import { Title  } from '@/components/Title';
-import { Table } from '@/components/Table';
-import { useRouter } from 'next/router';
-import { baseApiUrl } from '@/config'
+import { Title } from "@/components/Title";
+import { Table } from "@/components/Table";
+import { useRouter } from "next/router";
+import { baseApiUrl } from "@/config";
 import { getSession, useSession } from "next-auth/react";
+import { format } from "date-fns";
 
 export default function IndicatorsPage({ indicators }) {
-  const router = useRouter()
-  const session = useSession()
+  const router = useRouter();
+  const session = useSession();
 
   const tableData = indicators.indicators?.map((indicator, idx) => {
-    const { ph, capacity, concentration, createdAt, bacteriaAmount, conductivity, fungi, _id, creatorName,
+    const {
+      ph,
+      capacity,
+      concentration,
+      createdAt,
+      bacteriaAmount,
+      conductivity,
+      fungi,
+      _id,
+      creatorName,
       addedOilAmount,
       foreignOil,
       biocide,
-      serviceAdditives } = indicator;
+      serviceAdditives,
+    } = indicator;
+
+    const formattedDate = format(new Date(createdAt), "yyyy-MM-dd HH:MM:SS");
 
     return {
       id: idx + 1,
@@ -22,7 +34,7 @@ export default function IndicatorsPage({ indicators }) {
       ph,
       concentration,
       capacity,
-      date: createdAt,
+      date: formattedDate,
       link: `/indicators/${_id}`,
       bacteriaAmount,
       conductivity,
@@ -30,33 +42,44 @@ export default function IndicatorsPage({ indicators }) {
       addedOilAmount,
       foreignOil,
       biocide,
-      serviceAdditives
-    }
-  })
+      serviceAdditives,
+    };
+  });
 
-  const tableHead = ['Дата', 'Имя', 'pH', 'Долив', 'Концентрация', 'Количество бактерий', 'Электропроводность', 'Грибки',  'Долив', 'Постороннее масло', 'Добавлено биоцида', 'Добавлено сервисных присадок' ];
+  const tableHead = [
+    "Дата",
+    "Имя",
+    "pH",
+    "Долив",
+    "Концентрация",
+    "Количество бактерий",
+    "Электропроводность",
+    "Грибки",
+    "Долив",
+    "Постороннее масло",
+    "Добавлено биоцида",
+    "Добавлено сервисных присадок",
+  ];
 
   function pushToIndicator(link) {
-    if (session?.data?.user?.role === 'CUSTOMER') {
-      return
+    if (session?.data?.user?.role === "CUSTOMER") {
+      return;
     }
 
-    router.push(link)
+    router.push(link);
   }
 
   return (
     <>
-      <Title className="mb-4">
-        Indicators
-      </Title>
+      <Title className="mb-4">Indicators</Title>
       <Table onRowClick={pushToIndicator} rows={tableData} head={tableHead} />
     </>
-  )
+  );
 }
 
 IndicatorsPage.auth = {
-  loading: 'loading'
-}
+  loading: "loading",
+};
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
@@ -66,20 +89,20 @@ export async function getServerSideProps(context) {
     if (!response.ok) {
       throw new Error(`Server error`);
     }
-    
+
     const indicators = await response.json();
-    console.log(indicators)
-    
+    console.log(indicators);
+
     return {
       props: {
-        indicators
-      }
-    }
+        indicators,
+      },
+    };
   } catch (error) {
     return {
       props: {
         indicators: [],
-      }
-    }
+      },
+    };
   }
 }

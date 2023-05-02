@@ -13,33 +13,30 @@ function Header() {
   }
 
   const startPagesByRole = {
-    ENGINEER: '/customers',
-    ADMIN: '/customers',
-    CUSTOMER: '/departments',
-    SUPERADMIN: '/dashboard',
-  }
+    ENGINEER: "/customers",
+    ADMIN: "/customers",
+    CUSTOMER: "/departments",
+    SUPERADMIN: "/dashboard",
+  };
 
-  const isBackButtonRender = startPagesByRole[session?.data?.user?.role] !== router.pathname;
+  const isBackButtonRender =
+    startPagesByRole[session?.data?.user?.role] !== router.pathname;
 
-  const isNotCustomer = session?.data?.user?.role !== 'CUSTOMER';
-  const isSuperAdmin = session?.data?.user?.role === 'SUPERADMIN';
-  const isCustomerPage = router.pathname === '/customers';
+  const isNotCustomer = session?.data?.user?.role !== "CUSTOMER";
+  const isSuperAdmin = session?.data?.user?.role === "SUPERADMIN";
+  const isCustomerPage = router.pathname === "/customers";
 
   async function onSignOut() {
     await signOut({
-      callbackUrl: window.location.origin
-    })
+      callbackUrl: window.location.origin,
+    });
   }
 
   return (
     <>
       <div className={`flex items-center mb-8 justify-between`}>
         <div className="flex items-center">
-          {isBackButtonRender && (
-            <Button onClick={router.back}>
-              Назад
-            </Button>
-          )}
+          {isBackButtonRender && <Button onClick={router.back}>Назад</Button>}
         </div>
         <Button className="border-red-600 text-red-600" onClick={onSignOut}>
           Выйти
@@ -48,21 +45,32 @@ function Header() {
       {isNotCustomer && (
         <nav>
           <ul className="flex flex-col md:flex-row">
+            <Link className="text-blue-400 mb-2 md:mr-8" href="/dashboard">
+              Главная
+            </Link>
             {!isCustomerPage && (
-              <Link className="text-blue-400 mb-2" href='/customers'>Заказчики</Link>
+              <Link className="text-blue-400 mb-2" href="/customers">
+                Заказчики
+              </Link>
             )}
             {isSuperAdmin && (
               <>
-                <Link className={`text-blue-400 mb-2 ${isCustomerPage ? '' : 'md:ml-8' }`} href='/users/create'>Создать пользователя</Link>
+                <Link
+                  className={`text-blue-400 mb-2 ${
+                    isCustomerPage ? "" : "md:ml-8"
+                  }`}
+                  href="/users/create"
+                >
+                  Создать пользователя
+                </Link>
               </>
             )}
           </ul>
         </nav>
       )}
-      <hr className="bg-gray-500 h-0.5 mb-4"/>
+      <hr className="bg-gray-500 h-0.5 mb-4" />
     </>
-  )
+  );
 }
 
-export default Header
-
+export default Header;

@@ -1,8 +1,9 @@
-import dbConnect from '@/lib/mongoose';
-import IndicatorsModel from '@/models/Indicators';
+import dbConnect from "@/lib/mongoose";
+import IndicatorsModel from "@/models/Indicators";
+import MachineModel from "@/models/Machine";
 
 function validateIndicator(indicatorData) {
-  const isValidIndicator = Object.keys(indicatorData).reduce((acc, curr ) => {
+  const isValidIndicator = Object.keys(indicatorData).reduce((acc, curr) => {
     if (!indicatorData[curr]) {
       acc = false;
     }
@@ -13,40 +14,54 @@ function validateIndicator(indicatorData) {
   return isValidIndicator;
 }
 
-export default async function handler(
-  req,
-  res
-) {
+export default async function handler(req, res) {
   await dbConnect();
 
-  if (req.method === 'POST') {
+  if (req.method === "POST") {
     try {
-      const indicator = JSON.parse(req.body)
+      const indicator = JSON.parse(req.body);
 
-      const isValidIndicator = validateIndicator(indicator)
+      const indicators = await IndicatorsModel.find({
+        machine: indicator.machine,
+      }).sort({
+        createdAt: -1,
+      });
+
+      if (indicators.length === 0) {
+        const updatedMachine = await MachineModel.findByIdAndUpdate(
+          indicator.machine,
+          {
+            emulsionFillingDate: new Date().toISOString(),
+          }
+        );
+      }
+
+      const isValidIndicator = validateIndicator(indicator);
 
       if (!isValidIndicator) {
         res.status(400).json({
-          error: 'Неккоректно введены данные' 
-        })
+          error: "Неккоректно введены данные",
+        });
       }
 
-      await IndicatorsModel.insertMany([indicator])
+      await IndicatorsModel.insertMany([indicator]);
 
       res.status(200).json({ ok: true });
     } catch (e) {
       console.error(e);
-      res.status(400).json({ error: 'Server error' });
+      res.status(400).json({ error: "Server error" });
     }
-  } else if (req.method === 'GET') {
+  } else if (req.method === "GET") {
     const { id } = req.query;
-    console.log(id);
+
     try {
-      const indicators = await IndicatorsModel.find({ machine: id}).sort({ createdAt: -1 });
+      const indicators = await IndicatorsModel.find({ machine: id }).sort({
+        createdAt: -1,
+      });
 
       res.status(200).json({ indicators });
     } catch (error) {
-      res.status(400).json({ error: 'Server error' });
+      res.status(400).json({ error: "Server error" });
     }
   }
 }

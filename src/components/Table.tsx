@@ -35,7 +35,11 @@ export function Table({ rows, head, onRowClick }: TableProps) {
           {rows?.length > 0 &&
             rows.map((row) => {
               return (
-                <tr onClick={() => onRowClick(row.link)} key={row.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer">
+                <tr
+                  onClick={() => onRowClick(row.link)}
+                  key={row.id}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer"
+                >
                   <td className="px-6 py-4">{row.date}</td>
                   <td className="px-6 py-4">{row.creator}</td>
                   <td className="px-6 py-4">{row.ph}</td>
