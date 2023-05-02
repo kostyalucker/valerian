@@ -16,15 +16,14 @@ export default function DepartmentPage(props) {
     <>
       <div className="flex">
         <Title>Выберите станок</Title>
-        {isSuperAdmin ||
-          (isEngineer && (
-            <Link
-              className="text-blue-400 ml-8"
-              href={`/machines/create?${router.query.id}`}
-            >
-              Добавить станок
-            </Link>
-          ))}
+        {(isSuperAdmin || isEngineer) && (
+          <Link
+            className="text-blue-400 ml-8"
+            href={`/machines/create?${router.query.id}`}
+          >
+            Добавить станок
+          </Link>
+        )}
       </div>
       <ul className="overflow-y-auto">
         <div className="flex text-center mb-2">
