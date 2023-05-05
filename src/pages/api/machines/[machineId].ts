@@ -1,22 +1,27 @@
-import { ObjectId } from 'mongodb';
-import dbConnect from '@/lib/mongoose';
-import MachineModel from '@/models/Machine';
-import DepartmentModel from '@/models/Department';
-import IndicatorsModel from '@/models/Indicators';
+import FactoryModel from "@/models/Factory";
+import { ObjectId } from "mongodb";
+import dbConnect from "@/lib/mongoose";
+import MachineModel from "@/models/Machine";
+import DepartmentModel from "@/models/Department";
+import IndicatorsModel from "@/models/Indicators";
 
-export default async function handler(
-  req,
-  res
-) {
+export default async function handler(req, res) {
   try {
-    await dbConnect()
+    await dbConnect();
 
     const { machineId } = req.query;
     const isValidObjectId = ObjectId.isValid(machineId);
-    if (isValidObjectId) { 
-      const machineInfo = await MachineModel.findById(machineId).populate({ path: "department", model: DepartmentModel });
+    if (isValidObjectId) {
+      const machineInfo = await MachineModel.findById(machineId).populate({
+        path: "department",
+        model: DepartmentModel,
+        populate: {
+          path: "factory",
+          model: FactoryModel,
+        },
+      });
       const indicators = await IndicatorsModel.find({
-        machine: machineInfo._id
+        machine: machineInfo._id,
       }).sort({ createdAt: -1 });
       // await IndicatorsModel.insertMany([
       //   {
@@ -44,11 +49,10 @@ export default async function handler(
     }
 
     res.status(400).json({
-      error: 'Информация о станке не найдена'
-    })
+      error: "Информация о станке не найдена",
+    });
   } catch (e) {
     console.error(e);
-    res.status(400).json({ error: 'Server error' });
+    res.status(400).json({ error: "Server error" });
   }
-
 }

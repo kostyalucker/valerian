@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 import dbConnect from "@/lib/mongoose";
 import MachineModel from "@/models/Machine";
 import DepartmentModel from "@/models/Department";
+import FactoryModel from "@/models/Factory";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 
@@ -18,7 +19,16 @@ async function validateMachine(machine: any) {
   const isValidDepartment = ObjectId.isValid(department);
   const isValidMachineType = ObjectId.isValid(machineType);
 
+  const findedExistedmachine = await MachineModel.findOne({
+    department,
+    machineNumber,
+  });
+
   return new Promise((resolve, reject) => {
+    if (findedExistedmachine) {
+      reject("Станок с таким номером уже существует");
+    }
+
     if (model && machineNumber && isValidDepartment && machineCapacity) {
       resolve(true);
     } else {
@@ -38,7 +48,14 @@ export default async function handler(req, res) {
       if (isValidObjectId) {
         const machines = await MachineModel.find({
           department,
-        }).populate({ path: "department", model: DepartmentModel });
+        }).populate({
+          path: "department",
+          model: DepartmentModel,
+          populate: {
+            path: "factory",
+            model: FactoryModel,
+          },
+        });
 
         res.json(machines);
 
@@ -67,8 +84,7 @@ export default async function handler(req, res) {
 
       throw new Error("error");
     }
-  } catch (e) {
-    console.error(e);
-    res.status(400).json({ error: "Server error" });
+  } catch (error) {
+    res.status(400).json({ error });
   }
 }

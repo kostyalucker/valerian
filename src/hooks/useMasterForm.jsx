@@ -1,28 +1,33 @@
 import { useForm } from "react-hook-form";
 
-export function useMasterForm(
-  fields = []
-) {
+export function useMasterForm(fields = []) {
   const defaultFieldsValues = fields.reduce((acc, curr) => {
-      acc[curr.name] = curr.defaultValue;
-  
-      return acc;
-    }, {});
+    acc[curr.name] = curr.defaultValue;
 
-  const { register, getValues, formState: { isValid }, reset, handleSubmit, ...rest } = useForm({
-    defaultValues: defaultFieldsValues
+    return acc;
+  }, {});
+
+  const {
+    register,
+    getValues,
+    formState: { isValid },
+    reset,
+    handleSubmit,
+    ...rest
+  } = useForm({
+    defaultValues: defaultFieldsValues,
   });
 
-  const registeredFields = fields.map(field => {
+  const registeredFields = fields.map((field) => {
     const { label, type, component, options, defaultValue } = field;
 
     const extraFields = {
       label,
       type,
       component,
-    }
+    };
 
-    if (component === 'select') {
+    if (component === "select") {
       extraFields.options = options;
       extraFields.defaultValue = defaultValue;
     }
@@ -31,11 +36,16 @@ export function useMasterForm(
       ...register(field.name, {
         required: field.required,
       }),
-      ...extraFields
-    }
+      ...extraFields,
+    };
   });
 
   return {
-    ...rest, getValues, formState: { isValid }, reset, handleSubmit, registeredFields
-  }
+    ...rest,
+    getValues,
+    formState: { isValid },
+    reset,
+    handleSubmit,
+    registeredFields,
+  };
 }

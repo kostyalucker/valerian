@@ -25,6 +25,7 @@ export default async function handler(req, res) {
 
       res.json({
         departments,
+        factory,
       });
     } else {
       const session = await getServerSession(req, res, authOptions);

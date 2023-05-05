@@ -1,8 +1,8 @@
 import { useMasterForm } from "@/hooks/useMasterForm";
 import { FORM_COMPONENTS_MAP } from "@/constants";
 import Button from "@/components/Button";
-import Input from "@/components/Input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 // todo: problem with dynamic fields, reset doesn't work
 export function FormMaster({ title, fields, onSubmit }) {
@@ -15,6 +15,7 @@ export function FormMaster({ title, fields, onSubmit }) {
     watch,
   } = useMasterForm(fields);
   const [error, setError] = useState(false);
+  const router = useRouter();
 
   const onFormSubmit = () => {
     try {
@@ -29,8 +30,6 @@ export function FormMaster({ title, fields, onSubmit }) {
           const response = await onSubmit(values);
 
           if (response?.ok) {
-            reset();
-
             return;
           }
 
@@ -44,14 +43,14 @@ export function FormMaster({ title, fields, onSubmit }) {
           console.log(err);
         }
       )();
-
-      reset();
     } catch (error) {
       setError(true);
 
       setTimeout(() => {
         setError(false);
       }, 10000);
+    } finally {
+      router.reload(window.location.pathname);
     }
   };
 

@@ -3,17 +3,40 @@ import { Title } from "@/components/Title";
 import { baseApiUrl } from "@/config";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 
 export default function DepartmentPage(props) {
   const router = useRouter();
   const { machines } = props;
   const session = useSession();
+  const [machineInfo, setMachineInfo] = useState({});
 
   const isSuperAdmin = session?.data?.user?.role === "SUPERADMIN";
   const isEngineer = session?.data?.user?.role === "ENGINEER";
 
+  function getMachinesInfo() {
+    if (machines?.length) {
+      const existedMachine = machines[0];
+
+      setMachineInfo({
+        factoryName: existedMachine?.department.factory.name,
+        departmentName: existedMachine?.department.departmentNumber,
+      });
+    }
+  }
+
+  useEffect(() => {
+    getMachinesInfo();
+  }, []);
+
   return (
     <>
+      {machineInfo?.factoryName && (
+        <p className="mb-4">Предприятие: {machineInfo.factoryName}</p>
+      )}
+      {machineInfo?.departmentName && (
+        <p className="mb-4">Цех: {machineInfo.departmentName}</p>
+      )}
       <div className="flex">
         <Title>Выберите станок</Title>
         {(isSuperAdmin || isEngineer) && (

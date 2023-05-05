@@ -206,6 +206,10 @@ export default function MachinePage({ baseUrl }) {
         <span className="font-bold">Номер станка:</span> {info?.machineNumber}
       </p>
       <p>
+        <span className="font-bold">Предприятие:</span>{" "}
+        {info?.department?.factory?.name}
+      </p>
+      <p>
         <span className="font-bold">Цех:</span>{" "}
         {info?.department?.departmentNumber}
       </p>

@@ -60,11 +60,15 @@ export default function CreateMachinePage() {
         setTimeout(() => {
           setMessage("");
         }, 5000);
+
+        return response;
       }
 
-      return response;
+      const data = await response.json();
+
+      throw new Error(data.error);
     } catch (error) {
-      setMessage("Ошибка при добавлении станка");
+      setMessage(error.message || "Ошибка при добавлении станка");
 
       setTimeout(() => {
         setMessage("");

@@ -9,49 +9,59 @@ const Signin = ({ providers }: any) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const [error, setError] = useState('');
-  const session = useSession()
+  const [error, setError] = useState("");
+  const session = useSession();
 
-  async function onLogin(event) {
+  async function onLogin(event: any) {
     event.preventDefault();
-    
-    const res = await signIn('credentials', {
+
+    const res = await signIn("credentials", {
       redirect: false,
       email,
-      password
+      password,
     });
 
     if (res.ok) {
-      router.push('/dashboard')
+      router.push("/dashboard");
     } else {
-      setError('Ошибка при вводе данных')
+      setError("Ошибка при вводе данных");
 
       setTimeout(() => {
-        setError('')
+        setError("");
       }, 5000);
 
-      return  
+      return;
     }
   }
 
   function onEmailChange(event: any) {
-    setEmail(event.target.value)
+    setEmail(event.target.value);
   }
 
   function onPasswordChange(event: any) {
-    setPassword(event.target.value)
+    setPassword(event.target.value);
   }
 
   return (
     <div className="flex justify-center items-center h-screen">
-      {!session.data && <form className="flex flex-col max-w-lg w-full">
-        <Input value={email} onChange={onEmailChange} type="email" className="form-input px-4 py-3 mb-4"></Input>
-        <Input value={password} onChange={onPasswordChange} type="password" className="form-input px-4 py-3 mb-4"></Input>
-        <Button onClick={(event) => onLogin(event)}>Войти</Button>
-        {error && <p className="text-red-400 mt-2">
-          {error}
-        </p>}
-      </form>}
+      {!session.data && (
+        <form className="flex flex-col max-w-lg w-full">
+          <Input
+            value={email}
+            onChange={onEmailChange}
+            type="email"
+            className="form-input px-4 py-3 mb-4"
+          ></Input>
+          <Input
+            value={password}
+            onChange={onPasswordChange}
+            type="password"
+            className="form-input px-4 py-3 mb-4"
+          ></Input>
+          <Button onClick={(event: any) => onLogin(event)}>Войти</Button>
+          {error && <p className="text-red-400 mt-2">{error}</p>}
+        </form>
+      )}
     </div>
   );
 };
