@@ -39,7 +39,7 @@ export default function DepartmentPage(props) {
       )}
       <div className="flex">
         <Title>Выберите станок</Title>
-        {(isSuperAdmin || isEngineer) && (
+        {isSuperAdmin && (
           <Link
             className="text-blue-400 ml-8"
             href={`/machines/create?${router.query.id}`}
