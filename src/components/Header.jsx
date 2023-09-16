@@ -28,7 +28,7 @@ function Header() {
 
   async function onSignOut() {
     await signOut({
-      callbackUrl: window.location.origin,
+      callbackUrl: "/",
     });
   }
 
