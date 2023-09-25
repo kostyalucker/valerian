@@ -17,7 +17,9 @@ export function FormMaster({ title, fields, onSubmit }) {
   const [error, setError] = useState(false);
   const router = useRouter();
 
-  const onFormSubmit = () => {
+  const onFormSubmit = (e) => {
+    e.preventDefault();
+
     try {
       const values = getValues();
 
@@ -50,6 +52,7 @@ export function FormMaster({ title, fields, onSubmit }) {
         setError(false);
       }, 10000);
     } finally {
+      // TODO: remove force reload and fix updates
       router.reload(window.location.pathname);
     }
   };

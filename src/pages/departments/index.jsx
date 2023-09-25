@@ -1,17 +1,33 @@
 import Link from "next/link";
-
+import { useSession } from "next-auth/react";
 import { getSession } from "next-auth/react";
+
 import { Title } from "@/components/Title";
-import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { baseApiUrl, baseUrl } from "@/config";
+import { ROLES } from "@/constants/users";
+import { useRouter } from "next/router";
 
 export default function Departments(props) {
-  const { departments, factory } = props;
+  const { departments } = props;
+  const session = useSession();
+  const router = useRouter();
+
+  const isSuperAdmin = session?.data?.user?.role === ROLES.superAdmin;
 
   return (
     <>
-      {factory?.name && <p className="mb-4">Предприятие: {factory.name}</p>}
-      <Title>Выберите цех</Title>
+      {/* {factory?.name && <p className="mb-4">Предприятие: {factory.name}</p>} */}
+      <div className="title__container flex items-center mb-4">
+        <Title>Выберите цех</Title>
+        {isSuperAdmin && router.query.userId && (
+          <Link
+            href={`/departments/create?userId=${router.query.userId}`}
+            className="ml-4 text-blue-400"
+          >
+            Добавить
+          </Link>
+        )}
+      </div>
       <ul>
         {departments?.map((department) => (
           <Link
@@ -75,12 +91,9 @@ export async function getServerSideProps(context) {
       return err;
     });
 
-  console.log(response);
-
   return {
     props: {
       departments: response.departments,
-      factory: response.factory,
     },
   };
 }

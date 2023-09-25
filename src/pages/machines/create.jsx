@@ -11,27 +11,7 @@ export default function CreateMachinePage() {
   const [message, setMessage] = useState("");
 
   async function getDataForMachine() {
-    const departmentId = Object.keys(router.query)[0];
-    const machineTypesResponse = await fetch("/api/machineTypes");
-    const machineDepartmentsResponse = await fetch(
-      `/api/departments?${departmentId}`
-    );
-    const promises = await Promise.all([
-      machineTypesResponse,
-      machineDepartmentsResponse,
-    ]);
-    const jsonPromises = promises.map(async (promise) => {
-      return await promise.json();
-    });
-    const dataForMachines = await Promise.all(jsonPromises);
-
-    const formattedMachineTypes = dataForMachines[0]?.map((type) => {
-      return {
-        value: type._id,
-        label: type.name,
-      };
-    });
-    const fields = createMachineFields(formattedMachineTypes);
+    const fields = createMachineFields();
 
     setMachineFields(fields);
   }

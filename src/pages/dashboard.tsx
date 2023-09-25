@@ -1,5 +1,5 @@
 import { getSession, signOut, useSession } from "next-auth/react";
-import { baseApiUrl, baseUrl } from '@/config'
+import { baseApiUrl, baseUrl } from "@/config";
 
 export default function Dashboard(props) {
   const { data: session } = useSession();
@@ -48,11 +48,11 @@ export async function getServerSideProps(context: any) {
   const session = await getSession({ req });
 
   if (!session) {
-    return { 
+    return {
       redirect: {
-        destination: '/'
-      }
-    }
+        destination: "/",
+      },
+    };
   }
 
   if (session?.user?.role === "ENGINEER" || session?.user?.role === "ADMIN") {
@@ -64,8 +64,8 @@ export async function getServerSideProps(context: any) {
       redirect: { destination: `${baseUrl}/departments` },
     };
   } else if (session?.user?.role === "SUPERADMIN") {
-    const response = await fetch(`${baseApiUrl}/user`)
-    
+    const response = await fetch(`${baseApiUrl}/users`);
+
     if (!response.ok) {
       return {
         props: {
@@ -78,9 +78,9 @@ export async function getServerSideProps(context: any) {
 
     return {
       props: {
-        users
-      }
-    }
+        users,
+      },
+    };
   }
 
   return {

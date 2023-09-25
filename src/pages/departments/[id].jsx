@@ -17,10 +17,10 @@ export default function DepartmentPage(props) {
   function getMachinesInfo() {
     if (machines?.length) {
       const existedMachine = machines[0];
-
+      console.log(existedMachine);
       setMachineInfo({
-        factoryName: existedMachine?.department.factory.name,
         departmentName: existedMachine?.department.departmentNumber,
+        factoryName: existedMachine?.department.user.name,
       });
     }
   }
@@ -37,14 +37,14 @@ export default function DepartmentPage(props) {
       {machineInfo?.departmentName && (
         <p className="mb-4">Цех: {machineInfo.departmentName}</p>
       )}
-      <div className="flex">
+      <div className="flex mb-4 items-center">
         <Title>Выберите станок</Title>
         {isSuperAdmin && (
           <Link
             className="text-blue-400 ml-8"
             href={`/machines/create?${router.query.id}`}
           >
-            Добавить станок
+            Добавить
           </Link>
         )}
       </div>

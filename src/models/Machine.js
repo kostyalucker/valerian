@@ -1,21 +1,20 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const MachineSchema = new mongoose.Schema({
-  machineNumber: String,
-  model: String,
-  machineType: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'MachineType'
+const MachineSchema = new mongoose.Schema(
+  {
+    machineNumber: String,
+    model: String,
+    machineCapacity: String,
+    emulsionFillingDate: String,
+    department: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Department",
+    },
   },
-  machineCapacity: String,
-  emulsionFillingDate: String,
-  department: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Department'
-  },
-  indicators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Indicator'}],
-}, {
-  timestamps: true,
-})
+  {
+    timestamps: true,
+  }
+);
 
-export default mongoose.models.Machine || mongoose.model('Machine', MachineSchema);
+export default mongoose.models.Machine ||
+  mongoose.model("Machine", MachineSchema);

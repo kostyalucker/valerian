@@ -1,14 +1,17 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const DepartmentSchema = new mongoose.Schema({
-  departmentNumber: String,
-  factory: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Factory'
+const DepartmentSchema = new mongoose.Schema(
+  {
+    departmentNumber: String,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
-  machines: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Machine'}],
-}, {
-  timestamps: true,
-})
+  {
+    timestamps: true,
+  }
+);
 
-export default mongoose.models.Department || mongoose.model('Department', DepartmentSchema);
+export default mongoose.models.Department ||
+  mongoose.model("Department", DepartmentSchema);

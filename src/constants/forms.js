@@ -82,12 +82,6 @@ export const createUserFields = () => {
 };
 
 export const createMachineFields = () => {
-  // if (!types.length) {
-  //   return [];
-  // }
-
-  // const defaultTypeValue = types[0].value;
-
   return [
     {
       name: "machineNumber",
@@ -112,6 +106,19 @@ export const createMachineFields = () => {
       defaultValue: "",
       component: "input",
       type: "number",
+    },
+  ];
+};
+
+export const createDepartmentFields = () => {
+  return [
+    {
+      name: "departmentNumber",
+      label: "Название цеха",
+      required: true,
+      defaultValue: "",
+      component: "input",
+      type: "text",
     },
   ];
 };

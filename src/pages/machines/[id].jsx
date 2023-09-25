@@ -29,11 +29,6 @@ export default function MachinePage({ baseUrl }) {
       const response = await fetch(`${baseUrl}/api/machines/${id}`);
       const data = await response.json();
 
-      // const responseMachineStandards = await fetch(
-      //   `${baseUrl}/api/machineOperations?machineType=${data.info.machineType}`
-      // );
-      // const machineStandards = await responseMachineStandards.json();
-
       const TEMP_STANDARDS = {
         ph: {
           min: "8.7",
@@ -186,7 +181,6 @@ export default function MachinePage({ baseUrl }) {
   }
 
   function onIndicatorsCreateSuccess() {
-    console.log("created");
     getMachineData();
   }
 
@@ -207,7 +201,7 @@ export default function MachinePage({ baseUrl }) {
       </p>
       <p>
         <span className="font-bold">Предприятие:</span>{" "}
-        {info?.department?.factory?.name}
+        {info?.department?.user?.name}
       </p>
       <p>
         <span className="font-bold">Цех:</span>{" "}

@@ -2,22 +2,14 @@ import { ObjectId } from "mongodb";
 import dbConnect from "@/lib/mongoose";
 import MachineModel from "@/models/Machine";
 import DepartmentModel from "@/models/Department";
-import FactoryModel from "@/models/Factory";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
+import UserModel from "@/models/User";
 
 async function validateMachine(machine: any) {
-  const {
-    machineNumber,
-    model,
-    machineType,
-    department,
-    emulsionFillingDate,
-    machineCapacity,
-  } = machine;
+  const { machineNumber, model, department, machineCapacity } = machine;
 
   const isValidDepartment = ObjectId.isValid(department);
-  const isValidMachineType = ObjectId.isValid(machineType);
 
   const findedExistedmachine = await MachineModel.findOne({
     department,
@@ -52,8 +44,8 @@ export default async function handler(req, res) {
           path: "department",
           model: DepartmentModel,
           populate: {
-            path: "factory",
-            model: FactoryModel,
+            path: "user",
+            model: UserModel,
           },
         });
 
@@ -72,6 +64,7 @@ export default async function handler(req, res) {
       const isRoleWithAccess =
         session?.user?.role === "SUPERADMIN" ||
         session?.user?.role === "ENGINEER";
+
       if (isRoleWithAccess && isCreatedMachineValid) {
         const insertedMachine = await MachineModel.insertMany([machine]);
 
