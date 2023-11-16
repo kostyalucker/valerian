@@ -1,25 +1,32 @@
 import { getSession, signOut, useSession } from "next-auth/react";
 import { baseApiUrl, baseUrl } from "@/config";
+import Link from "next/link";
 
 export default function Dashboard(props) {
+  console.log(1);
   const { data: session } = useSession();
   const user = session?.user;
   //@ts-ignore
-  const isAdmin = user?.role === "ADMIN" || user?.role === "SUPERADMIN";
 
-  if (!isAdmin) {
-    return (
-      <section className="grid h-screen place-items-center">
-        <div className="w-25">
-          <p>You do not have permission to view this page!</p>
-        </div>
-      </section>
-    );
+  function getUrlCustomers() {
+    const role = session?.user?.role;
+    switch (role) {
+      case "CUSTOMER":
+        return "/departments";
+      case "ENGINEER":
+        return "/customers";
+      default:
+        return "/customers";
+    }
   }
-
   return (
-    <section className="grid h-screen place-items-center">
-      <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <section className=" place-items-center">
+      <Link className="text-blue-400 mb-2" href={getUrlCustomers()}>
+        <div className="text-white w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-center cursor-pointer">
+          Мониторинг показателей
+        </div>
+      </Link>
+      {/* <div className="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <h2 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           Hello {session?.user?.name}
         </h2>
@@ -33,7 +40,7 @@ export default function Dashboard(props) {
             );
           })}
         <br />
-      </div>
+      </div> */}
     </section>
   );
 }
@@ -55,15 +62,7 @@ export async function getServerSideProps(context: any) {
     };
   }
 
-  if (session?.user?.role === "ENGINEER" || session?.user?.role === "ADMIN") {
-    return {
-      redirect: { destination: `${baseUrl}/customers` },
-    };
-  } else if (session?.user?.role === "CUSTOMER") {
-    return {
-      redirect: { destination: `${baseUrl}/departments` },
-    };
-  } else if (session?.user?.role === "SUPERADMIN") {
+  if (session?.user?.role === "SUPERADMIN") {
     const response = await fetch(`${baseApiUrl}/users`);
 
     if (!response.ok) {
