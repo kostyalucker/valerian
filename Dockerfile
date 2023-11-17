@@ -1,21 +1,25 @@
-FROM node
+FROM node:alpine
 
 RUN mkdir -p /app
 
 WORKDIR /app
 
-COPY . /app
+RUN npm install --global pm2
 
-RUN npm install
+COPY ./package*.json /app
 
-COPY . /app
-
-EXPOSE 3000
-
-RUN npm run build
+RUN npm ci
 
 RUN npm uninstall bcrypt
 
 RUN npm install bcrypt
 
-CMD ["npm", "run", "dev"]
+COPY ./ ./
+
+RUN npm run build
+
+EXPOSE 3000
+
+USER node
+
+CMD [ "pm2-runtime", "npm", "--", "start" ]
