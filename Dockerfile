@@ -6,7 +6,7 @@ WORKDIR /app
 
 RUN npm install --global pm2
 
-COPY ./package*.json /app
+COPY ./package*.json /
 
 RUN npm ci
 
