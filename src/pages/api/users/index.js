@@ -62,6 +62,23 @@ export default async function handler(req, res) {
           });
         });
       }
+    } else if (req.method === "DELETE") {
+      const deletedUserId = req.query.id;
+      const isValidObjectId = ObjectId.isValid(deletedUserId);
+
+      if (!isValidObjectId) {
+        throw new Error("Invalid id");
+      }
+
+      const deletedUser = await UserModel.deleteOne({
+        _id: ObjectId(deletedUserId),
+      });
+
+      console.log(deletedUser, isValidObjectId, deletedUserId);
+
+      res.status(200).json({
+        ...deletedUser,
+      });
     }
   } catch (error) {
     res.status(500).json({
