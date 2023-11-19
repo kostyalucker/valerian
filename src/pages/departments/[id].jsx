@@ -17,7 +17,6 @@ export default function DepartmentPage(props) {
   function getMachinesInfo() {
     if (machines?.length) {
       const existedMachine = machines[0];
-      console.log(existedMachine);
       setMachineInfo({
         departmentName: existedMachine?.department.departmentNumber,
         factoryName: existedMachine?.department.user.name,

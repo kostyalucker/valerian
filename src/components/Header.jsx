@@ -24,8 +24,12 @@ function Header() {
 
   const isNotCustomer = session?.data?.user?.role !== "CUSTOMER";
   const isSuperAdmin = session?.data?.user?.role === "SUPERADMIN";
+  const isEngineer = session?.data?.user?.role === "ENGINEER";
   const isCustomerPage = router.pathname === "/customers";
 
+  const isShowCreateUser = () => {
+    return isSuperAdmin || isEngineer;
+  };
   async function onSignOut() {
     await signOut({
       callbackUrl: "/",
@@ -53,7 +57,7 @@ function Header() {
                 Заказчики
               </Link>
             )}
-            {isSuperAdmin && (
+            {isShowCreateUser && (
               <>
                 <Link
                   className={`text-blue-400 mb-2 ${

@@ -3,6 +3,7 @@ import { FORM_COMPONENTS_MAP } from "@/constants";
 import Button from "@/components/Button";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 // todo: problem with dynamic fields, reset doesn't work
 export function FormMaster({ title, fields, onSubmit }) {
@@ -103,6 +104,9 @@ export function FormMaster({ title, fields, onSubmit }) {
         disabled={!isValid}
       >
         Добавить
+      </Button>
+      <Button className="disabled:pointer-events-none">
+        <Link href="/">Отмена</Link>
       </Button>
       {!isValid && (
         <p className="text-red-400 mt-2">Заполните все поля формы</p>

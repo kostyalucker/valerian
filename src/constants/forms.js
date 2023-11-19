@@ -28,6 +28,37 @@ export const createUserFields = () => {
       dependentExist: null,
     },
     {
+      name: "inn",
+      label: "ИНН",
+      defaultValue: "",
+      component: "input",
+      dependentExist: ["role"],
+    },
+    {
+      name: "region",
+      label: "Регион",
+      defaultValue: "",
+      component: "input",
+      required: true,
+      type: "text",
+    },
+    {
+      name: "city",
+      label: "Город",
+      defaultValue: "",
+      component: "input",
+      required: true,
+      type: "text",
+    },
+    {
+      name: "address",
+      label: "Улица, дом",
+      defaultValue: "",
+      component: "input",
+      required: true,
+      type: "text",
+    },
+    {
       name: "email",
       label: "Email",
       required: true,
@@ -71,12 +102,82 @@ export const createUserFields = () => {
         },
       ],
     },
+  ];
+};
+
+export const createUserFieldsCustomer = () => {
+  return [
+    {
+      name: "companyName",
+      label: "Имя компании",
+      required: true,
+      defaultValue: "",
+      component: "input",
+      type: "text",
+      dependentExist: null,
+    },
     {
       name: "inn",
       label: "ИНН",
       defaultValue: "",
       component: "input",
       dependentExist: ["role"],
+    },
+    {
+      name: "region",
+      label: "Регион",
+      defaultValue: "",
+      component: "input",
+      required: true,
+      type: "text",
+    },
+    {
+      name: "city",
+      label: "Город",
+      defaultValue: "",
+      component: "input",
+      required: true,
+      type: "text",
+    },
+    {
+      name: "address",
+      label: "Улица, дом",
+      defaultValue: "",
+      component: "input",
+      required: true,
+      type: "text",
+    },
+    {
+      name: "email",
+      label: "Email",
+      required: true,
+      defaultValue: "",
+      component: "input",
+      dependentExist: null,
+      type: "email",
+    },
+    {
+      name: "password",
+      label: "Пароль",
+      required: true,
+      defaultValue: "",
+      component: "input",
+      dependentExist: null,
+      type: "password",
+    },
+    {
+      name: "role",
+      label: "Роль",
+      required: true,
+      defaultValue: "ADMIN",
+      component: "select",
+      dependentExist: null,
+      options: [
+        {
+          value: "CUSTOMER",
+          label: "Заказчик",
+        },
+      ],
     },
   ];
 };
