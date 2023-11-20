@@ -9,9 +9,9 @@ on:
 jobs:
   build:
     env:
-      MONGODB_URI: ${{ env.MONGODB_URI }}
-      NEXTAUTH_URL: ${{ env.NEXTAUTH_URL }}
-      NEXTAUTH_SECRET: ${{ env.NEXTAUTH_SECRET }}
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+      NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
