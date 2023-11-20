@@ -34,12 +34,14 @@ export default function CustomersPage({ customers, baseUrl }) {
 
   function openCustomer(e, id) {
     e.preventDefault();
-    router.push(`/departments?userId=${id}`);
-  }
 
-  function editCustomer(e, id) {
-    e.preventDefault();
-    router.push(`/customers/${id}`);
+    if (e.target.dataset.id === "edit") {
+      router.push(`/customers/${id}`);
+    } else if (e.target.dataset.id === "delete") {
+      deleteCustomer(id);
+    } else {
+      router.push(`/departments?userId=${id}`);
+    }
   }
 
   return (
@@ -78,17 +80,15 @@ export default function CustomersPage({ customers, baseUrl }) {
                 <td class="px-6 py-4">{customer.region}</td>
                 <td class="px-6 py-4">{customer.city}</td>
                 <td class="px-6 py-4">{customer.inn}</td>
-                <td
-                  class="px-6 py-4 bg-gray text hover:bg-slate-100"
-                  onClick={() => deleteCustomer(customer._id)}
-                >
-                  <button disabled={isLoading}>Удалить</button>
+                <td class="px-6 py-4 bg-gray text hover:bg-slate-100">
+                  <button disabled={isLoading} data-id="delete">
+                    Удалить
+                  </button>
                 </td>
-                <td
-                  class="px-6 py-4 bg-gray text hover:bg-slate-100"
-                  onClick={(e) => editCustomer(e, customer._id)}
-                >
-                  Редактировать
+                <td class="px-6 py-4 bg-gray text hover:bg-slate-100 edit">
+                  <button disabled={isLoading} data-id="edit">
+                    Редактировать
+                  </button>
                 </td>
               </tr>
             ))}

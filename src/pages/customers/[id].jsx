@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { baseApiUrl, baseUrl } from "@/config";
 import { getSession } from "next-auth/react";
 
-export default function IndicatorPage({ customer }) {
+export default function CustomersPage({ customer }) {
   const router = useRouter();
   const { name, email, inn, city, region, address } = customer;
 
@@ -130,7 +130,7 @@ export default function IndicatorPage({ customer }) {
   );
 }
 
-IndicatorPage.auth = {
+CustomersPage.auth = {
   loading: "loading",
 };
 
