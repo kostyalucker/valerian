@@ -43,7 +43,6 @@ export default function IndicatorPage({ indicator }) {
 
   async function onIndicatorsEdit() {
     const values = getValues()
-    console.log(values, isValid);
     if (!isValid) {
       return
     }
