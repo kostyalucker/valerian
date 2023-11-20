@@ -31,11 +31,32 @@ export default function CreateUserPage() {
   }
 
   const formatedField = () => {
-    let fields = createUserFields();
-    if (role === "ENGINEER") {
-      return (fields = createUserFieldsCustomer());
-    }
+    const fields =
+      role === "ENGINEER" ? createUserFieldsCustomer() : createUserFields();
     return fields;
+  };
+
+  const onChangeRole = (fieldName, value) => {
+    if (fieldName === "role" && value === "CUSTOMER") {
+      const fields = userFields.filter(
+        (field) => field.name !== "lastName" && field.name !== "patronomyc"
+      );
+      setUserFields(
+        fields.map((field) => {
+          if (field.name === "firstName") {
+            return {
+              ...field,
+              name: "companyName",
+              label: "Имя компании",
+            };
+          } else {
+            return { ...field };
+          }
+        })
+      );
+    } else {
+      setUserFields(createUserFields());
+    }
   };
 
   useEffect(() => {
@@ -49,6 +70,7 @@ export default function CreateUserPage() {
         title="Добавить пользователя"
         fields={userFields}
         onSubmit={onUserCreate}
+        onChangeRole={onChangeRole}
       />
     </>
   );
@@ -65,11 +87,9 @@ export async function getServerSideProps(context) {
   const isSuperAdmin = session?.data?.user?.role === "SUPERADMIN";
   const isEngineer = session?.data?.user?.role === "ENGINEER";
 
-  const isShowCreateUser = () => {
-    return isSuperAdmin || isEngineer;
-  };
+  const isShowCreateUser = isSuperAdmin || isEngineer;
 
-  if (isShowCreateUser()) {
+  if (isShowCreateUser) {
     return {
       redirect: { destination: `${baseUrl}/dashboard` },
     };

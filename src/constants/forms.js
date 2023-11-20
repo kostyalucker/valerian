@@ -1,6 +1,32 @@
 export const createUserFields = () => {
   return [
     {
+      name: "role",
+      label: "Роль",
+      required: true,
+      defaultValue: "ADMIN",
+      component: "select",
+      dependentExist: null,
+      options: [
+        {
+          value: "ADMIN",
+          label: "Администратор",
+        },
+        {
+          value: "ENGINEER",
+          label: "Инженер",
+        },
+        {
+          value: "MANAGER",
+          label: "Менеджер",
+        },
+        {
+          value: "CUSTOMER",
+          label: "Заказчик",
+        },
+      ],
+    },
+    {
       name: "firstName",
       label: "Имя",
       required: true,
@@ -16,7 +42,7 @@ export const createUserFields = () => {
       defaultValue: "",
       component: "input",
       type: "text",
-      dependentExist: null,
+      dependentExist: "role",
     },
     {
       name: "patronomyc",
@@ -25,7 +51,7 @@ export const createUserFields = () => {
       defaultValue: "",
       component: "input",
       type: "text",
-      dependentExist: null,
+      dependentExist: "role",
     },
     {
       name: "inn",
@@ -76,6 +102,11 @@ export const createUserFields = () => {
       dependentExist: null,
       type: "password",
     },
+  ];
+};
+
+export const createUserFieldsCustomer = () => {
+  return [
     {
       name: "role",
       label: "Роль",
@@ -85,28 +116,11 @@ export const createUserFields = () => {
       dependentExist: null,
       options: [
         {
-          value: "ADMIN",
-          label: "Администратор",
-        },
-        {
-          value: "ENGINEER",
-          label: "Инженер",
-        },
-        {
-          value: "MANAGER",
-          label: "Менеджер",
-        },
-        {
           value: "CUSTOMER",
           label: "Заказчик",
         },
       ],
     },
-  ];
-};
-
-export const createUserFieldsCustomer = () => {
-  return [
     {
       name: "companyName",
       label: "Имя компании",
@@ -164,20 +178,6 @@ export const createUserFieldsCustomer = () => {
       component: "input",
       dependentExist: null,
       type: "password",
-    },
-    {
-      name: "role",
-      label: "Роль",
-      required: true,
-      defaultValue: "ADMIN",
-      component: "select",
-      dependentExist: null,
-      options: [
-        {
-          value: "CUSTOMER",
-          label: "Заказчик",
-        },
-      ],
     },
   ];
 };

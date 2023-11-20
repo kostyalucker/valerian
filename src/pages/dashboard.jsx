@@ -12,7 +12,7 @@ export default function Dashboard(props) {
 
   const { data: session } = useSession();
   const user = session?.user;
-  //@ts-ignore
+
   function getUrlCustomers() {
     const role = session?.user?.role;
 

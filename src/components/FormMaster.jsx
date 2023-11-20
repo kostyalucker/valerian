@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 // todo: problem with dynamic fields, reset doesn't work
-export function FormMaster({ title, fields, onSubmit }) {
+export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
   const {
     getValues,
     formState: { isValid },
@@ -60,6 +60,11 @@ export function FormMaster({ title, fields, onSubmit }) {
 
   const watchedRole = watch("role", "ADMIN");
 
+  const setValueField = (fieldName, value) => {
+    if (fieldName === "role") {
+      onChangeRole(fieldName, value);
+    }
+  };
   return (
     <>
       <p className="text-xl font-bold mb-4">{title}</p>
@@ -94,6 +99,7 @@ export function FormMaster({ title, fields, onSubmit }) {
                 inputref={field.ref}
                 className="w-full"
                 type={field.type}
+                onChange={(e) => setValueField(field.name, e.target.value)}
               />
             </div>
           );

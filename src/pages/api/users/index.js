@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import dbConnect from "@/lib/mongoose";
 
 function createdName(user, role) {
-  if (role === "ENGINEER") {
+  if (user.role === "CUSTOMER") {
     return `${user.companyName}`;
   }
   return `${user.lastName} ${user.firstName} ${user.patronomyc}`;
@@ -80,9 +80,9 @@ export default async function handler(req, res) {
       const session = await getServerSession(req, res, authOptions);
       const user = JSON.parse(req.body);
       const role = session?.user?.role;
-      console.log(role, "role");
+
       const isValidateUser =
-        role === "ENGINEER"
+        user.role === "CUSTOMER"
           ? await validateCustomer(user)
           : await validateUser(user);
 
@@ -91,7 +91,7 @@ export default async function handler(req, res) {
         ...user,
         name: createdName(user, role),
       };
-      console.log(isValidateUser, "isValidateUser");
+
       if (isValidateUser) {
         role === "ENGINEER" || role === "SUPERADMIN"
           ? bcrypt.hash(user.password, SALT_ROUNDS, async function (err, hash) {
