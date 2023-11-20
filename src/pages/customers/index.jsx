@@ -47,6 +47,7 @@ export default function CustomersPage({ customers, baseUrl }) {
   return (
     <>
       <p className="text-xl font-bold mb-4">Заказчики</p>
+      
       <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -70,7 +71,7 @@ export default function CustomersPage({ customers, baseUrl }) {
           <tbody>
             {customersState?.map((customer) => (
               <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer  hover:bg-slate-100"
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer "
                 key={customer._id}
                 onClick={(e) => openCustomer(e, customer._id)}
               >
@@ -80,13 +81,21 @@ export default function CustomersPage({ customers, baseUrl }) {
                 <td class="px-6 py-4">{customer.region}</td>
                 <td class="px-6 py-4">{customer.city}</td>
                 <td class="px-6 py-4">{customer.inn}</td>
-                <td class="px-6 py-4 bg-gray text hover:bg-slate-100">
-                  <button disabled={isLoading} data-id="delete">
+                <td class="px-6 py-4 bg-gray text ">
+                  <button
+                    className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                    disabled={isLoading}
+                    data-id="delete"
+                  >
                     Удалить
                   </button>
                 </td>
-                <td class="px-6 py-4 bg-gray text hover:bg-slate-100 edit">
-                  <button disabled={isLoading} data-id="edit">
+                <td class="text edit">
+                  <button
+                    className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
+                    disabled={isLoading}
+                    data-id="edit"
+                  >
                     Редактировать
                   </button>
                 </td>
