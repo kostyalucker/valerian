@@ -6,16 +6,3 @@ services:
     build: ./nginx
     ports:
       - 80:80
-    depends_on:
-      - mongodb
-  mongodb:
-    image: mongo
-    ports:
-      - 27017:27017
-  mongo_seed:
-    image: mongo
-    links:
-      - mongodb
-    volumes:
-      - ./mongo-seed:/mongo-seed
-    command: bash /mongo-seed/import.sh
