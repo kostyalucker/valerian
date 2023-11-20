@@ -1,10 +1,12 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-
   reactStrictMode: true,
   typescript: {
     ignoreBuildErrors: true,
+  },
+  env: {
+    NEXTAUTH_URL: "http://localhost:3000",
   },
   async headers() {
     return [
@@ -25,8 +27,8 @@ const nextConfig = {
           },
         ],
       },
-    ]
+    ];
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

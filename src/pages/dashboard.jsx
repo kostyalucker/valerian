@@ -1,25 +1,22 @@
 import { getSession, signOut, useSession } from "next-auth/react";
 import { baseApiUrl, baseUrl } from "@/config";
 import Link from "next/link";
-type ObjType = {
-  ENGINEER: string;
-  CUSTOMER: string;
-  default: string;
-};
+import { ROLES } from "@/constants/users";
 export default function Dashboard(props) {
-  const links: ObjType = {
-    ENGINEER: "/customers",
-    CUSTOMER: "/departments",
+  const links = {
+    [ROLES.engineer]: "/customers",
+    [ROLES.customer]: "/departments",
+    [ROLES.superAdmin]: "/customers",
     default: "/customers",
   };
 
   const { data: session } = useSession();
   const user = session?.user;
-  //@ts-ignore
-  function getUrlCustomers(): string {
+
+  function getUrlCustomers() {
     const role = session?.user?.role;
 
-    const keyRole: keyof ObjType = role || "default";
+    const keyRole = role || "default";
     return links[keyRole];
   }
 
@@ -39,7 +36,7 @@ Dashboard.auth = {
   loading: "loading",
 };
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context) {
   const { req } = context;
   const session = await getSession({ req });
 
