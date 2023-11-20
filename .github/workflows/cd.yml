@@ -10,9 +10,9 @@ on:
       - completed
 
 jobs:
-  build:
+  on-success:
     runs-on: ubuntu-latest
-
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Deploy using ssh
         uses: appleboy/ssh-action@v1.0.0
@@ -25,3 +25,8 @@ jobs:
             cd ../var/www/valerian
             git pull origin main
             docker-compose up -d --build nextjs
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The triggering workflow failed'
