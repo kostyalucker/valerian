@@ -17,6 +17,6 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
-            cd ~/usr/www/valerian
+            cd ../usr/www/valerian
             git pull origin main
             docker-compose up -d --build nextjs
