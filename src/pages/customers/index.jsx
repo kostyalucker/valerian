@@ -78,13 +78,11 @@ export default function CustomersPage({ customers, baseUrl }) {
       setFilters({
         sorted: "DESC",
       });
-      console.log("asc");
     } else if (filters.sorted === "DESC") {
       sortedCustomersAsc();
       setFilters({
         sorted: "ASC",
       });
-      console.log("Desc");
     }
   }
 
