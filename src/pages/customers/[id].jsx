@@ -62,6 +62,7 @@ export default function CustomersPage({ customer }) {
   return (
     <>
       <p className="text-xl font-bold mb-4">Редактирование заказчика</p>
+
       <div>
         <p className="mb-2">Наименование</p>
         <Input
