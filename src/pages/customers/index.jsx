@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useState } from "react";
+import { getSession, signOut, useSession } from "next-auth/react";
 
 import { baseApiUrl } from "@/config";
 import { useRouter, router } from "next/router";
@@ -9,6 +10,11 @@ export default function CustomersPage({ customers, baseUrl }) {
   const [filters, setFilters] = useState({
     sorted: "ASC",
   });
+
+  const { data: session } = useSession();
+
+  const user = session?.user;
+
   const [selectedCustomerId, setSelectedCustomerId] = useState();
   const [isShowModalDelete, setShowModalDelete] = useState(false);
   const [customersState, setCustomers] = useState(customers);
@@ -128,7 +134,9 @@ export default function CustomersPage({ customers, baseUrl }) {
               <th scope="col" className="px-6 py-3">
                 Инн
               </th>
-              <th scope="col" className="px-6 py-3"></th>
+              {user.role === "SUPERADMIN" && (
+                <th scope="col" className="px-6 py-3"></th>
+              )}
               <th scope="col" className="px-6 py-3"></th>
             </tr>
           </thead>
@@ -148,15 +156,17 @@ export default function CustomersPage({ customers, baseUrl }) {
                 <td className="px-6 py-4">{customer.region}</td>
                 <td className="px-6 py-4">{customer.city}</td>
                 <td className="px-6 py-4">{customer.inn}</td>
-                <td className="px-6 py-4 bg-gray text ">
-                  <button
-                    className="bg-red-500 text-white px-4 py-2 rounded-lg"
-                    disabled={isLoading}
-                    data-id="delete"
-                  >
-                    Удалить
-                  </button>
-                </td>
+                {user.role === "SUPERADMIN" && (
+                  <td className="px-6 py-4 bg-gray text">
+                    <button
+                      className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                      disabled={isLoading}
+                      data-id="delete"
+                    >
+                      Удалить
+                    </button>
+                  </td>
+                )}
                 <td className="text edit">
                   <button
                     className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
