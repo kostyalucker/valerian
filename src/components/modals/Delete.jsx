@@ -1,4 +1,5 @@
-function ModalDeleteUser(props) {
+function Delete(props) {
+  const { description } = props;
   function remove() {
     props.delete();
   }
@@ -39,8 +40,7 @@ function ModalDeleteUser(props) {
           </div>
           <div class="p-4 md:p-5 space-y-4">
             <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              Вы хотите удалить пользователя!! После удаления пользователь и его
-              данные будут удалены
+              {description}
             </p>
           </div>
           <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
@@ -65,4 +65,4 @@ function ModalDeleteUser(props) {
   );
 }
 
-export default ModalDeleteUser;
+export default Delete;

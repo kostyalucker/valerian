@@ -1,10 +1,9 @@
-import Link from "next/link";
 import { useState } from "react";
-import { getSession, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 import { baseApiUrl } from "@/config";
-import { useRouter, router } from "next/router";
-import ModalDeleteUser from "../../components/modals/DeleteUser";
+import { router } from "next/router";
+import Delete from "../../components/modals/Delete";
 export default function CustomersPage({ customers, baseUrl }) {
   const [isLoading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
@@ -95,7 +94,11 @@ export default function CustomersPage({ customers, baseUrl }) {
   return (
     <>
       {isShowModalDelete && (
-        <ModalDeleteUser delete={deleteCustomer} cancel={cancel} />
+        <Delete
+          description="Вы хотите удалить пользователя!! После удаления пользователь и его данные будут удалены"
+          delete={deleteCustomer}
+          cancel={cancel}
+        />
       )}
       <p className="text-xl font-bold mb-4">Заказчики</p>
       <div className="relative overflow-x-auto">
@@ -192,6 +195,8 @@ CustomersPage.auth = {
 export async function getServerSideProps({ req }) {
   try {
     const response = await fetch(`${baseApiUrl}/customers`);
+
+    console.log(response, "reposne");
 
     if (!response.ok) {
       throw new Error("Error");
