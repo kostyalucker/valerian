@@ -3,7 +3,9 @@ import { useSession } from "next-auth/react";
 
 import { baseApiUrl } from "@/config";
 import { router } from "next/router";
-import Delete from "../../components/modals/Delete";
+import DeleteDialog from "../../components/modals/Delete";
+
+import { dialog } from "../../constants/dialog";
 export default function CustomersPage({ customers, baseUrl }) {
   const [isLoading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
@@ -94,8 +96,8 @@ export default function CustomersPage({ customers, baseUrl }) {
   return (
     <>
       {isShowModalDelete && (
-        <Delete
-          description="Вы хотите удалить пользователя!! После удаления пользователь и его данные будут удалены"
+        <DeleteDialog
+          description={dialog.deleteCustomer()}
           delete={deleteCustomer}
           cancel={cancel}
         />
@@ -195,8 +197,6 @@ CustomersPage.auth = {
 export async function getServerSideProps({ req }) {
   try {
     const response = await fetch(`${baseApiUrl}/customers`);
-
-    console.log(response, "reposne");
 
     if (!response.ok) {
       throw new Error("Error");

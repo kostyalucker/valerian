@@ -9,8 +9,9 @@ import { useRouter } from "next/router";
 
 import { useState, useEffect } from "react";
 
-import Delete from "../../components/modals/Delete";
+import DeleteDialog from "../../components/modals/Delete";
 
+import { dialog } from "../../constants/dialog";
 export default function Departments(props) {
   const { departments } = props;
 
@@ -83,17 +84,19 @@ export default function Departments(props) {
     getInfoCustomer(idCustomer);
   }, [idCustomer]);
 
-  function unshowDeleteModal() {
+  function closeDeleteModal() {
     setIsShowDelete(false);
   }
 
   return (
     <>
       {isShowDelete && (
-        <Delete
-          description={`Вы хотите удалить цех ${selectedDepartment.departmentNumber}!! После удаления цех и его данные будут удалены`}
+        <DeleteDialog
+          description={dialog.deleteDepartment(
+            selectedDepartment.departmentNumber
+          )}
           delete={deleteDepartment}
-          cancel={unshowDeleteModal}
+          cancel={closeDeleteModal}
         />
       )}
       {customer && (

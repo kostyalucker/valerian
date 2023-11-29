@@ -1,4 +1,4 @@
-function Delete(props) {
+function DeleteDialog(props) {
   const { description } = props;
   function remove() {
     props.delete();
@@ -65,4 +65,4 @@ function Delete(props) {
   );
 }
 
-export default Delete;
+export default DeleteDialog;
