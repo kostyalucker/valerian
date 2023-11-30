@@ -33,7 +33,6 @@ export default function CustomersPage({ customer }) {
 
   async function onCustomerEdit() {
     const values = getValues();
-    console.log(values, isValid);
     if (!isValid) {
       return;
     }

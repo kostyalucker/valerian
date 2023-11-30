@@ -47,11 +47,11 @@ CreateUserPage.auth = {
 export async function getServerSideProps(context) {
   const { req } = context;
   const session = await getSession({ req });
-  const isAdminRole =
+  const isAccessCreation =
     session?.user?.role === ROLES.admin ||
-    session?.user?.role === ROLES.superAdmin;
-
-  if (!isAdminRole) {
+    session?.user?.role === ROLES.superAdmin ||
+    session?.user?.role === ROLES.engineer;
+  if (!isAccessCreation) {
     return {
       redirect: { destination: `${baseUrl}/dashboard` },
     };

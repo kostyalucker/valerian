@@ -12,7 +12,6 @@ export default function Dashboard(props) {
 
   const { data: session } = useSession();
   const user = session?.user;
-
   function getUrlCustomers() {
     const role = session?.user?.role;
 
@@ -39,7 +38,7 @@ Dashboard.auth = {
 export async function getServerSideProps(context) {
   const { req } = context;
   const session = await getSession({ req });
-
+  
   if (!session) {
     return {
       redirect: {

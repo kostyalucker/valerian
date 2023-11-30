@@ -1,10 +1,10 @@
 import DepartmentModel from "@/models/Department";
 import { getServerSession } from "next-auth";
-import dbConnect from "../../lib/mongoose";
-import Department from "../../models/Department";
-import { authOptions } from "./auth/[...nextauth]";
+import dbConnect from "../../../lib/mongoose";
+import Department from "../../../models/Department";
+import { authOptions } from "../auth/[...nextauth]";
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
   try {
     await dbConnect();
 
@@ -39,12 +39,14 @@ export default async function handler(req, res) {
 
         throw new Error();
       }
-    } else if (req.method === "POST") {
-      const department = JSON.parse(req.body);
+    } else if (req.method === "DELETE") {
+      const { id } = req.query;
 
-      const insertedDepartment = await DepartmentModel.insertMany([department]);
+      const deletedDepartment = await DepartmentModel.deleteOne({
+        _id: id,
+      });
 
-      res.status(200).json(insertedDepartment[0]);
+      res.status(200).json({ result: deletedDepartment });
     }
   } catch (e) {
     console.error(e);
