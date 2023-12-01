@@ -5,6 +5,9 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  env: {
+    baseUrl: process.env.BASE_URL,
+  },
   async headers() {
     return [
       {
