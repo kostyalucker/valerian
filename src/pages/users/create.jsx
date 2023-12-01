@@ -2,7 +2,7 @@ import { createUserFields, createUserFieldsCustomer } from "@/constants/forms";
 import { getSession, useSession } from "next-auth/react";
 import { FormMaster } from "@/components/FormMaster";
 import { useEffect, useState } from "react";
-import { baseUrl } from "@/config";
+import { baseUrl, baseApiUrl } from "@/config";
 import { validateInn } from "@/utils/validateInn";
 
 export default function CreateUserPage() {
@@ -21,7 +21,7 @@ export default function CreateUserPage() {
       }
     }
 
-    const response = await fetch(`/api/users`, {
+    const response = await fetch(`${baseApiUrl}/users`, {
       method: "POST",
       body: JSON.stringify(values),
     });
