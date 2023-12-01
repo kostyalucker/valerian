@@ -44,7 +44,7 @@ export default function Departments(props) {
   async function deleteDepartment() {
     try {
       const response = await fetch(
-        `${baseApiUrl}/departments/${selectedDepartment._id}`,
+        `/api/departments/${selectedDepartment._id}`,
         {
           method: "DELETE",
         }

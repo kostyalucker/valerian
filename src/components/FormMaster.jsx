@@ -10,13 +10,19 @@ export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
   const {
     getValues,
     formState: { isValid },
-    reset,
+    resetField,
     handleSubmit,
     registeredFields,
     watch,
   } = useMasterForm(fields);
   const [error, setError] = useState(false);
   const router = useRouter();
+
+  function clearFields(fields) {
+    Object.keys(fields).forEach((fieldKey) => {
+      resetField(fieldKey);
+    });
+  }
 
   const onFormSubmit = (e) => {
     e.preventDefault();
@@ -33,10 +39,12 @@ export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
           const response = await onSubmit(values);
 
           if (response?.ok) {
+            clearFields(values);
+
             return;
           }
 
-          setError(true);
+          setError(response.message || true);
 
           setTimeout(() => {
             setError(false);
@@ -54,7 +62,6 @@ export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
       }, 10000);
     } finally {
       // TODO: remove force reload and fix updates
-      router.reload(window.location.pathname);
     }
   };
 
@@ -65,6 +72,7 @@ export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
       onChangeRole(fieldName, value);
     }
   };
+
   return (
     <>
       <p className="text-xl font-bold mb-4">{title}</p>
@@ -117,7 +125,11 @@ export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
       {!isValid && (
         <p className="text-red-400 mt-2">Заполните все поля формы</p>
       )}
-      {error && <p className="text-red-400 mt-2">Ошибка при операции</p>}
+      {error && (
+        <p className="text-red-400 mt-2">
+          {typeof error === "string" ? error : "Ошибка при операции"}
+        </p>
+      )}
     </>
   );
 }
