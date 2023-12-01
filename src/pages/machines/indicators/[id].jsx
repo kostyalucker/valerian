@@ -91,7 +91,6 @@ export async function getServerSideProps(context) {
     }
 
     const indicators = await response.json();
-    console.log(indicators);
 
     return {
       props: {

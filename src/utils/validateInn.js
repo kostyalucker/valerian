@@ -1,10 +1,12 @@
 export function validateInn(inn, error) {
   var result = false;
+
   if (typeof inn === "number") {
     inn = inn.toString();
   } else if (typeof inn !== "string") {
     inn = "";
   }
+
   if (!inn.length) {
     error.code = 1;
     error.message = "ИНН пуст";
@@ -42,5 +44,5 @@ export function validateInn(inn, error) {
       error.message = "Неправильное контрольное число";
     }
   }
-  return result;
+  return { result, error };
 }
