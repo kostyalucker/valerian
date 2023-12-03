@@ -6,7 +6,14 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 // todo: problem with dynamic fields, reset doesn't work
-export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
+export function FormMaster({
+  title,
+  name,
+  type,
+  fields,
+  onSubmit,
+  onChangeRole,
+}) {
   const {
     getValues,
     formState: { isValid },
@@ -54,7 +61,7 @@ export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
       }, 10000);
     } finally {
       // TODO: remove force reload and fix updates
-      router.reload(window.location.pathname);
+      // router.reload(window.location.pathname);
     }
   };
 
@@ -92,7 +99,14 @@ export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
           }
 
           return (
-            <div key={field.label + field.name}>
+            <div
+              key={field.label + field.name}
+              className={
+                field.label === "Ф.И.О." && name === "department"
+                  ? "form-master--contact-name"
+                  : null
+              }
+            >
               <p className="mb-2">{field.label}</p>
               <Component
                 {...field}
@@ -105,14 +119,14 @@ export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
           );
         })}
       <Button
-        className="disabled:pointer-events-none"
+        className="disabled:pointer-events-none mr-2 "
         onClick={onFormSubmit}
         disabled={!isValid}
       >
-        Добавить
+        {type === "edit" ? "Сохранить" : "Добавить"}
       </Button>
       <Button className="disabled:pointer-events-none">
-        <Link href="/">Отмена</Link>
+        <Link href="/">Домой</Link>
       </Button>
       {!isValid && (
         <p className="text-red-400 mt-2">Заполните все поля формы</p>

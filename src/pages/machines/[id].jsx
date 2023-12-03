@@ -205,7 +205,7 @@ export default function MachinePage({ baseUrl }) {
       </p>
       <p>
         <span className="font-bold">Цех:</span>{" "}
-        {info?.department?.departmentNumber}
+        {info?.department?.name}
       </p>
       <p>
         <span className="font-bold">Модель станка:</span> {info?.model}

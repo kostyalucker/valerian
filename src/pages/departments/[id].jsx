@@ -18,7 +18,7 @@ export default function DepartmentPage(props) {
     if (machines?.length) {
       const existedMachine = machines[0];
       setMachineInfo({
-        departmentName: existedMachine?.department.departmentNumber,
+        departmentName: existedMachine?.department.name,
         factoryName: existedMachine?.department.user.name,
       });
     }
@@ -67,7 +67,7 @@ export default function DepartmentPage(props) {
               <div className="inline-flex text-center mb-2 hover:bg-slate-50 hover:border-cyan-900 hover:border-2 border-2 border-transparent">
                 <div className="p-2 border-2 w-12 shrink-0">{idx + 1}</div>
                 <div className="p-2 border-2 w-32 shrink-0">
-                  {department.departmentNumber}
+                  {department.name}
                 </div>
                 <div className="p-2 border-2 w-32 shrink-0">
                   {machineNumber}

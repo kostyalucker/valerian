@@ -1,5 +1,6 @@
+import { useState, useEffect } from "react";
 import { getSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useRouter, router } from "next/router";
 
 import { createDepartmentFields } from "@/constants/forms";
 import { ROLES } from "@/constants/users";
@@ -9,6 +10,9 @@ import { baseUrl } from "@/config";
 export default function CreateUserPage() {
   const fields = createDepartmentFields();
   const router = useRouter();
+
+  const [customer, setCustomer] = useState();
+  const idCustomer = router.query.userId;
 
   async function onDepartmentCreate(values) {
     if (!router.query.userId) {
@@ -28,10 +32,33 @@ export default function CreateUserPage() {
     return response;
   }
 
+  async function getInfoCustomer(id) {
+    if (!id) {
+      return;
+    }
+
+    const response = await fetch(`/api/users/${id}`).then((res) => {
+      return res.json();
+    });
+
+    setCustomer(response);
+  }
+
+  useEffect(() => {
+    getInfoCustomer(idCustomer);
+  }, [idCustomer]);
   return (
     <>
+      {customer && (
+        <div className="mb-4">
+          <p className="mb-2">Предприятие: {customer.name}</p>
+          <p>Адрес предприятие: {customer.address}</p>
+        </div>
+      )}
       <FormMaster
         title="Добавить цех"
+        name="department"
+        type="create"
         fields={fields}
         onSubmit={onDepartmentCreate}
       />

@@ -31,7 +31,9 @@ export default function Departments(props) {
   function openDepartment(e, id, department) {
     e.preventDefault();
     if (e.target.dataset.id === "edit") {
-      router.push(`/departments/${id}`);
+      router.push(
+        `/departments/edit?departmentId=${department._id}&userId=${idCustomer}`
+      );
     } else if (e.target.dataset.id === "delete") {
       setSelectedDepartment(department);
 
@@ -93,7 +95,7 @@ export default function Departments(props) {
       {isShowDelete && (
         <DeleteDialog
           description={dialog.deleteDepartment(
-            selectedDepartment.departmentNumber
+            selectedDepartment.name
           )}
           delete={deleteDepartment}
           cancel={closeDeleteModal}
@@ -164,7 +166,7 @@ export default function Departments(props) {
                     }}
                     key={department._id}
                   >
-                    {department.departmentNumber}
+                    {department.name}
                   </Link>
                 </td>
                 <td className="px-6 py-4 bg-gray text">

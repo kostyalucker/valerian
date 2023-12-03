@@ -214,8 +214,32 @@ export const createMachineFields = () => {
 export const createDepartmentFields = () => {
   return [
     {
-      name: "departmentNumber",
+      name: "name",
       label: "Название цеха",
+      required: true,
+      defaultValue: "",
+      component: "input",
+      type: "text",
+    },
+    {
+      name: "contactName",
+      label: "Ф.И.О.",
+      required: true,
+      defaultValue: "",
+      component: "input",
+      type: "text",
+    },
+    {
+      name: "contactPhone",
+      label: "Телефон",
+      required: true,
+      defaultValue: "",
+      component: "input",
+      type: "text",
+    },
+    {
+      name: "contactEmail",
+      label: "E-mail",
       required: true,
       defaultValue: "",
       component: "input",
