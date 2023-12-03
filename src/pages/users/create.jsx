@@ -2,9 +2,8 @@ import { createUserFields, createUserFieldsCustomer } from "@/constants/forms";
 import { getSession, useSession } from "next-auth/react";
 import { FormMaster } from "@/components/FormMaster";
 import { useEffect, useState } from "react";
-import { baseUrl } from "@/config";
+import { baseUrl, baseApiUrl } from "@/config";
 import { validateInn } from "@/utils/validateInn";
-import { baseApiUrl } from "@/config";
 
 export default function CreateUserPage() {
   const [userFields, setUserFields] = useState([]);
@@ -13,18 +12,18 @@ export default function CreateUserPage() {
 
   async function onUserCreate(values) {
     // TODO: refactoring dependent field inn
-    if (values.role === "CUSTOMER") {
-      const validateInnResult = validateInn(Number(values.inn), new Error());
 
-      if (!validateInnResult) {
-        return;
+    if (values.role === "CUSTOMER") {
+      const { result, error } = validateInn(Number(values.inn), new Error());
+
+      if (!result) {
+        return error;
       }
     }
+
     const response = await fetch(`${baseApiUrl}/users`, {
       method: "POST",
       body: JSON.stringify(values),
-    }).then((res) => {
-      return res.json();
     });
 
     return response;
@@ -41,6 +40,7 @@ export default function CreateUserPage() {
       const fields = userFields.filter(
         (field) => field.name !== "lastName" && field.name !== "patronomyc"
       );
+
       setUserFields(
         fields.map((field) => {
           if (field.name === "firstName") {
