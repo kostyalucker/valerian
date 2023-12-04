@@ -75,9 +75,9 @@ export default function CreateUserPage() {
   }
 
   useEffect(() => {
-    getInfoCustomer(idCustomer);
+    getInfoCustomer();
     getInfoDepartment();
-  }, [idCustomer]);
+  }, []);
 
   useEffect(() => {
     updateField();

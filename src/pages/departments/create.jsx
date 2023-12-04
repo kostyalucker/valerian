@@ -29,7 +29,9 @@ export default function CreateUserPage() {
       body: JSON.stringify(valuesWithUserId),
     });
 
-    return response;
+    if (response.ok) {
+      router.back();
+    }
   }
 
   async function getInfoCustomer(id) {

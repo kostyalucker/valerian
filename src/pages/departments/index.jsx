@@ -39,7 +39,7 @@ export default function Departments(props) {
 
       setIsShowDelete(true);
     } else {
-      router.push(`/departments?userId=${id}`);
+      router.push(`/departments/${department._id}?&userId=${idCustomer}`);
     }
   }
 
@@ -94,9 +94,7 @@ export default function Departments(props) {
     <>
       {isShowDelete && (
         <DeleteDialog
-          description={dialog.deleteDepartment(
-            selectedDepartment.name
-          )}
+          description={dialog.deleteDepartment(selectedDepartment.name)}
           delete={deleteDepartment}
           cancel={closeDeleteModal}
         />
@@ -159,15 +157,12 @@ export default function Departments(props) {
                   scope="row"
                   className="px-6 py-4 font-medium whitespace-nowrap"
                 >
-                  <Link
+                  <span
                     className="flex items-center justify-center w-full bg-slate-400 text-white "
-                    href={{
-                      pathname: `/departments/${department._id}`,
-                    }}
                     key={department._id}
                   >
                     {department.name}
-                  </Link>
+                  </span>
                 </td>
                 <td className="px-6 py-4 bg-gray text">
                   {router.query.userId && isSuperAdmin ? (
