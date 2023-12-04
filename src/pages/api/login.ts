@@ -14,7 +14,7 @@ export default async function handler(req: any, res: any) {
 
     const body = JSON.parse(JSON.stringify(req.body));
     const users = await UserModel.find({});
-    console.log(users, "users on login");
+
     // await UserModel.collection.insertOne({
     //   email: "admin@mail.ru",
     //   password: "$2a$10$8N9DT9gWHhdU.L0LDtNRc.TtHCnlPD98RjUM5GWrWF5Zo0A2L0d7y",
