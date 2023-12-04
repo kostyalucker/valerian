@@ -20,7 +20,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
-          port: 33333
+          port: ${{ secrets.SSH_PORT }}
           script: |
             cd ../var/www/valerian
             git pull origin main
