@@ -22,7 +22,7 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd ../var/www/valerian
+            cd ../../var/www/valerian
             git pull origin main
             docker-compose up -d --build nextjs --build-arg MONGODB_URI=${{ secrets.MONGODB_URI }} --build-arg BASE_URL=${{ secrets.BASE_URL }} --build-arg NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} --build-arg NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} --no-cache
   on-failure:
