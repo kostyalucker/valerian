@@ -24,7 +24,7 @@ jobs:
           script: |
             cd ../../var/www/valerian
             git pull origin main
-            docker-compose up -d --build nextjs
+            sudo docker-compose up -d --build nextjs
   on-failure:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
