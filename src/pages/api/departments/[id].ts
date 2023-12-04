@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import dbConnect from "../../../lib/mongoose";
 import Department from "../../../models/Department";
 import { authOptions } from "../auth/[...nextauth]";
+import { checkObjectProperties } from "@/utils/validateObjectProperties";
 
 export default async function handler(req: any, res: any) {
   try {
@@ -25,9 +26,9 @@ export default async function handler(req: any, res: any) {
         const departments = await Department.findById(id);
 
         res.json(departments);
+      } else {
+        throw new Error();
       }
-
-      throw new Error();
     } else if (req.method === "DELETE") {
       const { id } = req.query;
 
@@ -39,12 +40,19 @@ export default async function handler(req: any, res: any) {
     } else if (req.method === "PUT") {
       const { id } = req.query;
       const updateDepartmentParams = JSON.parse(req.body);
-      const updateDepartment = await DepartmentModel.findByIdAndUpdate(
-        id,
-        updateDepartmentParams
-      );
 
-      res.status(200).json(updateDepartment);
+      const validateProperties = checkObjectProperties(updateDepartmentParams);
+
+      if (validateProperties) {
+        const updateDepartment = await DepartmentModel.findByIdAndUpdate(
+          id,
+          updateDepartmentParams
+        );
+
+        res.status(200).json(updateDepartment);
+      } else {
+        throw new Error();
+      }
     }
   } catch (e) {
     console.error(e);

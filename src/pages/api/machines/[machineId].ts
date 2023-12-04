@@ -5,7 +5,9 @@ import DepartmentModel from "@/models/Department";
 import IndicatorsModel from "@/models/Indicators";
 import UserModel from "@/models/User";
 
-export default async function handler(req, res) {
+import { checkObjectProperties } from "@/utils/validateObjectProperties";
+
+export default async function handler(req: any, res: any) {
   try {
     await dbConnect();
     if (req.method === "GET") {
@@ -40,12 +42,18 @@ export default async function handler(req, res) {
       const { machineId } = req.query;
       const updateMachineParams = JSON.parse(req.body);
 
-      const updateMachine = await MachineModel.findByIdAndUpdate(
-        machineId,
-        updateMachineParams
-      );
+      const validateProperties = checkObjectProperties(updateMachineParams);
 
-      res.status(200).json(updateMachine);
+      if (validateProperties) {
+        const updateMachine = await MachineModel.findByIdAndUpdate(
+          machineId,
+          updateMachineParams
+        );
+
+        res.status(200).json(updateMachine);
+      } else {
+        throw new Error();
+      }
     } else if (req.method === "DELETE") {
       const { machineId } = req.query;
 

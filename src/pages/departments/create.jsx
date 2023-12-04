@@ -6,12 +6,11 @@ import { createDepartmentFields } from "@/constants/forms";
 import { ROLES } from "@/constants/users";
 import { FormMaster } from "@/components/FormMaster";
 import { baseUrl } from "@/config";
-
+import { useCustomerInfo } from "../../hooks/useCustomerInfo";
 export default function CreateUserPage() {
   const fields = createDepartmentFields();
   const router = useRouter();
 
-  const [customer, setCustomer] = useState();
   const customerId = router.query.userId;
 
   async function onDepartmentCreate(values) {
@@ -34,27 +33,14 @@ export default function CreateUserPage() {
     }
   }
 
-  async function getCustomerInfo(id) {
-    if (!id) {
-      return;
-    }
+  const { customerInfo } = useCustomerInfo(customerId);
 
-    const response = await fetch(`/api/users/${id}`).then((res) => {
-      return res.json();
-    });
-
-    setCustomer(response);
-  }
-
-  useEffect(() => {
-    getCustomerInfo(customerId);
-  }, [customerId]);
   return (
     <>
-      {customer && (
+      {customerInfo && (
         <div className="mb-4">
-          <p className="mb-2">Предприятие: {customer.name}</p>
-          <p>Адрес предприятие: {customer.address}</p>
+          <p className="mb-2">Предприятие: {customerInfo.name}</p>
+          <p>Адрес предприятие: {customerInfo.address}</p>
         </div>
       )}
       <FormMaster

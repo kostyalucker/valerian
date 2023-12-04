@@ -7,6 +7,7 @@ import { ROLES } from "@/constants/users";
 import { FormMaster } from "@/components/FormMaster";
 import { baseUrl } from "@/config";
 
+import { useCustomerInfo } from "../../hooks/useCustomerInfo";
 export default function CreateUserPage() {
   const [fields, setFields] = useState();
   const router = useRouter();
@@ -33,18 +34,7 @@ export default function CreateUserPage() {
       console.log(error);
     }
   }
-
-  // TODO: create custom hoock
-  async function getCustomerInfo() {
-    if (!customerId) {
-      return;
-    }
-    const response = await fetch(`/api/users/${customerId}`).then((res) => {
-      return res.json();
-    });
-
-    setCustomer(response);
-  }
+  const { customerInfo } = useCustomerInfo(customerId);
 
   const updateField = () => {
     if (!department) {
@@ -76,7 +66,6 @@ export default function CreateUserPage() {
   }
 
   useEffect(() => {
-    getCustomerInfo();
     getDepartmentInfo();
   }, []);
 
@@ -86,10 +75,10 @@ export default function CreateUserPage() {
 
   return (
     <>
-      {customer && (
+      {customerInfo && (
         <div className="mb-4">
-          <p className="mb-2">Предприятие: {customer.name}</p>
-          <p>Адрес предприятие: {customer.address}</p>
+          <p className="mb-2">Предприятие: {customerInfo.name}</p>
+          <p>Адрес предприятие: {customerInfo.address}</p>
         </div>
       )}
       {fields && (

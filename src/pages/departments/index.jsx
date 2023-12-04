@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import DeleteDialog from "../../components/modals/Delete";
 
 import { dialog } from "../../constants/dialog";
+import { useCustomerInfo } from "@/hooks/useCustomerInfo";
 export default function Departments(props) {
   const { departments } = props;
 
@@ -21,8 +22,6 @@ export default function Departments(props) {
   const [departmentsList, setDepartmentsList] = useState(departments);
   const [isShowDelete, setIsShowDelete] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState({});
-
-  const [customer, setCustomer] = useState();
 
   const customerId = router.query.userId;
   const isSuperAdmin = session?.data?.user?.role === ROLES.superAdmin;
@@ -70,21 +69,7 @@ export default function Departments(props) {
     }
   }
 
-  async function getCustomerInfo(id) {
-    if (!id) {
-      return;
-    }
-
-    const response = await fetch(`/api/users/${id}`).then((res) => {
-      return res.json();
-    });
-
-    setCustomer(response);
-  }
-
-  useEffect(() => {
-    getCustomerInfo(customerId);
-  }, [customerId]);
+  const { customerInfo } = useCustomerInfo(customerId);
 
   function closeDeleteModal() {
     setIsShowDelete(false);
@@ -99,10 +84,10 @@ export default function Departments(props) {
           cancel={closeDeleteModal}
         />
       )}
-      {customer && (
+      {customerInfo && (
         <div className="mb-4">
-          <p className="mb-2">Предприятие: {customer.name}</p>
-          <p>Адрес предприятие: {customer.address}</p>
+          <p className="mb-2">Предприятие: {customerInfo.name}</p>
+          <p>Адрес предприятие: {customerInfo.address}</p>
         </div>
       )}
       <div className="title__container flex items-center mb-4">

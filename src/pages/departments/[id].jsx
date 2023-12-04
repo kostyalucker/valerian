@@ -3,9 +3,11 @@ import { Title } from "@/components/Title";
 import { baseApiUrl } from "@/config";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import DeleteDialog from "../../components/modals/Delete";
 import { dialog } from "../../constants/dialog";
+
+import { useCustomerInfo } from "@/hooks/useCustomerInfo";
 
 export default function DepartmentPage(props) {
   const router = useRouter();
@@ -25,18 +27,9 @@ export default function DepartmentPage(props) {
   const isEngineer = session?.data?.user?.role === "ENGINEER";
   const customerId = router.query.userId;
 
+  const { customerInfo } = useCustomerInfo(customerId);
+
   const accessToAdd = isSuperAdmin || isEngineer;
-
-  async function getCustomerInfo() {
-    if (!customerId) {
-      return;
-    }
-    const response = await fetch(`/api/users/${customerId}`).then((res) => {
-      return res.json();
-    });
-
-    setCustomer(response);
-  }
 
   async function getDepartmentInfo() {
     const id = router.query.id;
@@ -100,7 +93,6 @@ export default function DepartmentPage(props) {
 
   useEffect(() => {
     getDepartmentInfo();
-    getCustomerInfo();
   }, []);
 
   return (
@@ -112,14 +104,15 @@ export default function DepartmentPage(props) {
           delete={deleteMachine}
         />
       )}
-      {customer && (
+      {customerInfo && (
         <div className="">
           <span>
             <span className="font-semibold mb-2">Наименование Заказчика: </span>
-            <span>{customer.name}</span>
+            <span>{customerInfo.name}</span>
           </span>
           <p className="mb-2">
-            <span className="font-semibolds">Адрес: </span> {customer.address}
+            <span className="font-semibolds">Адрес: </span>{" "}
+            {customerInfo.address}
           </p>
         </div>
       )}
@@ -240,10 +233,8 @@ DepartmentPage.auth = {
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
-
   try {
     const response = await fetch(`${baseApiUrl}/machines?department=${id}`);
-
     if (!response.ok) {
       throw new Error("Error");
     }
