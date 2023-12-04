@@ -24,7 +24,7 @@ jobs:
           script: |
             cd ../../var/www/valerian
             git pull origin main
-            docker build -t nextjs --build-arg MONGODB_URI=${{ secrets.MONGODB_URI }} --build-arg BASE_URL=${{ secrets.BASE_URL }} --build-arg NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} --build-arg NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} --no-cache . && docker run nextjs
+            docker build --build-arg MONGODB_URI=${{ secrets.MONGODB_URI }} --build-arg BASE_URL=${{ secrets.BASE_URL }} --build-arg NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} --build-arg NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} -t nextjs --no-cache . && docker run nextjs
   on-failure:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
