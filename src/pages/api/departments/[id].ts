@@ -38,7 +38,6 @@ export default async function handler(req: any, res: any) {
       res.status(200).json({ result: deletedDepartment });
     } else if (req.method === "PUT") {
       const { id } = req.query;
-
       const updateDepartmentParams = JSON.parse(req.body);
       const updateDepartment = await DepartmentModel.findByIdAndUpdate(
         id,

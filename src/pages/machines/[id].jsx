@@ -189,8 +189,6 @@ export default function MachinePage({ baseUrl }) {
       return "";
     }
 
-    console.log(date);
-
     return format(new Date(date), "yyyy-MM-dd HH:mm");
   }
 

@@ -72,6 +72,14 @@ export function FormMaster({
       onChangeRole(fieldName, value);
     }
   };
+
+  function createClassName(str) {
+    let result = str.replace(/([A-Z])/g, " $1"); // добавляем пробелы перед заглавными буквами
+    result = result.trim().toLowerCase(); // убираем лишние пробелы и приводим к нижнему регистру
+    result = result.replace(/\s+/g, "-"); // заменяем пробелы на дефисы
+    return "form-master--" + result;
+  }
+
   return (
     <>
       <p className="text-xl font-bold mb-4">{title}</p>
@@ -101,11 +109,7 @@ export function FormMaster({
           return (
             <div
               key={field.label + field.name}
-              className={
-                field.label === "Ф.И.О." && name === "department"
-                  ? "form-master--contact-name"
-                  : null
-              }
+              className={createClassName(field.name)}
             >
               <p className="mb-2">{field.label}</p>
               <Component

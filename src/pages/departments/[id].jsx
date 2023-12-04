@@ -23,22 +23,22 @@ export default function DepartmentPage(props) {
 
   const isSuperAdmin = session?.data?.user?.role === "SUPERADMIN";
   const isEngineer = session?.data?.user?.role === "ENGINEER";
-  const idCustomer = router.query.userId;
+  const customerId = router.query.userId;
 
   const accessToAdd = isSuperAdmin || isEngineer;
 
-  async function getInfoCustomer() {
-    if (!idCustomer) {
+  async function getCustomerInfo() {
+    if (!customerId) {
       return;
     }
-    const response = await fetch(`/api/users/${idCustomer}`).then((res) => {
+    const response = await fetch(`/api/users/${customerId}`).then((res) => {
       return res.json();
     });
 
     setCustomer(response);
   }
 
-  async function getInfoDepartment() {
+  async function getDepartmentInfo() {
     const id = router.query.id;
     if (!id) {
       return;
@@ -56,7 +56,7 @@ export default function DepartmentPage(props) {
     e.preventDefault();
     if (e.target.dataset.id === "edit") {
       router.push(
-        `/machines/edit?machineId=${machine._id}&userId=${idCustomer}`
+        `/machines/edit?machineId=${machine._id}&userId=${customerId}`
       );
     } else if (e.target.dataset.id === "delete") {
       setSelectedMachine(machine);
@@ -99,8 +99,8 @@ export default function DepartmentPage(props) {
   }
 
   useEffect(() => {
-    getInfoDepartment();
-    getInfoCustomer();
+    getDepartmentInfo();
+    getCustomerInfo();
   }, []);
 
   return (
@@ -185,42 +185,48 @@ export default function DepartmentPage(props) {
             </tr>
           </thead>
           <tbody>
-            {machines?.map((machine, index) => (
-              <tr
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer "
-                key={machine._id}
-                onClick={(e) => openMachine(e, machine)}
-              >
-                <td
-                  scope="row"
-                  className="px-6 py-4 font-medium whitespace-nowrap"
+            {machines ? (
+              machines?.map((machine, index) => (
+                <tr
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer "
+                  key={machine._id}
+                  onClick={(e) => openMachine(e, machine)}
                 >
-                  {index + 1}
-                </td>
-                <td className="px-6 py-4">{machine.machineNumber}</td>
-                <td className="px-6 py-4">{machine.type}</td>
-                <td className="px-6 py-4">{machine.model}</td>
-                <td className="px-6 py-4">{machine.machineCapacity}</td>
-                {user.role === "SUPERADMIN" && (
-                  <td className="px-6 py-4 bg-gray text">
+                  <td
+                    scope="row"
+                    className="px-6 py-4 font-medium whitespace-nowrap"
+                  >
+                    {index + 1}
+                  </td>
+                  <td className="px-6 py-4">{machine.machineNumber}</td>
+                  <td className="px-6 py-4">{machine.type}</td>
+                  <td className="px-6 py-4">{machine.model}</td>
+                  <td className="px-6 py-4">{machine.machineCapacity}</td>
+                  {user.role === "SUPERADMIN" && (
+                    <td className="px-6 py-4 bg-gray text">
+                      <button
+                        className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                        data-id="delete"
+                      >
+                        Удалить
+                      </button>
+                    </td>
+                  )}
+                  <td className="text edit">
                     <button
-                      className="bg-red-500 text-white px-4 py-2 rounded-lg"
-                      data-id="delete"
+                      className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
+                      data-id="edit"
                     >
-                      Удалить
+                      Редактировать
                     </button>
                   </td>
-                )}
-                <td className="text edit">
-                  <button
-                    className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
-                    data-id="edit"
-                  >
-                    Редактировать
-                  </button>
-                </td>
-              </tr>
-            ))}
+                </tr>
+              ))
+            ) : (
+              <span className="w-full font-semibold text-xl text-center">
+                Здесь будет список станков
+              </span>
+            )}
           </tbody>
         </table>
       </div>

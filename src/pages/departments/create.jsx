@@ -12,7 +12,7 @@ export default function CreateUserPage() {
   const router = useRouter();
 
   const [customer, setCustomer] = useState();
-  const idCustomer = router.query.userId;
+  const customerId = router.query.userId;
 
   async function onDepartmentCreate(values) {
     if (!router.query.userId) {
@@ -34,7 +34,7 @@ export default function CreateUserPage() {
     }
   }
 
-  async function getInfoCustomer(id) {
+  async function getCustomerInfo(id) {
     if (!id) {
       return;
     }
@@ -47,8 +47,8 @@ export default function CreateUserPage() {
   }
 
   useEffect(() => {
-    getInfoCustomer(idCustomer);
-  }, [idCustomer]);
+    getCustomerInfo(customerId);
+  }, [customerId]);
   return (
     <>
       {customer && (

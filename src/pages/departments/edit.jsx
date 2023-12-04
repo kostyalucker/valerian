@@ -14,7 +14,7 @@ export default function CreateUserPage() {
   const [department, setDepartment] = useState();
   const [customer, setCustomer] = useState();
 
-  const idCustomer = router.query.userId;
+  const customerId = router.query.userId;
 
   async function onDepartmentEdit(values) {
     if (!department) {
@@ -34,11 +34,12 @@ export default function CreateUserPage() {
     }
   }
 
-  async function getInfoCustomer() {
-    if (!idCustomer) {
+  // TODO: create custom hoock
+  async function getCustomerInfo() {
+    if (!customerId) {
       return;
     }
-    const response = await fetch(`/api/users/${idCustomer}`).then((res) => {
+    const response = await fetch(`/api/users/${customerId}`).then((res) => {
       return res.json();
     });
 
@@ -60,7 +61,7 @@ export default function CreateUserPage() {
     setFields(updatedFields);
   };
 
-  async function getInfoDepartment() {
+  async function getDepartmentInfo() {
     const id = router.query.departmentId;
     if (!id) {
       return;
@@ -75,8 +76,8 @@ export default function CreateUserPage() {
   }
 
   useEffect(() => {
-    getInfoCustomer();
-    getInfoDepartment();
+    getCustomerInfo();
+    getDepartmentInfo();
   }, []);
 
   useEffect(() => {

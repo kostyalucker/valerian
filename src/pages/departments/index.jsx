@@ -24,7 +24,7 @@ export default function Departments(props) {
 
   const [customer, setCustomer] = useState();
 
-  const idCustomer = router.query.userId;
+  const customerId = router.query.userId;
   const isSuperAdmin = session?.data?.user?.role === ROLES.superAdmin;
   const isEngineer = session?.data?.user?.role === ROLES.engineer;
 
@@ -32,14 +32,14 @@ export default function Departments(props) {
     e.preventDefault();
     if (e.target.dataset.id === "edit") {
       router.push(
-        `/departments/edit?departmentId=${department._id}&userId=${idCustomer}`
+        `/departments/edit?departmentId=${department._id}&userId=${customerId}`
       );
     } else if (e.target.dataset.id === "delete") {
       setSelectedDepartment(department);
 
       setIsShowDelete(true);
     } else {
-      router.push(`/departments/${department._id}?&userId=${idCustomer}`);
+      router.push(`/departments/${department._id}?&userId=${customerId}`);
     }
   }
 
@@ -70,7 +70,7 @@ export default function Departments(props) {
     }
   }
 
-  async function getInfoCustomer(id) {
+  async function getCustomerInfo(id) {
     if (!id) {
       return;
     }
@@ -83,8 +83,8 @@ export default function Departments(props) {
   }
 
   useEffect(() => {
-    getInfoCustomer(idCustomer);
-  }, [idCustomer]);
+    getCustomerInfo(customerId);
+  }, [customerId]);
 
   function closeDeleteModal() {
     setIsShowDelete(false);
