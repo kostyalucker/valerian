@@ -29,10 +29,10 @@ async function dbConnect() {
     return cached.conn;
   }
 
-  console.log("mongo connected");
-
   if (!cached.promise) {
     try {
+      console.log("mongo connected");
+
       cached.promise = mongoose.connect(MONGODB_URI);
     } catch (error) {
       console.log(error);
