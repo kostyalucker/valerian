@@ -44,7 +44,7 @@ export function FormMaster({ title, fields, onSubmit, isEdit, onChangeRole }) {
             return;
           }
 
-          setError(response.message || true);
+          setError(true);
 
           setTimeout(() => {
             setError(false);

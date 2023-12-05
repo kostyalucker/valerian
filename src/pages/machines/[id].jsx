@@ -73,15 +73,17 @@ export default function MachinePage({ baseUrl }) {
 
     const indicatorsObj = indicatorsClone?.reduce((acc, curr) => {
       const {
+        concentration,
         ph,
         conductivity,
-        concentration,
-        fungi,
         bacteriaAmount,
+        fungi,
         addedOilAmount,
-        foreignOil,
         biocide,
-        serviceAdditives,
+        smell,
+        presenceImpurities,
+        antiFoamAdditive,
+        fungicide,
       } = curr;
 
       if (!acc.ph) {
@@ -91,9 +93,12 @@ export default function MachinePage({ baseUrl }) {
         acc.bacteriaAmount = [bacteriaAmount];
         acc.concentration = [concentration];
         acc.addedOilAmount = [addedOilAmount];
-        acc.foreignOil = [foreignOil];
-        acc.biocide = [biocide];
-        acc.serviceAdditives = [serviceAdditives];
+        (acc.smell = [smell]),
+          (acc.presenceImpurities = [presenceImpurities]),
+          (acc.biocide = [biocide]);
+        // acc.serviceAdditives = [serviceAdditives];
+        (acc.antiFoamAdditive = [antiFoamAdditive]),
+          (acc.fungicide = [fungicide]);
       } else {
         acc.ph.push(ph);
         acc.bacteriaAmount.push(bacteriaAmount);
@@ -101,9 +106,12 @@ export default function MachinePage({ baseUrl }) {
         acc.conductivity.push(conductivity);
         acc.concentration.push(concentration);
         acc.addedOilAmount.push(addedOilAmount);
-        acc.foreignOil.push(foreignOil);
-        acc.biocide.push(biocide);
-        acc.serviceAdditives.push(serviceAdditives);
+        acc.smell.push(smell),
+          acc.presenceImpurities.push(presenceImpurities),
+          acc.biocide.push(biocide);
+        // acc.serviceAdditives.push(serviceAdditives);
+        acc.antiFoamAdditive.push(antiFoamAdditive),
+          acc.fungicide.push(fungicide);
       }
 
       return acc;
@@ -114,15 +122,18 @@ export default function MachinePage({ baseUrl }) {
     });
 
     const indicatorsNames = {
+      concentration: "Концентрация",
       ph: "pH",
       conductivity: "Электропроводность",
-      concentration: "Концентрация",
-      fungi: "Грибки",
       bacteriaAmount: "Бактерии",
+      fungi: "Грибки",
+      smell: "Запах",
       addedOilAmount: "Долив",
-      foreignOil: "Постороннее масло",
+      presenceImpurities: "Наличие посторонних примесей",
       biocide: "Добавлено биоцида",
-      serviceAdditives: "Добавлено сервисных присадок",
+      antiFoamAdditive: "Антипенная",
+      fungicide: "Фунгицид",
+      // serviceAdditives: "Добавлено сервисных присадок",
     };
 
     const formattedIndicators = Object.keys(indicatorsObj).map((key) => {
@@ -195,15 +206,20 @@ export default function MachinePage({ baseUrl }) {
   return (
     <>
       <p>
+        <p className="mb-4">
+          <span className="font-bold">Предприятие:</span>{" "}
+          {info?.department?.user?.name}
+          <p>
+            <span className="font-bold">Цех:</span> {info?.department?.name}
+          </p>
+        </p>
+      </p>
+
+      <p>
         <span className="font-bold">Номер станка:</span> {info?.machineNumber}
       </p>
       <p>
-        <span className="font-bold">Предприятие:</span>{" "}
-        {info?.department?.user?.name}
-      </p>
-      <p>
-        <span className="font-bold">Цех:</span>{" "}
-        {info?.department?.name}
+        <span className="font-bold">Тип станка:</span> {info?.type}
       </p>
       <p>
         <span className="font-bold">Модель станка:</span> {info?.model}
@@ -212,16 +228,34 @@ export default function MachinePage({ baseUrl }) {
         <span className="font-bold">Емкость системы:</span>{" "}
         {info?.machineCapacity}
       </p>
+      <p>
+        <span className="font-bold">Название СОЖ, коэф. рефракции: </span>
+        <span>
+          {info.oilName}, {info.refractionCoefficient}
+        </span>
+      </p>
+      <p>
+        <span className="font-bold">Рекомендуемая концентрация: </span>
+        <span>{info.recommendeConcentration}</span>
+      </p>
+      <p>
+        <span className="font-bold">Дата заливки: </span>
+        <span>{info.fillingDate}</span>
+      </p>
+      <p>
+        <span className="font-bold">Дата внесения последних изменений: </span>
+        <span>{info.lastModifiedDate}</span>
+      </p>
       {getFormattedDate(info?.emulsionFillingDate) && (
         <div>
           <span className="font-bold">Дата заливки эмульсии:</span>{" "}
           {getFormattedDate(info?.emulsionFillingDate)}
         </div>
       )}
-      <p className="mb-4">
+      {/* <p className="mb-4">
         <span className="font-bold">Дата внесения последних показателей:</span>{" "}
         {getFormattedDate(lastCreatedIndicator?.createdAt)}
-      </p>
+      </p> */}
       {lastCreatedIndicator && (
         <>
           <hr className="bg-gray-500 h-0.5 mb-4" />
@@ -281,15 +315,18 @@ export default function MachinePage({ baseUrl }) {
       </ul>
       {lastCreatedIndicator && (
         <Link href={`/machines/indicators/${info?._id}`}>
-          <Button className="mb-4">Список показателей</Button>
+          <Button className="mb-4 mr-4">Список показателей</Button>
         </Link>
       )}
       {(session.data?.user.role === "ENGINEER" ||
         session.data?.user.role === "SUPERADMIN") && (
         <>
-          <CreateIndicatorsForm
+          <Link href={`/machines/indicators/add/?id=${info?._id}`}>
+            <Button>Внести показания</Button>
+          </Link>
+          {/* <CreateIndicatorsForm
             onIndicatorsCreateSuccess={onIndicatorsCreateSuccess}
-          />
+          /> */}
         </>
       )}
     </>
