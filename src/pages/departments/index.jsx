@@ -12,6 +12,7 @@ import { useState, useEffect } from "react";
 import DeleteDialog from "../../components/modals/Delete";
 
 import { dialog } from "../../constants/dialog";
+import { useCustomerInfo } from "@/hooks/useCustomerInfo";
 export default function Departments(props) {
   const { departments } = props;
 
@@ -22,22 +23,22 @@ export default function Departments(props) {
   const [isShowDelete, setIsShowDelete] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState({});
 
-  const [customer, setCustomer] = useState();
-
-  const idCustomer = router.query.userId;
+  const customerId = router.query.userId;
   const isSuperAdmin = session?.data?.user?.role === ROLES.superAdmin;
   const isEngineer = session?.data?.user?.role === ROLES.engineer;
 
   function openDepartment(e, id, department) {
     e.preventDefault();
     if (e.target.dataset.id === "edit") {
-      router.push(`/departments/${id}`);
+      router.push(
+        `/departments/edit?departmentId=${department._id}&userId=${customerId}`
+      );
     } else if (e.target.dataset.id === "delete") {
       setSelectedDepartment(department);
 
       setIsShowDelete(true);
     } else {
-      router.push(`/departments?userId=${id}`);
+      router.push(`/departments/${department._id}?&userId=${customerId}`);
     }
   }
 
@@ -68,21 +69,7 @@ export default function Departments(props) {
     }
   }
 
-  async function getInfoCustomer(id) {
-    if (!id) {
-      return;
-    }
-
-    const response = await fetch(`/api/users/${id}`).then((res) => {
-      return res.json();
-    });
-
-    setCustomer(response);
-  }
-
-  useEffect(() => {
-    getInfoCustomer(idCustomer);
-  }, [idCustomer]);
+  const { customerInfo } = useCustomerInfo(customerId);
 
   function closeDeleteModal() {
     setIsShowDelete(false);
@@ -92,17 +79,15 @@ export default function Departments(props) {
     <>
       {isShowDelete && (
         <DeleteDialog
-          description={dialog.deleteDepartment(
-            selectedDepartment.departmentNumber
-          )}
+          description={dialog.deleteDepartment(selectedDepartment.name)}
           delete={deleteDepartment}
           cancel={closeDeleteModal}
         />
       )}
-      {customer && (
+      {customerInfo && (
         <div className="mb-4">
-          <p className="mb-2">Предприятие: {customer.name}</p>
-          <p>Адрес предприятие: {customer.address}</p>
+          <p className="mb-2">Предприятие: {customerInfo.name}</p>
+          <p>Адрес предприятие: {customerInfo.address}</p>
         </div>
       )}
       <div className="title__container flex items-center mb-4">
@@ -157,15 +142,12 @@ export default function Departments(props) {
                   scope="row"
                   className="px-6 py-4 font-medium whitespace-nowrap"
                 >
-                  <Link
+                  <span
                     className="flex items-center justify-center w-full bg-slate-400 text-white "
-                    href={{
-                      pathname: `/departments/${department._id}`,
-                    }}
                     key={department._id}
                   >
-                    {department.departmentNumber}
-                  </Link>
+                    {department.name}
+                  </span>
                 </td>
                 <td className="px-6 py-4 bg-gray text">
                   {router.query.userId && isSuperAdmin ? (

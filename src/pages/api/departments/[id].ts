@@ -3,40 +3,30 @@ import { getServerSession } from "next-auth";
 import dbConnect from "../../../lib/mongoose";
 import Department from "../../../models/Department";
 import { authOptions } from "../auth/[...nextauth]";
+import { checkObjectProperties } from "@/utils/validateObjectProperties";
 
 export default async function handler(req: any, res: any) {
   try {
     await dbConnect();
 
     if (req.method === "GET") {
-      const { userId } = req.query;
+      const { id } = req.query;
 
-      if (userId) {
-        const departments = await Department.find({
-          user: userId,
-        });
+      const session = await getServerSession(req, res, authOptions);
 
-        res.json({
-          departments,
-        });
+      if (!id) {
+        throw new Error("incorrect department");
+      }
+
+      const isRoleWithAccess =
+        session?.user?.role === "SUPERADMIN" ||
+        session?.user?.role === "ENGINEER";
+
+      if (isRoleWithAccess) {
+        const departments = await Department.findById(id);
+
+        res.json(departments);
       } else {
-        const session = await getServerSession(req, res, authOptions);
-        const departmentId = Object.keys(req.query)[0];
-
-        if (!departmentId) {
-          throw new Error("incorrect department");
-        }
-
-        const isRoleWithAccess =
-          session?.user?.role === "SUPERADMIN" ||
-          session?.user?.role === "ENGINEER";
-
-        if (isRoleWithAccess) {
-          const departments = await Department.findById(departmentId);
-
-          res.json(departments);
-        }
-
         throw new Error();
       }
     } else if (req.method === "DELETE") {
@@ -47,6 +37,22 @@ export default async function handler(req: any, res: any) {
       });
 
       res.status(200).json({ result: deletedDepartment });
+    } else if (req.method === "PUT") {
+      const { id } = req.query;
+      const updateDepartmentParams = JSON.parse(req.body);
+
+      const validateProperties = checkObjectProperties(updateDepartmentParams);
+
+      if (validateProperties) {
+        const updateDepartment = await DepartmentModel.findByIdAndUpdate(
+          id,
+          updateDepartmentParams
+        );
+
+        res.status(200).json(updateDepartment);
+      } else {
+        throw new Error();
+      }
     }
   } catch (e) {
     console.error(e);

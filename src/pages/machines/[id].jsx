@@ -189,8 +189,6 @@ export default function MachinePage({ baseUrl }) {
       return "";
     }
 
-    console.log(date);
-
     return format(new Date(date), "yyyy-MM-dd HH:mm");
   }
 
@@ -205,7 +203,7 @@ export default function MachinePage({ baseUrl }) {
       </p>
       <p>
         <span className="font-bold">Цех:</span>{" "}
-        {info?.department?.departmentNumber}
+        {info?.department?.name}
       </p>
       <p>
         <span className="font-bold">Модель станка:</span> {info?.model}

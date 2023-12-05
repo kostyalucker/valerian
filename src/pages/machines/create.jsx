@@ -41,7 +41,9 @@ export default function CreateMachinePage() {
           setMessage("");
         }, 5000);
 
-        return response;
+        if (response.ok) {
+          router.back();
+        }
       }
 
       const data = await response.json();
@@ -77,7 +79,8 @@ export async function getServerSideProps(context) {
   const { req } = context;
   const session = await getSession({ req });
 
-  const isRoleWithAccess = session?.user?.role === "SUPERADMIN";
+  const isRoleWithAccess =
+    session?.user?.role === "SUPERADMIN" || session?.user?.role === "ENGINEER";
 
   if (!isRoleWithAccess) {
     return {

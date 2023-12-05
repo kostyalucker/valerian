@@ -2,7 +2,10 @@ import mongoose from "mongoose";
 
 const DepartmentSchema = new mongoose.Schema(
   {
-    departmentNumber: String,
+    name: String,
+    contactName: String,
+    contactPhone: String,
+    contactEmail: String,
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

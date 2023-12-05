@@ -124,8 +124,6 @@ export default async function handler(req, res) {
         _id: ObjectId(deletedUserId),
       });
 
-      console.log(deletedUser, isValidObjectId, deletedUserId);
-
       res.status(200).json({
         ...deletedUser,
       });

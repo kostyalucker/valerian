@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 // todo: problem with dynamic fields, reset doesn't work
-export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
+export function FormMaster({ title, fields, onSubmit, isEdit, onChangeRole }) {
   const {
     getValues,
     formState: { isValid },
@@ -62,6 +62,7 @@ export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
       }, 10000);
     } finally {
       // TODO: remove force reload and fix updates
+      // router.reload(window.location.pathname);
     }
   };
 
@@ -72,6 +73,13 @@ export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
       onChangeRole(fieldName, value);
     }
   };
+
+  function createClassName(str) {
+    let result = str.replace(/([A-Z])/g, " $1"); // добавляем пробелы перед заглавными буквами
+    result = result.trim().toLowerCase(); // убираем лишние пробелы и приводим к нижнему регистру
+    result = result.replace(/\s+/g, "-"); // заменяем пробелы на дефисы
+    return "form-master--" + result;
+  }
 
   return (
     <>
@@ -100,7 +108,10 @@ export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
           }
 
           return (
-            <div key={field.label + field.name}>
+            <div
+              key={field.label + field.name}
+              className={createClassName(field.name)}
+            >
               <p className="mb-2">{field.label}</p>
               <Component
                 {...field}
@@ -113,14 +124,14 @@ export function FormMaster({ title, fields, onSubmit, onChangeRole }) {
           );
         })}
       <Button
-        className="disabled:pointer-events-none"
+        className="disabled:pointer-events-none mr-2 "
         onClick={onFormSubmit}
         disabled={!isValid}
       >
-        Добавить
+        {isEdit ? "Сохранить" : "Добавить"}
       </Button>
       <Button className="disabled:pointer-events-none">
-        <Link href="/">Отмена</Link>
+        <Link href="/">Домой</Link>
       </Button>
       {!isValid && (
         <p className="text-red-400 mt-2">Заполните все поля формы</p>

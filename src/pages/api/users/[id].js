@@ -26,12 +26,19 @@ export default async function handler(req, res) {
       });
     } else if (req.method === "PUT") {
       const updateUserParams = JSON.parse(req.body);
-      const updatedUser = await UserModel.findByIdAndUpdate(
-        id,
-        updateUserParams
-      );
 
-      res.status(200).json(updatedUser);
+      const validateProperties = checkObjectProperties(updateUserParams);
+
+      if (validateProperties) {
+        const updatedUser = await UserModel.findByIdAndUpdate(
+          id,
+          updateUserParams
+        );
+
+        res.status(200).json(updatedUser);
+      } else {
+        throw new Error();
+      }
     }
   } catch (error) {
     res.status(500).json({
