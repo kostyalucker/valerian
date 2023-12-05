@@ -217,7 +217,7 @@ export const createMachineFields = () => {
       type: "number",
     },
     {
-      name: "nameOil",
+      name: "oilName",
       label: "Название СОЖ",
       required: true,
       defaultValue: "",
@@ -225,7 +225,7 @@ export const createMachineFields = () => {
       type: "text",
     },
     {
-      name: "coefficientRefraction",
+      name: "refractionCoefficient",
       label: "Коэф. рефракции",
       required: true,
       defaultValue: "",

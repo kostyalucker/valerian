@@ -85,7 +85,7 @@ export default function CreateUserPage() {
         <FormMaster
           title="Добавить цех"
           name="department"
-          type="edit"
+          isEdit
           fields={fields}
           onSubmit={onDepartmentEdit}
         />

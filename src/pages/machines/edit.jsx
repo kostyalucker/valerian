@@ -85,7 +85,7 @@ export default function CreateMachinePage() {
             title="Редактировать станок"
             fields={machineFields}
             onSubmit={onMachineEdit}
-            type="edit"
+            isEdit
           />
           <p className="mt-4">{message}</p>
         </div>

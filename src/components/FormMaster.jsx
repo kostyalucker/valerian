@@ -6,14 +6,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 // todo: problem with dynamic fields, reset doesn't work
-export function FormMaster({
-  title,
-  name,
-  type,
-  fields,
-  onSubmit,
-  onChangeRole,
-}) {
+export function FormMaster({ title, fields, onSubmit, isEdit, onChangeRole }) {
   const {
     getValues,
     formState: { isValid },
@@ -127,7 +120,7 @@ export function FormMaster({
         onClick={onFormSubmit}
         disabled={!isValid}
       >
-        {type === "edit" ? "Сохранить" : "Добавить"}
+        {isEdit ? "Сохранить" : "Добавить"}
       </Button>
       <Button className="disabled:pointer-events-none">
         <Link href="/">Домой</Link>
