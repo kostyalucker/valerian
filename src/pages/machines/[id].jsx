@@ -242,20 +242,16 @@ export default function MachinePage({ baseUrl }) {
         <span className="font-bold">Дата заливки: </span>
         <span>{info.fillingDate}</span>
       </p>
-      <p>
-        <span className="font-bold">Дата внесения последних изменений: </span>
-        <span>{info.lastModifiedDate}</span>
-      </p>
       {getFormattedDate(info?.emulsionFillingDate) && (
         <div>
           <span className="font-bold">Дата заливки эмульсии:</span>{" "}
           {getFormattedDate(info?.emulsionFillingDate)}
         </div>
       )}
-      {/* <p className="mb-4">
+      <p className="mb-4">
         <span className="font-bold">Дата внесения последних показателей:</span>{" "}
         {getFormattedDate(lastCreatedIndicator?.createdAt)}
-      </p> */}
+      </p>
       {lastCreatedIndicator && (
         <>
           <hr className="bg-gray-500 h-0.5 mb-4" />

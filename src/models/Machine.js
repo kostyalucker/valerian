@@ -13,7 +13,6 @@ const MachineSchema = new mongoose.Schema(
     phMin: String,
     phMax: String,
     fillingDate: String,
-    lastModifiedDate: String,
     department: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Department",
