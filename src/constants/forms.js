@@ -241,14 +241,6 @@ export const createMachineFields = () => {
       type: "date",
     },
     {
-      name: "lastModifiedDate",
-      label: "Дата внесения последних изменений",
-      required: true,
-      defaultValue: "",
-      component: "input",
-      type: "date",
-    },
-    {
       name: "refractionCoefficient",
       label: "Коэф. рефракции",
       required: true,
