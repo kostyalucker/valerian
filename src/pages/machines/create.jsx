@@ -43,6 +43,8 @@ export default function CreateMachinePage() {
 
         if (response.ok) {
           router.back();
+
+          return;
         }
       }
 

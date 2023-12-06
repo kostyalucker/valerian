@@ -225,6 +225,22 @@ export const createMachineFields = () => {
       type: "text",
     },
     {
+      name: "recommendeConcentration",
+      label: "Рекомендуемая концентрация",
+      required: true,
+      defaultValue: "",
+      component: "input",
+      type: "number",
+    },
+    {
+      name: "fillingDate",
+      label: "Дата заливки",
+      required: true,
+      defaultValue: "",
+      component: "input",
+      type: "date",
+    },
+    {
       name: "refractionCoefficient",
       label: "Коэф. рефракции",
       required: true,

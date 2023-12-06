@@ -7,10 +7,12 @@ const MachineSchema = new mongoose.Schema(
     type: String,
     machineCapacity: String,
     oilName: String,
+    recommendeConcentration: String,
     refractionCoefficient: String,
     emulsionFillingDate: String,
     phMin: String,
     phMax: String,
+    fillingDate: String,
     department: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Department",

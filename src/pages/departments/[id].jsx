@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { useState, useEffect, useCallback } from "react";
 import DeleteDialog from "../../components/modals/Delete";
 import { dialog } from "../../constants/dialog";
-
+import Button from "@/components/Button";
 import { useCustomerInfo } from "@/hooks/useCustomerInfo";
 
 export default function DepartmentPage(props) {
@@ -147,7 +147,7 @@ export default function DepartmentPage(props) {
             className="text-blue-400 ml-8"
             href={`/machines/create?${router.query.id}`}
           >
-            Добавить
+            <Button>Добавить</Button>
           </Link>
         )}
       </div>
