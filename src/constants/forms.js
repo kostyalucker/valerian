@@ -230,7 +230,7 @@ export const createMachineFields = () => {
       required: true,
       defaultValue: "",
       component: "input",
-      type: "text",
+      type: "number",
     },
     {
       name: "fillingDate",
@@ -238,7 +238,7 @@ export const createMachineFields = () => {
       required: true,
       defaultValue: "",
       component: "input",
-      type: "text",
+      type: "date",
     },
     {
       name: "lastModifiedDate",
@@ -246,7 +246,7 @@ export const createMachineFields = () => {
       required: true,
       defaultValue: "",
       component: "input",
-      type: "text",
+      type: "date",
     },
     {
       name: "refractionCoefficient",

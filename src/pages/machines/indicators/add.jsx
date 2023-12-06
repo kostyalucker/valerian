@@ -202,6 +202,14 @@ export default function MachinePage({ baseUrl }) {
           <CreateIndicatorsForm
             onIndicatorsCreateSuccess={onIndicatorsCreateSuccess}
           />
+          <div className="buttons mt-4">
+            <Button className="mr-4" onClick={() => router.back()}>
+              Назад
+            </Button>
+            <Link href={"/dashboard"}>
+              <Button>Домой</Button>
+            </Link>
+          </div>
         </>
       )}
     </>

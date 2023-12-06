@@ -159,7 +159,7 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
           className="w-full"
           {...bacteriaAmount}
           inputref={bacteriaAmount.ref}
-          type="text"
+          type="number"
         />
       </div>
       <div>
@@ -201,7 +201,7 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
           className="w-full"
           {...addedOilAmount}
           inputref={addedOilAmount.ref}
-          type="text"
+          type="number"
         />
       </div>
       <h2 className="text-xl font-bold mb-2 ">Сервисные присадки:</h2>
@@ -220,7 +220,7 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
           className="w-full"
           {...biocide}
           inputref={biocide.ref}
-          type="text"
+          type="number"
         />
       </div>
       <div>
@@ -229,7 +229,7 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
           className="w-full"
           {...fungicide}
           inputref={fungicide.ref}
-          type="text"
+          type="number"
         />
       </div>
       <div>
@@ -238,7 +238,7 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
           className="w-full"
           {...antiFoamAdditive}
           inputref={antiFoamAdditive.ref}
-          type="text"
+          type="number"
         />
       </div>
       <div>

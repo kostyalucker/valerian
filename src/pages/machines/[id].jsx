@@ -322,13 +322,21 @@ export default function MachinePage({ baseUrl }) {
         session.data?.user.role === "SUPERADMIN") && (
         <>
           <Link href={`/machines/indicators/add/?id=${info?._id}`}>
-            <Button>Внести показания</Button>
+            <Button className="mt-4">Внести показания</Button>
           </Link>
           {/* <CreateIndicatorsForm
             onIndicatorsCreateSuccess={onIndicatorsCreateSuccess}
           /> */}
         </>
       )}
+      <div className="buttons mt-4">
+        <Button className="mr-4" onClick={() => router.back()}>
+          Назад
+        </Button>
+        <Link href={"/dashboard"}>
+          <Button>Домой</Button>
+        </Link>
+      </div>
     </>
   );
 }
