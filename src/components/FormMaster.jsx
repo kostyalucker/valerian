@@ -124,14 +124,11 @@ export function FormMaster({ title, fields, onSubmit, isEdit, onChangeRole }) {
           );
         })}
       <Button
-        className="disabled:pointer-events-none mr-2 "
+        className="disabled:pointer-events-none mb-4"
         onClick={onFormSubmit}
         disabled={!isValid}
       >
         {isEdit ? "Сохранить" : "Добавить"}
-      </Button>
-      <Button className="disabled:pointer-events-none">
-        <Link href="/">Домой</Link>
       </Button>
       {!isValid && (
         <p className="text-red-400 mt-2">Заполните все поля формы</p>
@@ -141,6 +138,17 @@ export function FormMaster({ title, fields, onSubmit, isEdit, onChangeRole }) {
           {typeof error === "string" ? error : "Ошибка при операции"}
         </p>
       )}
+      <div className="">
+        <Button className="disabled:pointer-events-none mr-4">
+          <Link href="/dashboard">Домой</Link>
+        </Button>
+        <Button
+          className="disabled:pointer-events-none"
+          onClick={() => router.back()}
+        >
+          Назад
+        </Button>
+      </div>
     </>
   );
 }
