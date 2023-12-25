@@ -64,7 +64,7 @@ function Header() {
                   }`}
                   href="/users/create"
                 >
-                  Создать пользователя
+                  Добавить заказчика
                 </Link>
               </>
             )}
