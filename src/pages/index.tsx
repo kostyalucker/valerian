@@ -2,15 +2,19 @@ import { useRef, useState } from "react";
 import { getProviders, getSession, signIn, useSession } from "next-auth/react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
+import Optic from "@/components/icons/Optic";
+
 import { useRouter } from "next/router";
 import { baseUrl } from "@/config";
-
+import Image from "next/image";
+import Logo from "../assets/logo.png";
 const Signin = ({ providers }: any) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const [error, setError] = useState("");
   const session = useSession();
+  const [showPassword, setShowPassword] = useState(false);
 
   async function onLogin(event: any) {
     event.preventDefault();
@@ -43,7 +47,16 @@ const Signin = ({ providers }: any) => {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex flex-col	 justify-center items-center h-screen">
+      <div className="mb-40">
+        {" "}
+        <Image
+          src={Logo}
+          width={150}
+          height={150}
+          alt="Picture of the author"
+        />
+      </div>
       {!session.data && (
         <form className="flex flex-col max-w-lg w-full">
           <Input
@@ -51,13 +64,23 @@ const Signin = ({ providers }: any) => {
             onChange={onEmailChange}
             type="email"
             className="form-input px-4 py-3 mb-4"
+            placeholder="Login"
           ></Input>
-          <Input
-            value={password}
-            onChange={onPasswordChange}
-            type="password"
-            className="form-input px-4 py-3 mb-4"
-          ></Input>
+          <div className="form-group flex relative">
+            <Input
+              value={password}
+              onChange={onPasswordChange}
+              type={showPassword ? "text" : "password"}
+              placeholder="password"
+              className="form-input px-4 py-3 mb-4 w-full"
+            ></Input>
+            <div
+              className="block w-2 absolute right-10 cursor-pointer absolute top-1/3 transform -translate-y-1/2"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              <Optic />
+            </div>
+          </div>
           <Button onClick={(event: any) => onLogin(event)}>Войти</Button>
           {error && <p className="text-red-400 mt-2">{error}</p>}
         </form>
