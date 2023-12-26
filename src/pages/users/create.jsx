@@ -4,11 +4,14 @@ import { FormMaster } from "@/components/FormMaster";
 import { useEffect, useState } from "react";
 import { baseUrl, baseApiUrl } from "@/config";
 import { validateInn } from "@/utils/validateInn";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 export default function CreateUserPage() {
   const [userFields, setUserFields] = useState([]);
   const { data: session } = useSession();
   const role = session?.user.role;
+  const router = useRouter();
 
   async function onUserCreate(values) {
     // TODO: refactoring dependent field inn
@@ -21,12 +24,25 @@ export default function CreateUserPage() {
       }
     }
 
-    const response = await fetch(`${baseApiUrl}/users`, {
-      method: "POST",
-      body: JSON.stringify(values),
-    });
+    try {
+      const response = await fetch(`${baseApiUrl}/users`, {
+        method: "POST",
+        body: JSON.stringify(values),
+      });
 
-    return response;
+      if (response.ok) {
+        // Успешный ответ
+        toast("Пользователь создан!");
+      } else {
+        // Ошибка
+        toast("Пользователь не создан!");
+      }
+    } catch (error) {
+      // Ошибка сети или другие ошибки
+      toast("Пользователь не оздан!");
+    }
+
+    router.back();
   }
 
   const formatedField = () => {
