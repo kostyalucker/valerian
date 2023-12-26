@@ -2,6 +2,8 @@ import { useRef, useState } from "react";
 import { getProviders, getSession, signIn, useSession } from "next-auth/react";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
+import Optic from "@/components/icons/Optic";
+
 import { useRouter } from "next/router";
 import { baseUrl } from "@/config";
 import Image from "next/image";
@@ -76,37 +78,7 @@ const Signin = ({ providers }: any) => {
               className="block w-2 absolute right-10 cursor-pointer absolute top-1/3 transform -translate-y-1/2"
               onClick={() => setShowPassword((prev) => !prev)}
             >
-              <svg
-                width="16px"
-                height="16px"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12"
-                  stroke="#000000"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M1 12C1 12 5 20 12 20C19 20 23 12 23 12"
-                  stroke="#000000"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="3"
-                  stroke="#000000"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <Optic />
             </div>
           </div>
           <Button onClick={(event: any) => onLogin(event)}>Войти</Button>
