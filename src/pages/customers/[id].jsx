@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import { useRouter } from "next/router";
 import { baseApiUrl, baseUrl } from "@/config";
 import { getSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 export default function CustomersPage({ customer }) {
   const router = useRouter();
@@ -44,9 +45,11 @@ export default function CustomersPage({ customer }) {
       });
 
       if (response.ok) {
+        toast("Изменения сохранены!");
         router.back();
       }
     } catch (error) {
+      toast("Что-то пошло не так!");
       console.log(error);
     }
   }
@@ -121,7 +124,7 @@ export default function CustomersPage({ customer }) {
         onClick={handleSubmit(onCustomerEdit)}
         disabled={!isValid}
       >
-        Подтвердить
+        Сохранить
       </Button>
       {!isValid && (
         <p className="text-red-400 mt-2">Заполните все поля формы</p>
