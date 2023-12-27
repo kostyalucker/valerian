@@ -112,7 +112,7 @@ export default function DepartmentPage(props) {
           </span>
           <p className="mb-2">
             <span className="font-semibolds">Адрес: </span>{" "}
-            {customerInfo.address}
+            {customerInfo.address} {customerInfo.city}
           </p>
         </div>
       )}
@@ -136,6 +136,10 @@ export default function DepartmentPage(props) {
             <p>
               <span className="font-semibold">Email: </span>
               {department.contactEmail}
+            </p>
+            <p>
+              <span className="font-semibold">Должность: </span>
+              {department.position}
             </p>
           </div>
         </div>
