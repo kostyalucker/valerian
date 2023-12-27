@@ -226,13 +226,17 @@ export default function MachinePage({ baseUrl }) {
       </p>
       <p>
         <span className="font-bold">Емкость системы:</span>{" "}
-        {info?.machineCapacity}
+        {info?.machineCapacity}(Л)
       </p>
       <p>
-        <span className="font-bold">Название СОЖ, коэф. рефракции: </span>
+        <span className="font-bold">Название СОЖ </span>
         <span>
           {info.oilName}, {info.refractionCoefficient}
         </span>
+      </p>
+      <p>
+        <span className="font-bold">Коэф. рефракции:</span>
+        <span>{info.refractionCoefficient}</span>(%)
       </p>
       <p>
         <span className="font-bold">Рекомендуемая концентрация: </span>
