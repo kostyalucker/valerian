@@ -78,6 +78,7 @@ export default function MachinePage({ baseUrl }) {
         conductivity,
         bacteriaAmount,
         fungi,
+        foaming,
         addedOilAmount,
         biocide,
         smell,
@@ -90,6 +91,7 @@ export default function MachinePage({ baseUrl }) {
         acc.ph = [ph];
         acc.conductivity = [conductivity];
         acc.fungi = [fungi];
+        acc.foaming = [foaming];
         acc.bacteriaAmount = [bacteriaAmount];
         acc.concentration = [concentration];
         acc.addedOilAmount = [addedOilAmount];
@@ -127,6 +129,7 @@ export default function MachinePage({ baseUrl }) {
       conductivity: "Электропроводность",
       bacteriaAmount: "Бактерии",
       fungi: "Грибки",
+      foaming: "Пенообразование",
       smell: "Запах",
       addedOilAmount: "Долив",
       presenceImpurities: "Наличие посторонних примесей",
