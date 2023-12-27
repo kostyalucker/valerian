@@ -287,7 +287,9 @@ export default function MachinePage({ baseUrl }) {
                 <span span className="font-bold mr-1">
                   {datasets[0].label}:
                 </span>
-                {lastCreatedIndicator[key]}{" "}
+                {lastCreatedIndicator[key]}
+                {key === "addedOilAmount" && " (Л)"}
+                {key === "concentration" && " (%)"}
                 {standards[key] && (
                   <div
                     className={`ml-4 w-4 h-4 rounded-full ${
