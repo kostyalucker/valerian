@@ -56,7 +56,7 @@ function Header() {
                 Заказчики
               </Link>
             )}
-            {(isShowCreateUser && !isUserCreatePage) && (
+            {isShowCreateUser && !isUserCreatePage && (
               <>
                 <Link
                   className={`text-blue-400 mb-2 ${
@@ -64,7 +64,7 @@ function Header() {
                   }`}
                   href="/users/create"
                 >
-                  Добавить заказчика
+                  {isEngineer ? "Добавить заказчика" : "Создать пользователя"}
                 </Link>
               </>
             )}
