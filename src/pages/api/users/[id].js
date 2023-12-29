@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import UserModel from "@/models/User";
 import dbConnect from "@/lib/mongoose";
+import { checkObjectProperties } from "@/utils/validateObjectProperties";
 
 export default async function handler(req, res) {
   try {
@@ -28,7 +29,7 @@ export default async function handler(req, res) {
       const updateUserParams = JSON.parse(req.body);
 
       const validateProperties = checkObjectProperties(updateUserParams);
-
+      console.log(validateProperties, " validateProperties");
       if (validateProperties) {
         const updatedUser = await UserModel.findByIdAndUpdate(
           id,
