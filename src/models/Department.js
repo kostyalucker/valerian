@@ -6,6 +6,7 @@ const DepartmentSchema = new mongoose.Schema(
     contactName: String,
     contactPhone: String,
     contactEmail: String,
+    position: String,
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

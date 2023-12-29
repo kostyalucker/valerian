@@ -40,7 +40,7 @@ export default function CreateUserPage() {
       {customerInfo && (
         <div className="mb-4">
           <p className="mb-2">Предприятие: {customerInfo.name}</p>
-          <p>Адрес предприятие: {customerInfo.address}</p>
+          <p>Адрес предприятие: {customerInfo.address} {customerInfo.city}</p>
         </div>
       )}
       <FormMaster

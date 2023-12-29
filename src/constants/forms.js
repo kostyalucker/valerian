@@ -286,6 +286,14 @@ export const createDepartmentFields = () => {
       type: "text",
     },
     {
+      name: "position",
+      label: "Должность",
+      required: true,
+      defaultValue: "",
+      component: "input",
+      type: "text",
+    },
+    {
       name: "contactPhone",
       label: "Телефон",
       required: true,
