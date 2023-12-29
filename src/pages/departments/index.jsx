@@ -87,7 +87,9 @@ export default function Departments(props) {
       {customerInfo && (
         <div className="mb-4">
           <p className="mb-2">Предприятие: {customerInfo.name}</p>
-          <p>Адрес предприятие: {customerInfo.address}</p>
+          <p>
+            Адрес предприятия: {customerInfo.address}, {customerInfo.city}
+          </p>
         </div>
       )}
       <div className="title__container flex items-center mb-4">
