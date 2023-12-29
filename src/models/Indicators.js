@@ -11,6 +11,7 @@ const IndicatorsSchema = new mongoose.Schema(
     conductivity: String,
     bacteriaAmount: String,
     fungi: String,
+    foaming: String,
     fungicide: String,
     smell: String,
     reason: String,

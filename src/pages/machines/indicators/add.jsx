@@ -82,12 +82,14 @@ export default function MachinePage({ baseUrl }) {
         foreignOil,
         biocide,
         serviceAdditives,
+        foaming,
       } = curr;
 
       if (!acc.ph) {
         acc.ph = [ph];
         acc.conductivity = [conductivity];
         acc.fungi = [fungi];
+        acc.foaming = [foaming];
         acc.bacteriaAmount = [bacteriaAmount];
         acc.concentration = [concentration];
         acc.addedOilAmount = [addedOilAmount];
@@ -98,6 +100,7 @@ export default function MachinePage({ baseUrl }) {
         acc.ph.push(ph);
         acc.bacteriaAmount.push(bacteriaAmount);
         acc.fungi.push(fungi);
+        acc.foaming.push(foaming);
         acc.conductivity.push(conductivity);
         acc.concentration.push(concentration);
         acc.addedOilAmount.push(addedOilAmount);
@@ -118,6 +121,7 @@ export default function MachinePage({ baseUrl }) {
       conductivity: "Электропроводность",
       concentration: "Концентрация",
       fungi: "Грибки",
+      foaming: "Пенообразование",
       bacteriaAmount: "Бактерии",
       addedOilAmount: "Долив",
       foreignOil: "Постороннее масло",

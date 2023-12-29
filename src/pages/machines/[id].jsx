@@ -78,6 +78,7 @@ export default function MachinePage({ baseUrl }) {
         conductivity,
         bacteriaAmount,
         fungi,
+        foaming,
         addedOilAmount,
         biocide,
         smell,
@@ -90,6 +91,7 @@ export default function MachinePage({ baseUrl }) {
         acc.ph = [ph];
         acc.conductivity = [conductivity];
         acc.fungi = [fungi];
+        acc.foaming = [foaming];
         acc.bacteriaAmount = [bacteriaAmount];
         acc.concentration = [concentration];
         acc.addedOilAmount = [addedOilAmount];
@@ -127,6 +129,7 @@ export default function MachinePage({ baseUrl }) {
       conductivity: "Электропроводность",
       bacteriaAmount: "Бактерии",
       fungi: "Грибки",
+      foaming: "Пенообразование",
       smell: "Запах",
       addedOilAmount: "Долив",
       presenceImpurities: "Наличие посторонних примесей",
@@ -226,13 +229,17 @@ export default function MachinePage({ baseUrl }) {
       </p>
       <p>
         <span className="font-bold">Емкость системы:</span>{" "}
-        {info?.machineCapacity}
+        {info?.machineCapacity}(Л)
       </p>
       <p>
-        <span className="font-bold">Название СОЖ, коэф. рефракции: </span>
+        <span className="font-bold">Название СОЖ </span>
         <span>
           {info.oilName}, {info.refractionCoefficient}
         </span>
+      </p>
+      <p>
+        <span className="font-bold">Коэф. рефракции:</span>
+        <span>{info.refractionCoefficient}</span>(%)
       </p>
       <p>
         <span className="font-bold">Рекомендуемая концентрация: </span>
@@ -280,7 +287,9 @@ export default function MachinePage({ baseUrl }) {
                 <span span className="font-bold mr-1">
                   {datasets[0].label}:
                 </span>
-                {lastCreatedIndicator[key]}{" "}
+                {lastCreatedIndicator[key]}
+                {key === "addedOilAmount" && " (Л)"}
+                {key === "concentration" && " (%)"}
                 {standards[key] && (
                   <div
                     className={`ml-4 w-4 h-4 rounded-full ${

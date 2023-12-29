@@ -20,6 +20,7 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
     defaultValues: {
       concentration: "",
       fungi: "отсутствуют",
+      foaming: "",
       presenceImpurities: "отсутствуют",
       smell: "",
       ph: "",
@@ -80,6 +81,7 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
   // const foreignOil = registerRequiredField("foreignOil");
   const biocide = registerRequiredField("biocide");
   const fungicide = registerRequiredField("fungicide");
+  const foaming = registerRequiredField("foaming");
   const batchNumberDate = registerRequiredField("batchNumberDate");
   const antiFoamAdditive = registerRequiredField("antiFoamAdditive");
   // const serviceAdditives = registerRequiredField("serviceAdditives");
@@ -180,6 +182,15 @@ export function CreateIndicatorsForm({ onIndicatorsCreateSuccess }) {
           className="w-full"
           {...smell}
           inputref={smell.ref}
+        />
+      </div>
+      <div>
+        <p className="mb-2">Пенообразование</p>
+        <Input
+          className="w-full"
+          {...foaming}
+          inputref={foaming.ref}
+          type="text"
         />
       </div>
       <div>
