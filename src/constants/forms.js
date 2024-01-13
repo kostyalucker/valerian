@@ -93,15 +93,6 @@ export const createUserFields = () => {
       dependentExist: null,
       type: "email",
     },
-    {
-      name: "password",
-      label: "Пароль",
-      required: true,
-      defaultValue: "",
-      component: "input",
-      dependentExist: null,
-      type: "password",
-    },
   ];
 };
 
@@ -169,15 +160,6 @@ export const createUserFieldsCustomer = () => {
       component: "input",
       dependentExist: null,
       type: "email",
-    },
-    {
-      name: "password",
-      label: "Пароль",
-      required: true,
-      defaultValue: "",
-      component: "input",
-      dependentExist: null,
-      type: "password",
     },
   ];
 };
