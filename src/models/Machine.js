@@ -12,7 +12,6 @@ const MachineSchema = new mongoose.Schema(
     emulsionFillingDate: String,
     phMin: String,
     phMax: String,
-    fillingDate: String,
     department: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Department",

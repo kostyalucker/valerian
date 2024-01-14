@@ -233,8 +233,8 @@ export const createMachineFields = () => {
       type: "number",
     },
     {
-      name: "fillingDate",
-      label: "Дата заливки",
+      name: "emulsionFillingDate",
+      label: "Дата заливки эмульсии",
       required: true,
       defaultValue: "",
       component: "input",

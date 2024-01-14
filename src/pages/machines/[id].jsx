@@ -245,10 +245,6 @@ export default function MachinePage({ baseUrl }) {
         <span className="font-bold">Рекомендуемая концентрация: </span>
         <span>{info.recommendeConcentration}</span>
       </p>
-      <p>
-        <span className="font-bold">Дата заливки: </span>
-        <span>{info.fillingDate}</span>
-      </p>
       {getFormattedDate(info?.emulsionFillingDate) && (
         <div>
           <span className="font-bold">Дата заливки эмульсии:</span>{" "}
