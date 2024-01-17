@@ -38,7 +38,6 @@ export function FormMaster({ title, fields, onSubmit, isEdit, onChangeRole }) {
         async () => {
           const response = await onSubmit(values);
 
-          console.log(response, 'response')
           if (response?.ok) {
             clearFields(values);
 
