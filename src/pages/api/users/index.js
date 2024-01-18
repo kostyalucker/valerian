@@ -12,10 +12,19 @@ function createdName(user, role) {
 }
 
 async function validateCustomer(customer) {
-  const { firstName, email, password, companyName, address, region, city } =
-    customer;
+  const {
+    firstName,
+    email,
+    password,
+    companyName,
+    address,
+    region,
+    city,
+    inn,
+  } = customer;
 
   const findedUserWithEmail = await UserModel.findOne({ email });
+  const findedUserWithInn = await UserModel.findOne({ inn });
 
   return new Promise((resolve, reject) => {
     if (
@@ -25,10 +34,12 @@ async function validateCustomer(customer) {
       region &&
       city &&
       password &&
-      !findedUserWithEmail
+      !findedUserWithEmail &&
+      !findedUserWithInn
     ) {
       resolve(true);
     } else {
+      console.log("eror create");
       reject("Неверно введены данные или пользователь существует");
     }
   });
@@ -129,7 +140,7 @@ export default async function handler(req, res) {
     }
   } catch (error) {
     res.status(500).json({
-      error: "server error" + error,
+      error: "server error " + error,
     });
   }
 }

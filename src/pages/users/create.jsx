@@ -32,18 +32,17 @@ export default function CreateUserPage() {
       });
 
       if (response.ok) {
-        // Успешный ответ
         toast("Пользователь создан!");
+        router.back();
       } else {
-        // Ошибка
-        toast("Пользователь не создан!");
+        throw new Error("Пользователь с таким ИНН или email уже существует"); // Бросаем ошибку
       }
+      // Успешный ответ
     } catch (error) {
+      console.log(error, "error");
       // Ошибка сети или другие ошибки
-      toast("Пользователь не оздан!");
+      toast(error.message);
     }
-
-    router.back();
   }
 
   const formatedField = () => {
