@@ -26,6 +26,21 @@ export default async function handler(req, res) {
       }).sort({
         createdAt: -1,
       });
+      const machine = await MachineModel.findById(indicator.machine);
+      const validPh =
+        Number(indicator.ph) >= Number(machine.phMin) &&
+        Number(indicator.ph) <= Number(machine.phMax);
+
+      const minConcentration = Number(machine.recommendeConcentration) - 0;
+      const maxConcentration = Number(machine.recommendeConcentration) + 1;
+
+      const validConcetration =
+        Number(indicator.concentration) >= minConcentration &&
+        Number(indicator.concentration) <= maxConcentration;
+
+      await MachineModel.findByIdAndUpdate(indicator.machine, {
+        valid: validPh && validConcetration ? true : false,
+      });
 
       if (indicators.length === 0) {
         const updatedMachine = await MachineModel.findByIdAndUpdate(

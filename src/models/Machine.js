@@ -11,6 +11,7 @@ const MachineSchema = new mongoose.Schema(
     refractionCoefficient: String,
     emulsionFillingDate: String,
     phMin: String,
+    valid: Boolean,
     phMax: String,
     fillingDate: String,
     department: {
