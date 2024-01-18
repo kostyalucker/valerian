@@ -27,7 +27,7 @@ export default async function handler(req, res) {
         createdAt: -1,
       });
 
-      if (indicators.length === 0) {
+      if (Number(indicator.addedOilAmount) > 0) {
         const updatedMachine = await MachineModel.findByIdAndUpdate(
           indicator.machine,
           {
