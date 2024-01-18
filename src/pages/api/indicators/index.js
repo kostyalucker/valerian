@@ -34,7 +34,6 @@ export default async function handler(req, res) {
             emulsionFillingDate: new Date().toISOString(),
           }
         );
-        console.log(updatedMachine, "updatedMachine");
       }
 
       const isValidIndicator = validateIndicator(indicator);
