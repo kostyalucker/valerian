@@ -31,7 +31,7 @@ export default async function handler(req, res) {
         Number(indicator.ph) >= Number(machine.phMin) &&
         Number(indicator.ph) <= Number(machine.phMax);
 
-      const minConcentration = Number(machine.recommendeConcentration) - 0;
+      const minConcentration = Number(machine.recommendeConcentration) - 0.5;
       const maxConcentration = Number(machine.recommendeConcentration) + 1;
 
       const validConcetration =
