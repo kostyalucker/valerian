@@ -185,7 +185,13 @@ export default function DepartmentPage(props) {
             {machines ? (
               machines?.map((machine, index) => (
                 <tr
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer "
+                  className={[
+                    `bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer ${
+                      machine.hasOwnProperty("valid") && !machine.valid
+                        ? "with-error"
+                        : ""
+                    }`,
+                  ]}
                   key={machine._id}
                   onClick={(e) => openMachine(e, machine)}
                 >
