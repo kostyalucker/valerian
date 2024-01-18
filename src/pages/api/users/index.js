@@ -40,7 +40,6 @@ async function validateUser(user) {
     lastName,
     email,
     patronomyc,
-    password,
     companyName,
     address,
     region,
