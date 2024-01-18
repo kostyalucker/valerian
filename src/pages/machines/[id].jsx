@@ -31,24 +31,12 @@ export default function MachinePage({ baseUrl }) {
 
       const TEMP_STANDARDS = {
         ph: {
-          min: "8.7",
-          max: "11",
+          min: data.info.phMin,
+          max: data.info.phMax,
         },
         concentration: {
-          min: "0",
-          max: "4",
-        },
-        conductivity: {
-          min: "0",
-          max: "6000",
-        },
-        bacteriaAmout: {
-          min: "0",
-          max: "100000",
-        },
-        fungi: {
-          min: "0",
-          max: "0",
+          min: data.info.recommendedConcentration - 0.5,
+          max: data.info.recommendedConcentration + 1,
         },
       };
       setStandards(TEMP_STANDARDS);
@@ -181,7 +169,6 @@ export default function MachinePage({ baseUrl }) {
         return false;
       }
     }
-
     if (
       Number(lastCreatedIndicator[indicatorName]) >
         Number(standards[indicatorName].max) ||
@@ -286,13 +273,14 @@ export default function MachinePage({ baseUrl }) {
                 {lastCreatedIndicator[key]}
                 {key === "addedOilAmount" && " (Л)"}
                 {key === "concentration" && " (%)"}
-                {standards[key] && (
-                  <div
-                    className={`ml-4 w-4 h-4 rounded-full ${
-                      getIndicatorStatus(key) ? "bg-green-400" : "bg-red-400"
-                    }`}
-                  ></div>
-                )}
+                {(key === "ph" || key === "concentration") &&
+                  standards[key] && (
+                    <div
+                      className={`ml-4 w-4 h-4 rounded-full ${
+                        getIndicatorStatus(key) ? "bg-green-400" : "bg-red-400"
+                      }`}
+                    ></div>
+                  )}
               </p>
               <div
                 style={{
