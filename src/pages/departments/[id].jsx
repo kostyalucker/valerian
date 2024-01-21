@@ -10,6 +10,7 @@ import Button from "@/components/Button";
 import { useCustomerInfo } from "@/hooks/useCustomerInfo";
 
 export default function DepartmentPage(props) {
+  
   const router = useRouter();
   const [machines, setMachines] = useState(props.machines);
   const session = useSession();

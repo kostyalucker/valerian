@@ -3,19 +3,29 @@ import { baseApiUrl, baseUrl } from "@/config";
 import Link from "next/link";
 import { ROLES } from "@/constants/users";
 import { utils, writeFile } from "xlsx";
-
+import { useState } from "react";
 export default function Dashboard(props) {
-  const handleClick = async () => {
-    const response = await fetch("/api/download-excel");
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(new Blob([blob]));
+  const [message, setMessage] = useState(""); // Сообщение о результате операции
 
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", "example.xlsx");
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+  const handleClick = async () => {
+    try {
+      const response = await fetch('/api/template-excel');
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'filledData.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } else {
+        console.error('An error occurred while filling the Excel template');
+      }
+    } catch (error) {
+      console.error('An error occurred while communicating with the server');
+    }
+
   };
 
   const links = {
@@ -80,9 +90,9 @@ export default function Dashboard(props) {
   ];
   return (
     <section className=" place-items-center">
-      <button onClick={() => downloadExcelFile(dataDownload)}>
-        Download Excel
-      </button>
+      <button onClick={() => handleClick()}>Download Excel</button>
+      {message && <p>{message}</p>}
+
       <Link className="text-blue-400 mb-2" href={getUrlCustomers()}>
         <div className="text-white w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-center cursor-pointer">
           Мониторинг показателей

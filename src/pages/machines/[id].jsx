@@ -205,7 +205,38 @@ export default function MachinePage({ baseUrl }) {
 
     return format(new Date(date), "yyyy-MM-dd HH:mm");
   }
+  const downloadReport = async () => {
+    const data = {
+      companyName: info?.department?.user?.name,
+      adress: info?.department?.user?.address,
+      departmentName: info?.department?.name,
+      responsiblePerson: info?.department?.contactName,
+      name: "FIO ответсннего",
+      position: info?.department?.position,
+    };
 
+    try {
+      const response = await fetch("/api/template-excel", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "filledData.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } else {
+        console.error("An error occurred while filling the Excel template");
+      }
+    } catch (error) {
+      console.error("An error occurred while communicating with the server");
+    }
+  };
   return (
     <>
       <p>
@@ -326,9 +357,15 @@ export default function MachinePage({ baseUrl }) {
       {(session.data?.user.role === "ENGINEER" ||
         session.data?.user.role === "SUPERADMIN") && (
         <>
-          <Link href={`/machines/indicators/add/?id=${info?._id}`}>
+          <Link
+            href={`/machines/indicators/add/?id=${info?._id}`}
+            className="mr-4"
+          >
             <Button className="mt-4">Внести показания</Button>
           </Link>
+          <Button onClick={downloadReport} className="mt-4">
+            Cкачать отчеты
+          </Button>
           {/* <CreateIndicatorsForm
             onIndicatorsCreateSuccess={onIndicatorsCreateSuccess}
           /> */}
