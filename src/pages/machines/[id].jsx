@@ -211,14 +211,17 @@ export default function MachinePage({ baseUrl }) {
       adress: info?.department?.user?.address,
       departmentName: info?.department?.name,
       responsiblePerson: info?.department?.contactName,
-      name: "FIO ответсннего",
+      name: "ФИО отвественного",
       position: info?.department?.position,
     };
 
     try {
       const response = await fetch("/api/template-excel", {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          data: data,
+          indicators: indicators,
+        }),
       });
 
       if (response.ok) {

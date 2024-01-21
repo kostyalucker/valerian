@@ -5,23 +5,23 @@ import fs from "fs";
 interface DataInf {
   [key: string]: string;
 }
-const headersMachine: string[] = [
-  "Дата",
-  "Концентрация, %",
-  "рН",
-  "Электропроводность, µS/cm",
-  "Уровень эмульсии в баке, л",
-  "Долив (л)",
-  "Пенообразование",
-  "Запах",
-  "Грибы",
-  "Наличие посторонних примесей",
-  "Добавлено сервисных присадок",
-  "Примечания и рекомендации",
-  "Номер партии СОЖ",
-  "Фунгицид",
-  "Биоцид",
-  "Пеногаситель",
+const headersMachine = [
+  { id: "createdAt", translate: "Дата" },
+  { id: "concentration", translate: "Концентрация, %" },
+  { id: "ph", translate: "рН" },
+  { id: "conductivity", translate: "Электропроводность, µS/cm" },
+  { id: "emulsionLevel", translate: "Уровень эмульсии в баке, л" },
+  { id: "addedOilAmount", translate: "Долив (л)" },
+  { id: "foaming", translate: "Пенообразование" },
+  { id: "smell", translate: "Запах" },
+  { id: "fungi", translate: "Грибы" },
+  { id: "presenceImpurities", translate: "Наличие посторонних примесей" },
+  { id: "fungicide", translate: "Фунгицид" },
+  { id: "biocide", translate: "Биоцид" },
+  { id: "defoamer", translate: "Пеногаситель" },
+  { id: "notesRecommendations", translate: "Примечания и рекомендации" },
+  { id: "serviceAdditives", translate: "Добавлено сервисных присадок" },
+  { id: "batchNumber", translate: "Номер партии СОЖ" },
 ];
 
 const headers = [
@@ -48,15 +48,6 @@ const headers = [
   "Биоцид",
   "Пеногаситель",
 ];
-
-// const dataInf: DataInf = {
-//   companyName: "Company",
-//   adress: "Adress",
-//   departmentName: "Department anemploy",
-//   responsiblePerson: "Ответсенное лицо",
-//   name: "FIO ответсннего",
-//   position: "position",
-// };
 
 const templateFilePath = "./src/assets/template-report-department.xlsx"; // Укажите путь к вашему шаблону XLSX
 const rows = [
@@ -85,15 +76,17 @@ const rows = [
     id: 6,
   },
 ]; // id = Номер строки, в которой вы хотите установить значение
-const column = "С"; // Буквенное обозначение столбца, в котором вы хотите установить значение
+const ColumnInf = "D"; // Буквенное обозначение столбца, в котором вы хотите установить значение
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
     if (req.method === "POST") {
-      const dataInf: DataInf = JSON.parse(JSON.stringify(req.body)).data;
-      console.log(dataInf.data, " dataInf");
+      const parseBody = await JSON.parse(req.body);
+      const dataInf: DataInf = parseBody.data;
+
+      const indicators = parseBody.indicators;
       // Загрузка шаблона XLSX
       const templateFile = fs.readFileSync(templateFilePath);
       const workbook = xlsx.read(templateFile, { type: "buffer" });
@@ -104,7 +97,7 @@ export default async function handler(
 
       // проходимся по массиву строк и вставляем туда значения относительно объекта по имени ключа
       rows.forEach((row) => {
-        const adressCell = column + row.id;
+        const adressCell = ColumnInf + row.id;
         if (!ws[adressCell]) {
           ws[adressCell] = { v: "" }; // Если ячейка пуста, устанавливаем пустое значение
         }
@@ -124,13 +117,13 @@ export default async function handler(
       let currentColumn = "A";
 
       // Перебор вашего массива данных и запись в ячейки соответствующих данных
-      additionalData.forEach((itemData) => {
-        headersMachine.forEach((item) => {
+      indicators.forEach((itemData: any) => {
+        headersMachine.forEach((headerMachine) => {
           if (!ws[currentColumn + currentRow]) {
             ws[currentColumn + currentRow] = { v: "" }; // Если ячейка пуста, устанавливаем пустое значение
           }
 
-          ws[currentColumn + currentRow].v = itemData.name; // Установка значения в ячейку
+          ws[currentColumn + currentRow].v = itemData[headerMachine.id]; // Установка значения в ячейку
           currentColumn = String.fromCharCode(currentColumn.charCodeAt(0) + 1); // Переходим к следующему столбцу
         });
         currentColumn = "A"; // Сбрасываем текущий столбец обратно в "A" для следующей строки
@@ -163,11 +156,11 @@ export default async function handler(
         "Content-Disposition",
         "attachment; filename=updatedFile.xlsx"
       );
-      return res.status(200).end(excelBuffer);
+      res.status(200).end(excelBuffer);
     } else {
       res.status(400).json({ message: "Invalid request method" });
     }
   } catch {
-    console.log("error zapros");
+    res.status(500);
   }
 }

@@ -5,29 +5,6 @@ import { ROLES } from "@/constants/users";
 import { utils, writeFile } from "xlsx";
 import { useState } from "react";
 export default function Dashboard(props) {
-  const [message, setMessage] = useState(""); // Сообщение о результате операции
-
-  const handleClick = async () => {
-    try {
-      const response = await fetch('/api/template-excel');
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(new Blob([blob]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'filledData.xlsx');
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      } else {
-        console.error('An error occurred while filling the Excel template');
-      }
-    } catch (error) {
-      console.error('An error occurred while communicating with the server');
-    }
-
-  };
-
   const links = {
     [ROLES.engineer]: "/customers",
     [ROLES.customer]: "/departments",
@@ -53,41 +30,6 @@ export default function Dashboard(props) {
     return excelData;
   }
 
-  function downloadExcelFile(data) {
-    const excelData = generateExcelData(data);
-    const blob = new Blob([excelData], { type: "application/octet-stream" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", "data.txt");
-    document.body.appendChild(link);
-    link.click();
-  }
-
-  const dataDownload = [
-    {
-      _id: "65a90a9d184e34493c49d4dd",
-      машина: "656f4f71801d9b8cd4fca7b7",
-      ph: "2522",
-      concentration: "232",
-      conductivity: "4242",
-      bacteriaAmount: "44",
-      fungi: "присутствуют",
-      foaming: "22",
-      fungicide: "2424",
-      smell: "Умеренный",
-      presenceImpurities: "Нет",
-      antiFoamAdditive: "242",
-      batchNumberDate: "4",
-      notesRecommendations: "242",
-      creatorName: "Admin",
-      addedOilAmount: "25",
-      biocide: "1212",
-      __v: 0,
-      createdAt: "2024-01-18T11:25:17.389Z",
-      updatedAt: "2024-01-18T11:25:17.389Z",
-    },
-  ];
   return (
     <section className=" place-items-center">
       <button onClick={() => handleClick()}>Download Excel</button>
