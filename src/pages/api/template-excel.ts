@@ -106,12 +106,6 @@ export default async function handler(
         ws[adressCell].v = dataInf[row.name];
       });
 
-      const additionalData = [
-        { name: "John", age: 30, city: "New York" },
-        { name: "Alice", age: 28, city: "San Francisco" },
-        { name: "aasd", age: 28, city: "San dsds" },
-      ];
-
       // Начать заполнение с 19 строки
       let currentRow = 19;
       let currentColumn = "A";
@@ -129,17 +123,6 @@ export default async function handler(
         currentColumn = "A"; // Сбрасываем текущий столбец обратно в "A" для следующей строки
         currentRow++; // Переход к следующей строке
       });
-
-      const redFontStyle = {
-        font: { color: { rgb: "FF0000" } }, // 'FF0000' это код красного цвета
-      };
-
-      // Применяем стиль к каждой ячейке
-      for (const cellAddress in ws) {
-        if (cellAddress === "!ref" || !ws[cellAddress] || !ws[cellAddress].v)
-          continue; // пропускаем пустые ячейки
-        ws[cellAddress].s = redFontStyle; // Устанавливаем стиль красного цвета текста
-      }
 
       // Создание буфера с обновленными данными
       const excelBuffer = xlsx.write(workbook, {

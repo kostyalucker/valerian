@@ -216,7 +216,7 @@ export default function MachinePage({ baseUrl }) {
     };
 
     try {
-      const response = await fetch("/api/template-excel", {
+      const response = await fetch("/api/template-excel-js", {
         method: "POST",
         body: JSON.stringify({
           data: data,
