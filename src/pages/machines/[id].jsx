@@ -220,9 +220,7 @@ export default function MachinePage({ baseUrl }) {
       </p>
       <p>
         <span className="font-bold">Название СОЖ </span>
-        <span>
-          {info.oilName}, {info.refractionCoefficient}
-        </span>
+        <span>{info.oilName}</span>
       </p>
       <p>
         <span className="font-bold">Коэф. рефракции:</span>
@@ -230,7 +228,7 @@ export default function MachinePage({ baseUrl }) {
       </p>
       <p>
         <span className="font-bold">Рекомендуемая концентрация: </span>
-        <span>{info.recommendeConcentration}</span>
+        <span>{info.recommendeConcentration}%</span>
       </p>
       {getFormattedDate(info?.emulsionFillingDate) && (
         <div>
@@ -302,6 +300,10 @@ export default function MachinePage({ baseUrl }) {
           <p><span className="font-bold">Долив эмульсии, л:</span>{lastCreatedIndicator.capacity}</p>
           <p><span className="font-bold">Дата добавления:</span>{lastCreatedIndicator.createdAt}</p> */}
       </ul>
+      <div className="flex">
+        <h2 className="font-bold mr-2">Примечания и рекомендации:</h2>{" "}
+        <span>{lastCreatedIndicator?.notesRecommendations}</span>
+      </div>
       {lastCreatedIndicator && (
         <Link href={`/machines/indicators/${info?._id}`}>
           <Button className="mb-4 mr-4">Список показателей</Button>

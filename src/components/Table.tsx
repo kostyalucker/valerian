@@ -88,15 +88,21 @@ export function Table({ rows, head, onRowClick }: TableProps) {
                   <td className="px-6 py-4"> {row.date}</td>
                   <td className="px-6 py-4">{row.creator}</td>
                   <td className="px-6 py-4">{row.ph}</td>
-                  <td className="px-6 py-4">{row.capacity}</td>
                   <td className="px-6 py-4">{row.concentration}</td>
                   <td className="px-6 py-4">{row.bacteriaAmount}</td>
                   <td className="px-6 py-4">{row.conductivity}</td>
                   <td className="px-6 py-4">{row.fungi}</td>
                   <td className="px-6 py-4">{row.addedOilAmount}</td>
-                  <td className="px-6 py-4">{row.foreignOil}</td>
                   <td className="px-6 py-4">{row.biocide}</td>
-                  <td className="px-6 py-4">{row.serviceAdditives}</td>
+                  {row.capacity && (
+                    <td className="px-6 py-4">{row.capacity}</td>
+                  )}
+                  {row.foreignOil && (
+                    <td className="px-6 py-4">{row.foreignOil}</td>
+                  )}
+                  {row.serveserviceAdditives && (
+                    <td className="px-6 py-4">{row.serviceAdditives}</td>
+                  )}
                 </tr>
               );
             })}
