@@ -1,5 +1,5 @@
-import { getSession, signOut, useSession } from "next-auth/react";
-import { baseApiUrl, baseUrl } from "@/config";
+import { getSession, useSession } from "next-auth/react";
+import { baseApiUrl } from "@/config";
 import Link from "next/link";
 import { ROLES } from "@/constants/users";
 export default function Dashboard(props) {
@@ -38,7 +38,7 @@ Dashboard.auth = {
 export async function getServerSideProps(context) {
   const { req } = context;
   const session = await getSession({ req });
-  
+
   if (!session) {
     return {
       redirect: {
