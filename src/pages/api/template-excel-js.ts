@@ -1,6 +1,17 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Workbook, Worksheet } from "exceljs";
 import stream from "stream";
+
+export const formatDateTime = (dateString: string) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // +1 потому что нумерация месяцев начинается с 0
+  const day = date.getDate().toString().padStart(2, "0"); // Добавляем ведущий ноль, если нужно
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  return `${year}-${month}-${day} ${hours + ":" + minutes}`;
+};
+
 interface DataInf {
   [key: string]: string;
 }
@@ -9,7 +20,6 @@ const headersMachine = [
   { id: "concentration", translate: "Концентрация, %" },
   { id: "ph", translate: "рН" },
   { id: "conductivity", translate: "Электропроводность, µS/cm" },
-  { id: "emulsionLevel", translate: "Уровень эмульсии в баке, л" },
   { id: "addedOilAmount", translate: "Долив (л)" },
   { id: "foaming", translate: "Пенообразование" },
   { id: "smell", translate: "Запах" },
@@ -17,10 +27,8 @@ const headersMachine = [
   { id: "presenceImpurities", translate: "Наличие посторонних примесей" },
   { id: "fungicide", translate: "Фунгицид" },
   { id: "biocide", translate: "Биоцид" },
-  { id: "defoamer", translate: "Пеногаситель" },
   { id: "notesRecommendations", translate: "Примечания и рекомендации" },
   { id: "serviceAdditives", translate: "Добавлено сервисных присадок" },
-  { id: "batchNumber", translate: "Номер партии СОЖ" },
 ];
 const rows = [
   {
@@ -36,20 +44,43 @@ const rows = [
     id: 3,
   },
   {
-    name: "responsiblePerson",
+    name: "name",
     id: 4,
   },
   {
-    name: "name",
+    name: "position",
     id: 5,
   },
   {
-    name: "position",
-    id: 6,
+    name: "machineType",
+    id: 9,
+  },
+  {
+    name: "machineModel",
+    id: 10,
+  },
+  {
+    name: "machineNumber",
+    id: 11,
+  },
+  {
+    name: "machineCapacity",
+    id: 12,
   },
 ]; // id = Номер строки, в которой вы хотите установить значение
 
+const rowsGeneralInformations = [
+  {
+    name: "fillingDate",
+    id: 1,
+  },
+  {
+    name: "recommendeConcentration",
+    id: 5,
+  },
+];
 const columnNameInf = "D";
+const columnGeneralInformations = "L";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -63,6 +94,7 @@ export default async function handler(
 
       const indicators = parseBody.indicators;
       const dataInf: DataInf = parseBody.data;
+      const generalInformation: DataInf = parseBody.generalInformation;
 
       const fetchedWorkbook = await workbook.xlsx.readFile(filePath);
       let worksheet: Worksheet | undefined = fetchedWorkbook.getWorksheet(
@@ -72,12 +104,14 @@ export default async function handler(
       if (worksheet) {
         // Установка значений и стиля
 
+        rowsGeneralInformations.forEach((row) => {
+          const adressCell = columnGeneralInformations + row.id;
+
+          worksheet.getCell(adressCell).value = generalInformation[row.name];
+        });
+
         rows.forEach((row) => {
           const adressCell = columnNameInf + row.id;
-          // if (!worksheet.getCell(adressCell)) {
-          //   worksheet.getCell(adressCell).value = { v: "" }; // Если ячейка пуста, устанавливаем пустое значение
-          // }
-
           // Обращение к нужной ячейке и установка значения
           worksheet.getCell(adressCell).value = dataInf[row.name];
         });
@@ -89,18 +123,21 @@ export default async function handler(
         // Перебор вашего массива данных и запись в ячейки соответствующих данных
         indicators.forEach((itemData: any) => {
           headersMachine.forEach((headerMachine) => {
-            // if (!worksheet.getCell(currentColumn + currentRow)) {
-            //   worksheet.getCell(currentColumn + currentRow] = { v: "" }; // Если ячейка пуста, устанавливаем пустое значение
-            // }
-
             worksheet.getCell(currentColumn + currentRow).value =
-              itemData[headerMachine.id]; // Установка значения в ячейку
-            worksheet.getCell(currentColumn + currentRow).border = {
-              top: { style: "thin" },
-              left: { style: "thin" },
-              bottom: { style: "thin" },
-              right: { style: "thin" },
-            };
+              headerMachine.id === "createdAt"
+                ? formatDateTime(itemData.createdAt)
+                : itemData[headerMachine.id]; // Установка значения в ячейку
+            if (
+              ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"].find(
+                (item) => item === currentColumn
+              )
+            )
+              worksheet.getCell(currentColumn + currentRow).border = {
+                top: { style: "thin" },
+                left: { style: "thin" },
+                bottom: { style: "thin" },
+                right: { style: "thin" },
+              };
             worksheet.getCell(currentColumn + currentRow).alignment = {
               horizontal: "center",
             }; // Устанавливаем текст по центру

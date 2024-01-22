@@ -210,9 +210,12 @@ export default function MachinePage({ baseUrl }) {
       companyName: info?.department?.user?.name,
       adress: info?.department?.user?.address,
       departmentName: info?.department?.name,
-      responsiblePerson: info?.department?.contactName,
-      name: "ФИО отвественного",
+      name: info?.department?.contactName,
       position: info?.department?.position,
+      machineType: info?.type,
+      machineModel: info?.model,
+      machineNumber: info?.machineNumber,
+      machineCapacity: info?.machineCapacity,
     };
 
     try {
@@ -221,6 +224,10 @@ export default function MachinePage({ baseUrl }) {
         body: JSON.stringify({
           data: data,
           indicators: indicators,
+          generalInformation: {
+            fillingDate: info?.fillingDate,
+            recommendeConcentration: info?.recommendeConcentration,
+          },
         }),
       });
 
