@@ -16,9 +16,9 @@ export default function CreateUserPage() {
   async function onUserCreate(values) {
     // TODO: refactoring dependent field inn
 
-    values.password = "supreme1";
     if (values.role === "CUSTOMER") {
       const { result, error } = validateInn(Number(values.inn), new Error());
+      values.password = "supreme1";
 
       if (!result) {
         return error;
