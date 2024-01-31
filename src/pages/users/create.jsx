@@ -14,7 +14,7 @@ export default function CreateUserPage() {
   const router = useRouter();
 
   async function onUserCreate(values) {
-    // TODO: refactoring dependent field inn
+    // TODO: refactoring dependent field in
 
     if (values.role === "CUSTOMER") {
       const { result, error } = validateInn(Number(values.inn), new Error());
