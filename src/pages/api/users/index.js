@@ -12,16 +12,7 @@ function createdName(user, role) {
 }
 
 async function validateCustomer(customer) {
-  const {
-    firstName,
-    email,
-    password,
-    companyName,
-    address,
-    region,
-    city,
-    inn,
-  } = customer;
+  const { email, password, companyName, address, region, city, inn } = customer;
 
   const findedUserWithEmail = await UserModel.findOne({ email });
   const findedUserWithInn = await UserModel.findOne({ inn });
@@ -55,8 +46,10 @@ async function validateUser(user) {
     address,
     region,
     city,
+    password,
   } = user;
   const findedUserWithEmail = await UserModel.findOne({ email });
+  console.log(findedUserWithEmail, user);
 
   return new Promise((resolve, reject) => {
     if (
