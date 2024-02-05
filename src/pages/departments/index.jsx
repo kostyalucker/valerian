@@ -30,6 +30,8 @@ export default function Departments(props) {
 
   const createDepartmentLink = `/departments/create?userId=${customerId}`;
 
+  console.log(createDepartmentLink, session, customerId);
+
   function openDepartment(e, id, department) {
     e.preventDefault();
     if (e.target.dataset.id === "edit") {
@@ -96,7 +98,7 @@ export default function Departments(props) {
         </div>
       )}
       <div className="title__container flex items-center mb-4">
-        <Title>Выберите цех</Title>
+        <Title>Выберите цехх</Title>
         <Link href={createDepartmentLink} className="ml-4 text-blue-400">
           Добавить
         </Link>
