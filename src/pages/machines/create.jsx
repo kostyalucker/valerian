@@ -81,14 +81,14 @@ export async function getServerSideProps(context) {
   const { req } = context;
   const session = await getSession({ req });
 
-  const isRoleWithAccess =
-    session?.user?.role === "SUPERADMIN" || session?.user?.role === "ENGINEER";
+  // const isRoleWithAccess =
+  //   session?.user?.role === "SUPERADMIN" || session?.user?.role === "ENGINEER";
 
-  if (!isRoleWithAccess) {
-    return {
-      redirect: { destination: `${baseUrl}/dashboard` },
-    };
-  }
+  // if (!isRoleWithAccess) {
+  //   return {
+  //     redirect: { destination: `${baseUrl}/dashboard` },
+  //   };
+  // }
 
   return {
     props: {},

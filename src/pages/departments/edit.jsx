@@ -104,15 +104,15 @@ CreateUserPage.auth = {
 export async function getServerSideProps(context) {
   const { req } = context;
   const session = await getSession({ req });
-  const isAccessCreation =
-    session?.user?.role === ROLES.admin ||
-    session?.user?.role === ROLES.superAdmin ||
-    session?.user?.role === ROLES.engineer;
-  if (!isAccessCreation) {
-    return {
-      redirect: { destination: `${baseUrl}/dashboard` },
-    };
-  }
+  // const isAccessCreation =
+  //   session?.user?.role === ROLES.admin ||
+  //   session?.user?.role === ROLES.superAdmin ||
+  //   session?.user?.role === ROLES.engineer;
+  // if (!isAccessCreation) {
+  //   return {
+  //     redirect: { destination: `${baseUrl}/dashboard` },
+  //   };
+  // }
 
   return {
     props: {},
