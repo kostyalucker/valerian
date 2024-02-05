@@ -22,13 +22,13 @@ export default async function handler(req: any, res: any) {
         session?.user?.role === "SUPERADMIN" ||
         session?.user?.role === "ENGINEER";
 
-      if (isRoleWithAccess) {
-        const departments = await Department.findById(id);
+      // if (isRoleWithAccess) {
+      const departments = await Department.findById(id);
 
-        res.json(departments);
-      } else {
-        throw new Error();
-      }
+      res.json(departments);
+      // } else {
+      //   throw new Error();
+      // }
     } else if (req.method === "DELETE") {
       const { id } = req.query;
 

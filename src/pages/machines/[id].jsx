@@ -350,23 +350,23 @@ export default function MachinePage({ baseUrl }) {
           <Button className="mb-4 mr-4">Список показателей</Button>
         </Link>
       )}
-      {(session.data?.user.role === "ENGINEER" ||
-        session.data?.user.role === "SUPERADMIN") && (
-        <>
-          <Link
-            href={`/machines/indicators/add/?id=${info?._id}`}
-            className="mr-4"
-          >
-            <Button className="mt-4">Внести показания</Button>
-          </Link>
-          <Button onClick={downloadReport} className="mt-4">
-            Cкачать отчеты
-          </Button>
-          {/* <CreateIndicatorsForm
+      {/* {(session.data?.user.role === "ENGINEER" ||
+        session.data?.user.role === "SUPERADMIN") && ( */}
+      <>
+        <Link
+          href={`/machines/indicators/add/?id=${info?._id}`}
+          className="mr-4"
+        >
+          <Button className="mt-4">Внести показания</Button>
+        </Link>
+        <Button onClick={downloadReport} className="mt-4">
+          Cкачать отчеты
+        </Button>
+        {/* <CreateIndicatorsForm
             onIndicatorsCreateSuccess={onIndicatorsCreateSuccess}
           /> */}
-        </>
-      )}
+      </>
+      {/* )} */}
       <div className="buttons mt-4">
         <Button className="mr-4" onClick={() => router.back()}>
           Назад

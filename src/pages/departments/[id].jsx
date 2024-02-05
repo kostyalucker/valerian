@@ -10,7 +10,6 @@ import Button from "@/components/Button";
 import { useCustomerInfo } from "@/hooks/useCustomerInfo";
 
 export default function DepartmentPage(props) {
-  
   const router = useRouter();
   const [machines, setMachines] = useState(props.machines);
   const session = useSession();
@@ -30,7 +29,7 @@ export default function DepartmentPage(props) {
 
   const { customerInfo } = useCustomerInfo(customerId);
 
-  const accessToAdd = isSuperAdmin || isEngineer;
+  const accessToAdd = true;
 
   async function getDepartmentInfo() {
     const id = router.query.id;

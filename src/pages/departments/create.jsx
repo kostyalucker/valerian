@@ -40,7 +40,9 @@ export default function CreateUserPage() {
       {customerInfo && (
         <div className="mb-4">
           <p className="mb-2">Предприятие: {customerInfo.name}</p>
-          <p>Адрес предприятие: {customerInfo.address} {customerInfo.city}</p>
+          <p>
+            Адрес предприятие: {customerInfo.address} {customerInfo.city}
+          </p>
         </div>
       )}
       <FormMaster
@@ -62,15 +64,15 @@ CreateUserPage.auth = {
 export async function getServerSideProps(context) {
   const { req } = context;
   const session = await getSession({ req });
-  const isAccessCreation =
-    session?.user?.role === ROLES.admin ||
-    session?.user?.role === ROLES.superAdmin ||
-    session?.user?.role === ROLES.engineer;
-  if (!isAccessCreation) {
-    return {
-      redirect: { destination: `${baseUrl}/dashboard` },
-    };
-  }
+  // const isAccessCreation =
+  //   session?.user?.role === ROLES.admin ||
+  //   session?.user?.role === ROLES.superAdmin ||
+  //   session?.user?.role === ROLES.engineer;
+  // if (!isAccessCreation) {
+  //   return {
+  //     redirect: { destination: `${baseUrl}/dashboard` },
+  //   };
+  // }
 
   return {
     props: {},

@@ -23,9 +23,12 @@ export default function Departments(props) {
   const [isShowDelete, setIsShowDelete] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState({});
 
-  const customerId = router.query.userId;
+  const customerId = router.query.userId || session.data.user.id;
   const isSuperAdmin = session?.data?.user?.role === ROLES.superAdmin;
   const isEngineer = session?.data?.user?.role === ROLES.engineer;
+  const isCustomer = session?.data?.user?.role === ROLES.customer;
+
+  const createDepartmentLink = `/departments/create?userId=${customerId}`;
 
   function openDepartment(e, id, department) {
     e.preventDefault();
@@ -94,14 +97,9 @@ export default function Departments(props) {
       )}
       <div className="title__container flex items-center mb-4">
         <Title>Выберите цех</Title>
-        {(router.query.userId && isSuperAdmin) || isEngineer ? (
-          <Link
-            href={`/departments/create?userId=${router.query.userId}`}
-            className="ml-4 text-blue-400"
-          >
-            Добавить
-          </Link>
-        ) : null}
+        <Link href={createDepartmentLink} className="ml-4 text-blue-400">
+          Добавить
+        </Link>
       </div>
       <ul></ul>
       <div className="relative overflow-x-auto">
