@@ -16,11 +16,16 @@ interface DataInf {
   [key: string]: string;
 }
 const headersMachine = [
-  { id: "createdAt", translate: "Дата" },
-  { id: "concentration", translate: "Концентрация, %" },
-  { id: "ph", translate: "рН" },
-  { id: "conductivity", translate: "Электропроводность, µS/cm" },
-  { id: "addedOilAmount", translate: "Долив (л)" },
+  { id: "elNumber", translate: "№П/п" },
+  { id: "type", translate: "Тип" },
+  { id: "oilName", translate: "Название СОЖ" },
+  { id: "recommendeConcentration", translate: "Рекомендуемая концетрация" },
+  { id: "updatedAt", translate: "Дата внесения последних показателей" },
+  { id: "concentration", translate: "Концетрация" },
+  { id: "ph", translate: "PH" },
+  { id: "conductivity", translate: "Электропроводность" },
+  { id: "emulsionLevel", translate: "Уровень эмульсии" },
+  { id: "addedOilAmount", translate: "Долив/Л" },
   { id: "foaming", translate: "Пенообразование" },
   { id: "smell", translate: "Запах" },
   { id: "fungi", translate: "Грибы" },
@@ -52,42 +57,8 @@ const rows = [
     name: "position",
     id: 6,
   },
-  // {
-  //   name: "machineType",
-  //   id: 9,
-  // },
-  // {
-  //   name: "machineModel",
-  //   id: 10,
-  // },
-  {
-    name: "machineNumber",
-    id: 11,
-  },
-  {
-    name: "machineCapacity",
-    id: 12,
-  },
 ]; // id = Номер строки, в которой вы хотите установить значение
 
-const rowsGeneralInformations = [
-  {
-    name: "emulsionFillingDate",
-    id: 1,
-  },
-  {
-    name: "product",
-    id: 3,
-  },
-  {
-    name: "refractionCoefficient",
-    id: 4,
-  },
-  {
-    name: "recommendeConcentration",
-    id: 5,
-  },
-];
 const columnNameInf = "D";
 const columnGeneralInformations = "M";
 export default async function handler(
@@ -103,25 +74,13 @@ export default async function handler(
 
       const indicators = parseBody.indicators;
       const dataInf: DataInf = parseBody.data;
-      const generalInformation: DataInf = parseBody.generalInformation;
 
       const fetchedWorkbook = await workbook.xlsx.readFile(filePath);
-      let worksheet: Worksheet | undefined = fetchedWorkbook.getWorksheet(
-        "По конкретному станку"
-      );
+      let worksheet: Worksheet | undefined =
+        fetchedWorkbook.getWorksheet("Общий по цеху");
 
       if (worksheet) {
         // Установка значений и стиля
-
-        rowsGeneralInformations.forEach((row) => {
-          const adressCell = columnGeneralInformations + row.id;
-
-          if (row.id === 3) {
-            worksheet.getCell(adressCell).value = "Supreme Lubri";
-          } else {
-            worksheet.getCell(adressCell).value = generalInformation[row.name];
-          }
-        });
 
         rows.forEach((row) => {
           const adressCell = columnNameInf + row.id;
@@ -136,10 +95,15 @@ export default async function handler(
         // Перебор вашего массива данных и запись в ячейки соответствующих данных
         indicators.forEach((itemData: any) => {
           headersMachine.forEach((headerMachine) => {
-            worksheet.getCell(currentColumn + currentRow).value =
-              headerMachine.id === "createdAt"
-                ? formatDateTime(itemData.createdAt)
-                : itemData[headerMachine.id]; // Установка значения в ячейку
+            console.log(
+              itemData[headerMachine.id],
+              "itemData[headerMachine.id]"
+            );
+            worksheet.getCell(currentColumn + currentRow).value = itemData[
+              headerMachine.id
+            ]
+              ? String(itemData[headerMachine.id])
+              : "-"; // Установка значения в ячейку
             if (
               [
                 "A",
@@ -156,6 +120,11 @@ export default async function handler(
                 "L",
                 "M",
                 "N",
+                "O",
+                "P",
+                "Q",
+                "R",
+                "S",
               ].find((item) => item === currentColumn)
             ) {
               worksheet.getCell(currentColumn + currentRow).border = {

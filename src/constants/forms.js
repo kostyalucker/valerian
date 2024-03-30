@@ -104,6 +104,84 @@ export const createUserFields = () => {
     },
   ];
 };
+export const createUserFieldsInternalEngineer = () => {
+  return [
+    {
+      name: "role",
+      label: "Роль",
+      required: true,
+      defaultValue: "ADMIN",
+      component: "select",
+      dependentExist: null,
+      options: [
+        {
+          value: "INTERNAL_ENGINEER",
+          label: "Интерн-Инженер",
+        },
+      ],
+    },
+    {
+      name: "firstName",
+      label: "Имя",
+      required: true,
+      defaultValue: "",
+      component: "input",
+      type: "text",
+      dependentExist: null,
+    },
+    {
+      name: "lastName",
+      label: "Фамилия",
+      required: true,
+      defaultValue: "",
+      component: "input",
+      type: "text",
+      dependentExist: "role",
+    },
+    {
+      name: "patronomyc",
+      label: "Отчество",
+      required: true,
+      defaultValue: "",
+      component: "input",
+      type: "text",
+      dependentExist: "role",
+    },
+    {
+      name: "region",
+      label: "Регион",
+      defaultValue: "",
+      component: "input",
+      required: true,
+      type: "text",
+    },
+    {
+      name: "city",
+      label: "Город",
+      defaultValue: "",
+      component: "input",
+      required: true,
+      type: "text",
+    },
+    {
+      name: "address",
+      label: "Улица, дом",
+      defaultValue: "",
+      component: "input",
+      required: true,
+      type: "text",
+    },
+    {
+      name: "email",
+      label: "Email",
+      required: true,
+      defaultValue: "",
+      component: "input",
+      dependentExist: null,
+      type: "email",
+    },
+  ];
+};
 
 export const createUserFieldsCustomer = () => {
   return [

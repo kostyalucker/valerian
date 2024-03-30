@@ -212,8 +212,12 @@ export default function MachinePage({ baseUrl }) {
           data: data,
           indicators: indicators,
           generalInformation: {
-            fillingDate: info?.fillingDate,
+            emulsionFillingDate: new Date(
+              info?.emulsionFillingDate
+            ).toLocaleString(),
             recommendeConcentration: info?.recommendeConcentration,
+            refractionCoefficient: info?.refractionCoefficient,
+            product: info?.oilName,
           },
         }),
       });

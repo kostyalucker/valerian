@@ -6,7 +6,11 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   env: {
-    baseUrl: process.env.BASE_URL,
+    baseUrl: "http://localhost:3000",
+    MONGODB_URI:
+      "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.0",
+    NEXTAUTH_SECRET: "SECRET",
+    NEXTAUTH_URL: "http://localhost:3000",
   },
   async headers() {
     return [

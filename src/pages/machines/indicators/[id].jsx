@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { baseApiUrl } from "@/config";
 import { getSession, useSession } from "next-auth/react";
 import { format } from "date-fns";
+
+import Button from "@/components/Button";
 export default function IndicatorsPage({ indicators }) {
   const router = useRouter();
   const session = useSession();

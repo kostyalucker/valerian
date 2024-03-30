@@ -25,10 +25,11 @@ function Header() {
   const isNotCustomer = session?.data?.user?.role !== "CUSTOMER";
   const isSuperAdmin = session?.data?.user?.role === "SUPERADMIN";
   const isEngineer = session?.data?.user?.role === "ENGINEER";
+  const isCustomer = session?.data?.user?.role === "CUSTOMER";
   const isCustomerPage = router.pathname === "/customers";
   const isUserCreatePage = router.pathname === "/users/create";
 
-  const isShowCreateUser = isSuperAdmin || isEngineer;
+  const isShowCreateUser = isSuperAdmin || isEngineer || isCustomer;
   async function onSignOut() {
     await signOut({
       callbackUrl: "/",
@@ -45,32 +46,35 @@ function Header() {
           Выйти
         </Button>
       </div>
-      {isNotCustomer && (
-        <nav>
-          <ul className="flex flex-col md:flex-row">
-            <Link className="text-blue-400 mb-2 md:mr-8" href="/dashboard">
-              Главная
+      <nav>
+        <ul className="flex flex-col md:flex-row">
+          <Link className="text-blue-400 mb-2 md:mr-8" href="/dashboard">
+            Главная
+          </Link>
+          {isCustomer && (
+            <Link className="text-blue-400 mb-2 md:mr-8" href="/users">
+              Список пользователей
             </Link>
-            {!isCustomerPage && (
-              <Link className="text-blue-400 mb-2" href="/customers">
-                Заказчики
+          )}
+          {!isCustomerPage && (
+            <Link className="text-blue-400 mb-2" href="/customers">
+              Заказчики
+            </Link>
+          )}
+          {isShowCreateUser && !isUserCreatePage && (
+            <>
+              <Link
+                className={`text-blue-400 mb-2 ${
+                  isCustomerPage ? "" : "md:ml-8"
+                }`}
+                href="/users/create"
+              >
+                {isEngineer ? "Добавить заказчика" : "Создать пользователя"}
               </Link>
-            )}
-            {isShowCreateUser && !isUserCreatePage && (
-              <>
-                <Link
-                  className={`text-blue-400 mb-2 ${
-                    isCustomerPage ? "" : "md:ml-8"
-                  }`}
-                  href="/users/create"
-                >
-                  {isEngineer ? "Добавить заказчика" : "Создать пользователя"}
-                </Link>
-              </>
-            )}
-          </ul>
-        </nav>
-      )}
+            </>
+          )}
+        </ul>
+      </nav>
       <hr className="bg-gray-500 h-0.5 mb-4" />
     </>
   );

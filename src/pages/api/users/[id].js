@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       const updateUserParams = JSON.parse(req.body);
 
       const validateProperties = checkObjectProperties(updateUserParams);
-      console.log(validateProperties, " validateProperties");
+
       if (validateProperties) {
         const updatedUser = await UserModel.findByIdAndUpdate(
           id,

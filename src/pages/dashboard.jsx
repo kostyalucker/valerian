@@ -7,11 +7,13 @@ export default function Dashboard(props) {
     [ROLES.engineer]: "/customers",
     [ROLES.customer]: "/departments",
     [ROLES.superAdmin]: "/customers",
+    [ROLES.internalEngineer]: "/departments",
     default: "/customers",
   };
 
   const { data: session } = useSession();
   const user = session?.user;
+
   function getUrlCustomers() {
     const role = session?.user?.role;
 

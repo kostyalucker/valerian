@@ -14,7 +14,7 @@ import DeleteDialog from "../../components/modals/Delete";
 import { dialog } from "../../constants/dialog";
 import { useCustomerInfo } from "@/hooks/useCustomerInfo";
 export default function Departments(props) {
-  const { departments } = props;
+  const { departments, responseUserInfo, creatorOfCurrentUser } = props;
 
   const session = useSession();
   const router = useRouter();
@@ -86,9 +86,21 @@ export default function Departments(props) {
       )}
       {customerInfo && (
         <div className="mb-4">
-          <p className="mb-2">Предприятие: {customerInfo.name}</p>
+          <p className="mb-2">
+            Предприятие:{" "}
+            {creatorOfCurrentUser
+              ? creatorOfCurrentUser.name
+              : customerInfo.name}
+          </p>
           <p>
-            Адрес предприятия: {customerInfo.address}, {customerInfo.city}
+            Адрес предприятия:{" "}
+            {creatorOfCurrentUser
+              ? creatorOfCurrentUser.address
+              : customerInfo.address}
+            ,{" "}
+            {creatorOfCurrentUser
+              ? creatorOfCurrentUser.city
+              : customerInfo.city}
           </p>
         </div>
       )}
@@ -197,7 +209,17 @@ export async function getServerSideProps(context) {
   const { role, id } = session?.user;
   let url;
 
+  const resp = await fetch(`${baseApiUrl}/users/${id}`);
+
+  const activeUserInf = await resp.json();
+
   const isAdmin = role === "ADMIN" || role === "SUPERADMIN";
+
+  const respCreatorOfCurrentUser = await fetch(
+    `${baseApiUrl}/users/${activeUserInf.creator}`
+  );
+
+  const creatorOfCurrentUser = await respCreatorOfCurrentUser.json();
 
   if (role === "ENGINEER" || isAdmin) {
     const { userId } = query;
@@ -211,6 +233,8 @@ export async function getServerSideProps(context) {
     }
 
     url = `${baseApiUrl}/departments?userId=${userId}`;
+  } else if (role === "INTERNAL_ENGINEER") {
+    url = `${baseApiUrl}/departments?userId=${activeUserInf.creator}`;
   } else {
     url = `${baseApiUrl}/departments?userId=${id}`;
   }
@@ -226,6 +250,8 @@ export async function getServerSideProps(context) {
   return {
     props: {
       departments: response.departments,
+      responseUserInfo: activeUserInf,
+      creatorOfCurrentUser: creatorOfCurrentUser,
     },
   };
 }

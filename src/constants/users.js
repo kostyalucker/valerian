@@ -34,6 +34,7 @@ const ROLES = {
   engineer: "ENGINEER",
   customer: "CUSTOMER",
   superAdmin: "SUPERADMIN",
+  internalEngineer: "INTERNAL_ENGINEER",
 };
 
 export { Users, ROLES };

@@ -1,4 +1,8 @@
-import { createUserFields, createUserFieldsCustomer } from "@/constants/forms";
+import {
+  createUserFields,
+  createUserFieldsCustomer,
+  createUserFieldsInternalEngineer,
+} from "@/constants/forms";
 import { getSession, useSession } from "next-auth/react";
 import { FormMaster } from "@/components/FormMaster";
 import { useEffect, useState } from "react";
@@ -11,11 +15,11 @@ export default function CreateUserPage() {
   const [userFields, setUserFields] = useState([]);
   const { data: session } = useSession();
   const role = session?.user.role;
+  const idActiveUser = session?.user.id;
   const router = useRouter();
 
   async function onUserCreate(values) {
     // TODO: refactoring dependent field inn
-
     if (values.role === "CUSTOMER") {
       const { result, error } = validateInn(Number(values.inn), new Error());
       values.password = "supreme1";
@@ -26,6 +30,10 @@ export default function CreateUserPage() {
     }
 
     try {
+      if (values.role === "INTERNAL_ENGINEER") {
+        values.creator = idActiveUser;
+        values.password = "external_engineer_supreme";
+      }
       const response = await fetch(`${baseApiUrl}/users`, {
         method: "POST",
         body: JSON.stringify(values),
@@ -46,8 +54,15 @@ export default function CreateUserPage() {
   }
 
   const formatedField = () => {
-    const fields =
-      role === "ENGINEER" ? createUserFieldsCustomer() : createUserFields();
+    if (role === "ENGINEER") {
+      const fields = createUserFieldsCustomer();
+      return fields;
+    }
+    if (role === "CUSTOMER") {
+      const fields = createUserFieldsInternalEngineer();
+      return fields;
+    }
+    const fields = createUserFields();
     return fields;
   };
 
