@@ -364,7 +364,7 @@ export default function MachinePage({ baseUrl }) {
             <Button className="mt-4">Внести показания</Button>
           </Link>
           <Button onClick={downloadReport} className="mt-4">
-            Cкачать отчеты
+            Cкачать отчет
           </Button>
           {/* <CreateIndicatorsForm
             onIndicatorsCreateSuccess={onIndicatorsCreateSuccess}

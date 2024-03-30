@@ -88,7 +88,7 @@ export default async function handler(req, res) {
     } else if (req.method === "POST") {
       const session = await getServerSession(req, res, authOptions);
       const user = JSON.parse(req.body);
-      console.log(user, "user");
+
       const role = session?.user?.role;
 
       const isValidateUser =

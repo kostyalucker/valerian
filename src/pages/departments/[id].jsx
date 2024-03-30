@@ -10,7 +10,6 @@ import Button from "@/components/Button";
 import { useCustomerInfo } from "@/hooks/useCustomerInfo";
 
 export default function DepartmentPage(props) {
-  
   const router = useRouter();
   const [machines, setMachines] = useState(props.machines);
   const session = useSession();
@@ -93,7 +92,6 @@ export default function DepartmentPage(props) {
   }
 
   const downloadReport = async () => {
-
     const indicators = machines.map((el, i) => {
       return {
         ...el.indicator,
@@ -206,7 +204,9 @@ export default function DepartmentPage(props) {
       )}
       <div className="flex mb-4 items-center">
         <Title>Выберите станок</Title>
-        <Button onClick={downloadReport}>Cкачать отчеты</Button>
+        <Button onClick={downloadReport} className="ml-4">
+          Cкачать отчеты
+        </Button>
         {accessToAdd && (
           <Link
             className="text-blue-400 ml-8"
