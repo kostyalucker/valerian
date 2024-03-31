@@ -24,21 +24,26 @@ export default function Departments(props) {
   const [selectedDepartment, setSelectedDepartment] = useState({});
 
   const customerId = router.query.userId;
+
+  const user = session?.data?.user;
   const isSuperAdmin = session?.data?.user?.role === ROLES.superAdmin;
   const isEngineer = session?.data?.user?.role === ROLES.engineer;
+  const isInternalEngineer =
+    session?.data?.user?.role === ROLES.internalEngineer;
 
   function openDepartment(e, id, department) {
     e.preventDefault();
     if (e.target.dataset.id === "edit") {
+      console.log(department._id, user.id);
       router.push(
-        `/departments/edit?departmentId=${department._id}&userId=${customerId}`
+        `/departments/edit?departmentId=${department._id}&userId=${user.id}`
       );
     } else if (e.target.dataset.id === "delete") {
       setSelectedDepartment(department);
 
       setIsShowDelete(true);
     } else {
-      router.push(`/departments/${department._id}?&userId=${customerId}`);
+      router.push(`/departments/${department._id}?&userId=${user.id}`);
     }
   }
 
@@ -106,7 +111,9 @@ export default function Departments(props) {
       )}
       <div className="title__container flex items-center mb-4">
         <Title>Выберите цех</Title>
-        {(router.query.userId && isSuperAdmin) || isEngineer ? (
+        {(router.query.userId && isSuperAdmin) ||
+        isEngineer ||
+        isInternalEngineer ? (
           <Link
             href={`/departments/create?userId=${router.query.userId}`}
             className="ml-4 text-blue-400"
@@ -172,13 +179,14 @@ export default function Departments(props) {
                       Удалить
                     </button>
                   ) : null}
-
-                  <button
-                    className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
-                    data-id="edit"
-                  >
-                    Редактировать
-                  </button>
+                  {(isEngineer || isSuperAdmin || isInternalEngineer) && (
+                    <button
+                      className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
+                      data-id="edit"
+                    >
+                      Редактировать
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

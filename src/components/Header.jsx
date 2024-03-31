@@ -24,6 +24,7 @@ function Header() {
 
   const isNotCustomer = session?.data?.user?.role !== "CUSTOMER";
   const isSuperAdmin = session?.data?.user?.role === "SUPERADMIN";
+  const isAdmin = session?.data?.user?.role === "ADMIN";
   const isEngineer = session?.data?.user?.role === "ENGINEER";
   const isInternalEngineer = session?.data?.user?.role === "INTERNAL_ENGINEER";
   const isCustomer = session?.data?.user?.role === "CUSTOMER";
@@ -57,7 +58,7 @@ function Header() {
               Список пользователей
             </Link>
           )}
-          {!isCustomerPage && !isInternalEngineer && (
+          {(!isCustomerPage && (isEngineer || isSuperAdmin || isAdmin)) && (
             <Link className="text-blue-400 mb-2" href="/customers">
               Заказчики
             </Link>

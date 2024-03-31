@@ -25,6 +25,7 @@ export default function DepartmentPage(props) {
 
   const isSuperAdmin = session?.data?.user?.role === "SUPERADMIN";
   const isEngineer = session?.data?.user?.role === "ENGINEER";
+  const isInterEngineer = session?.data?.user?.role === "INTERNAL_ENGINEER";
   const customerId = router.query.userId;
 
   const { customerInfo } = useCustomerInfo(customerId);
@@ -48,6 +49,7 @@ export default function DepartmentPage(props) {
   function openMachine(e, machine) {
     e.preventDefault();
     if (e.target.dataset.id === "edit") {
+      console.log(machine._id, customerId, "machine");
       router.push(
         `/machines/edit?machineId=${machine._id}&userId=${customerId}`
       );
@@ -137,7 +139,7 @@ export default function DepartmentPage(props) {
         const url = window.URL.createObjectURL(new Blob([blob]));
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "filledData.xlsx");
+        link.setAttribute("download", "generalReport.xlsx");
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -204,9 +206,11 @@ export default function DepartmentPage(props) {
       )}
       <div className="flex mb-4 items-center">
         <Title>Выберите станок</Title>
-        <Button onClick={downloadReport} className="ml-4">
-          Cкачать отчеты
-        </Button>
+        {machines.length && (
+          <Button onClick={downloadReport} className="ml-4">
+            Cкачать отчеты
+          </Button>
+        )}
         {accessToAdd && (
           <Link
             className="text-blue-400 ml-8"
@@ -277,12 +281,14 @@ export default function DepartmentPage(props) {
                     </td>
                   )}
                   <td className="text edit">
-                    <button
-                      className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
-                      data-id="edit"
-                    >
-                      Редактировать
-                    </button>
+                    {(isEngineer || isSuperAdmin || isInterEngineer) && (
+                      <button
+                        className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
+                        data-id="edit"
+                      >
+                        Редактировать
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))

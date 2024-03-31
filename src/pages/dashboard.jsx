@@ -7,6 +7,7 @@ export default function Dashboard(props) {
     [ROLES.engineer]: "/customers",
     [ROLES.customer]: "/departments",
     [ROLES.superAdmin]: "/customers",
+    [ROLES.admin]: "/customers",
     [ROLES.internalEngineer]: "/departments",
     default: "/customers",
   };

@@ -107,7 +107,8 @@ export async function getServerSideProps(context) {
   const isAccessCreation =
     session?.user?.role === ROLES.admin ||
     session?.user?.role === ROLES.superAdmin ||
-    session?.user?.role === ROLES.engineer;
+    session?.user?.role === ROLES.engineer ||
+    session?.user?.role === ROLES.internalEngineer;
   if (!isAccessCreation) {
     return {
       redirect: { destination: `${baseUrl}/dashboard` },

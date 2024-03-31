@@ -46,6 +46,7 @@ export function FormMaster({ title, fields, onSubmit, isEdit, onChangeRole }) {
 
           setError(true);
 
+          console.log(response);
           setTimeout(() => {
             setError(false);
           }, 10000);

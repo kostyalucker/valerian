@@ -203,6 +203,7 @@ export default function MachinePage({ baseUrl }) {
       machineModel: info?.model,
       machineNumber: info?.machineNumber,
       machineCapacity: info?.machineCapacity,
+      emulsionLevel: "-",
     };
 
     try {
@@ -227,7 +228,7 @@ export default function MachinePage({ baseUrl }) {
         const url = window.URL.createObjectURL(new Blob([blob]));
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "filledData.xlsx");
+        link.setAttribute("download", "machineReport.xlsx");
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -355,7 +356,8 @@ export default function MachinePage({ baseUrl }) {
         </Link>
       )}
       {(session.data?.user.role === "ENGINEER" ||
-        session.data?.user.role === "SUPERADMIN") && (
+        session.data?.user.role === "SUPERADMIN" ||
+        session.data?.user.role === "INTERNAL_ENGINEER") && (
         <>
           <Link
             href={`/machines/indicators/add/?id=${info?._id}`}
@@ -363,14 +365,14 @@ export default function MachinePage({ baseUrl }) {
           >
             <Button className="mt-4">Внести показания</Button>
           </Link>
-          <Button onClick={downloadReport} className="mt-4">
-            Cкачать отчет
-          </Button>
           {/* <CreateIndicatorsForm
             onIndicatorsCreateSuccess={onIndicatorsCreateSuccess}
           /> */}
         </>
       )}
+      <Button onClick={downloadReport} className="mt-4">
+        Cкачать отчет
+      </Button>
       <div className="buttons mt-4">
         <Button className="mr-4" onClick={() => router.back()}>
           Назад

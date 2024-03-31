@@ -20,6 +20,7 @@ const headersMachine = [
   { id: "concentration", translate: "Концентрация, %" },
   { id: "ph", translate: "рН" },
   { id: "conductivity", translate: "Электропроводность, µS/cm" },
+  { id: "emulsionLevel", translate: "Уровень эмульсии" },
   { id: "addedOilAmount", translate: "Долив (л)" },
   { id: "foaming", translate: "Пенообразование" },
   { id: "smell", translate: "Запах" },

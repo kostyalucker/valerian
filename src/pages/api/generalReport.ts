@@ -66,7 +66,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const workbook = new Workbook();
-  const filePath = "./src/assets/templateReport.xlsx"; // Укажите путь к вашему шаблону XLSX
+  const filePath = "./src/assets/templateGeneralReport.xlsx"; // Укажите путь к вашему шаблону XLSX
 
   try {
     if (req.method === "POST") {

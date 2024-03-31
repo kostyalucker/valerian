@@ -104,7 +104,9 @@ export async function getServerSideProps(context) {
   const session = await getSession({ req });
 
   const isRoleWithAccess =
-    session?.user?.role === "SUPERADMIN" || session?.user?.role === "ENGINEER";
+    session?.user?.role === "SUPERADMIN" ||
+    session?.user?.role === "ENGINEER" ||
+    session?.user?.role === "INTERNAL_ENGINEER";
 
   if (!isRoleWithAccess) {
     return {
