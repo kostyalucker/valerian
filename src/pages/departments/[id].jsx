@@ -30,7 +30,7 @@ export default function DepartmentPage(props) {
 
   const { customerInfo } = useCustomerInfo(customerId);
 
-  const accessToAdd = isSuperAdmin || isEngineer;
+  const accessToAdd = true;
 
   async function getDepartmentInfo() {
     const id = router.query.id;

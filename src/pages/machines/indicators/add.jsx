@@ -200,22 +200,22 @@ export default function MachinePage({ baseUrl }) {
 
   return (
     <>
-      {(session.data?.user.role === "ENGINEER" ||
-        session.data?.user.role === "SUPERADMIN") && (
-        <>
-          <CreateIndicatorsForm
-            onIndicatorsCreateSuccess={onIndicatorsCreateSuccess}
-          />
-          <div className="buttons mt-4">
-            <Button className="mr-4" onClick={() => router.back()}>
-              Назад
-            </Button>
-            <Link href={"/dashboard"}>
-              <Button>Домой</Button>
-            </Link>
-          </div>
-        </>
-      )}
+      {/* {(session.data?.user.role === "ENGINEER" ||
+        session.data?.user.role === "SUPERADMIN") && ( */}
+      <>
+        <CreateIndicatorsForm
+          onIndicatorsCreateSuccess={onIndicatorsCreateSuccess}
+        />
+        <div className="buttons mt-4">
+          <Button className="mr-4" onClick={() => router.back()}>
+            Назад
+          </Button>
+          <Link href={"/dashboard"}>
+            <Button>Домой</Button>
+          </Link>
+        </div>
+      </>
+      {/* )} */}
     </>
   );
 }

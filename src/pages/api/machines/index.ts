@@ -82,11 +82,11 @@ export default async function handler(req, res) {
       const session = await getServerSession(req, res, authOptions);
       const machine = JSON.parse(req.body);
       const isCreatedMachineValid = await validateMachine(machine);
-      const isRoleWithAccess =
-        session?.user?.role === "SUPERADMIN" ||
-        session?.user?.role === "ENGINEER";
+      // const isRoleWithAccess =
+      //   session?.user?.role === "SUPERADMIN" ||
+      //   session?.user?.role === "ENGINEER";
 
-      if (isRoleWithAccess && isCreatedMachineValid) {
+      if (isCreatedMachineValid) {
         const insertedMachine = await MachineModel.insertMany([machine]);
 
         res.status(200).json({
