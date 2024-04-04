@@ -31,24 +31,12 @@ export default function MachinePage({ baseUrl }) {
 
       const TEMP_STANDARDS = {
         ph: {
-          min: "8.7",
-          max: "11",
+          min: data.info.phMin,
+          max: data.info.phMax,
         },
         concentration: {
-          min: "0",
-          max: "4",
-        },
-        conductivity: {
-          min: "0",
-          max: "6000",
-        },
-        bacteriaAmout: {
-          min: "0",
-          max: "100000",
-        },
-        fungi: {
-          min: "0",
-          max: "0",
+          min: data.info.recommendedConcentration - 0.5,
+          max: data.info.recommendedConcentration + 1,
         },
       };
       setStandards(TEMP_STANDARDS);
@@ -73,27 +61,34 @@ export default function MachinePage({ baseUrl }) {
 
     const indicatorsObj = indicatorsClone?.reduce((acc, curr) => {
       const {
+        concentration,
         ph,
         conductivity,
-        concentration,
-        fungi,
         bacteriaAmount,
+        fungi,
+        foaming,
         addedOilAmount,
-        foreignOil,
         biocide,
-        serviceAdditives,
+        smell,
+        presenceImpurities,
+        antiFoamAdditive,
+        fungicide,
       } = curr;
 
       if (!acc.ph) {
         acc.ph = [ph];
         acc.conductivity = [conductivity];
         acc.fungi = [fungi];
+        acc.foaming = [foaming];
         acc.bacteriaAmount = [bacteriaAmount];
         acc.concentration = [concentration];
         acc.addedOilAmount = [addedOilAmount];
-        acc.foreignOil = [foreignOil];
-        acc.biocide = [biocide];
-        acc.serviceAdditives = [serviceAdditives];
+        (acc.smell = [smell]),
+          (acc.presenceImpurities = [presenceImpurities]),
+          (acc.biocide = [biocide]);
+        // acc.serviceAdditives = [serviceAdditives];
+        (acc.antiFoamAdditive = [antiFoamAdditive]),
+          (acc.fungicide = [fungicide]);
       } else {
         acc.ph.push(ph);
         acc.bacteriaAmount.push(bacteriaAmount);
@@ -101,9 +96,12 @@ export default function MachinePage({ baseUrl }) {
         acc.conductivity.push(conductivity);
         acc.concentration.push(concentration);
         acc.addedOilAmount.push(addedOilAmount);
-        acc.foreignOil.push(foreignOil);
-        acc.biocide.push(biocide);
-        acc.serviceAdditives.push(serviceAdditives);
+        acc.smell.push(smell),
+          acc.presenceImpurities.push(presenceImpurities),
+          acc.biocide.push(biocide);
+        // acc.serviceAdditives.push(serviceAdditives);
+        acc.antiFoamAdditive.push(antiFoamAdditive),
+          acc.fungicide.push(fungicide);
       }
 
       return acc;
@@ -114,15 +112,19 @@ export default function MachinePage({ baseUrl }) {
     });
 
     const indicatorsNames = {
+      concentration: "Концентрация",
       ph: "pH",
       conductivity: "Электропроводность",
-      concentration: "Концентрация",
-      fungi: "Грибки",
       bacteriaAmount: "Бактерии",
+      fungi: "Грибки",
+      foaming: "Пенообразование",
+      smell: "Запах",
       addedOilAmount: "Долив",
-      foreignOil: "Постороннее масло",
+      presenceImpurities: "Наличие посторонних примесей",
       biocide: "Добавлено биоцида",
-      serviceAdditives: "Добавлено сервисных присадок",
+      antiFoamAdditive: "Антипенная",
+      fungicide: "Фунгицид",
+      // serviceAdditives: "Добавлено сервисных присадок",
     };
 
     const formattedIndicators = Object.keys(indicatorsObj).map((key) => {
@@ -167,7 +169,6 @@ export default function MachinePage({ baseUrl }) {
         return false;
       }
     }
-
     if (
       Number(lastCreatedIndicator[indicatorName]) >
         Number(standards[indicatorName].max) ||
@@ -189,30 +190,91 @@ export default function MachinePage({ baseUrl }) {
       return "";
     }
 
-    console.log(date);
-
     return format(new Date(date), "yyyy-MM-dd HH:mm");
   }
+  const downloadReport = async () => {
+    const data = {
+      companyName: info?.department?.user?.name,
+      adress: info?.department?.user?.address,
+      departmentName: info?.department?.name,
+      name: info?.department?.contactName,
+      position: info?.department?.position,
+      machineType: info?.type,
+      machineModel: info?.model,
+      machineNumber: info?.machineNumber,
+      machineCapacity: info?.machineCapacity,
+      emulsionLevel: "-",
+    };
 
+    try {
+      const response = await fetch("/api/template-excel-js", {
+        method: "POST",
+        body: JSON.stringify({
+          data: data,
+          indicators: indicators,
+          generalInformation: {
+            emulsionFillingDate: new Date(
+              info?.emulsionFillingDate
+            ).toLocaleString(),
+            recommendeConcentration: info?.recommendeConcentration,
+            refractionCoefficient: info?.refractionCoefficient,
+            product: info?.oilName,
+          },
+        }),
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "machineReport.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } else {
+        console.error("An error occurred while filling the Excel template");
+      }
+    } catch (error) {
+      console.error("An error occurred while communicating with the server");
+    }
+  };
   return (
     <>
+      <p>
+        <p className="mb-4">
+          <span className="font-bold">Предприятие:</span>{" "}
+          {info?.department?.user?.name}
+          <p>
+            <span className="font-bold">Цех:</span> {info?.department?.name}
+          </p>
+        </p>
+      </p>
+
       <p>
         <span className="font-bold">Номер станка:</span> {info?.machineNumber}
       </p>
       <p>
-        <span className="font-bold">Предприятие:</span>{" "}
-        {info?.department?.user?.name}
-      </p>
-      <p>
-        <span className="font-bold">Цех:</span>{" "}
-        {info?.department?.departmentNumber}
+        <span className="font-bold">Тип станка:</span> {info?.type}
       </p>
       <p>
         <span className="font-bold">Модель станка:</span> {info?.model}
       </p>
       <p>
         <span className="font-bold">Емкость системы:</span>{" "}
-        {info?.machineCapacity}
+        {info?.machineCapacity}(Л)
+      </p>
+      <p>
+        <span className="font-bold">Название СОЖ </span>
+        <span>{info.oilName}</span>
+      </p>
+      <p>
+        <span className="font-bold">Коэф. рефракции:</span>
+        <span>{info.refractionCoefficient}</span>(%)
+      </p>
+      <p>
+        <span className="font-bold">Рекомендуемая концентрация: </span>
+        <span>{info.recommendeConcentration}%</span>
       </p>
       {getFormattedDate(info?.emulsionFillingDate) && (
         <div>
@@ -252,14 +314,17 @@ export default function MachinePage({ baseUrl }) {
                 <span span className="font-bold mr-1">
                   {datasets[0].label}:
                 </span>
-                {lastCreatedIndicator[key]}{" "}
-                {standards[key] && (
-                  <div
-                    className={`ml-4 w-4 h-4 rounded-full ${
-                      getIndicatorStatus(key) ? "bg-green-400" : "bg-red-400"
-                    }`}
-                  ></div>
-                )}
+                {lastCreatedIndicator[key]}
+                {key === "addedOilAmount" && " (Л)"}
+                {key === "concentration" && " (%)"}
+                {(key === "ph" || key === "concentration") &&
+                  standards[key] && (
+                    <div
+                      className={`ml-4 w-4 h-4 rounded-full ${
+                        getIndicatorStatus(key) ? "bg-green-400" : "bg-red-400"
+                      }`}
+                    ></div>
+                  )}
               </p>
               <div
                 style={{
@@ -281,19 +346,41 @@ export default function MachinePage({ baseUrl }) {
           <p><span className="font-bold">Долив эмульсии, л:</span>{lastCreatedIndicator.capacity}</p>
           <p><span className="font-bold">Дата добавления:</span>{lastCreatedIndicator.createdAt}</p> */}
       </ul>
+      <div className="flex">
+        <h2 className="font-bold mr-2">Примечания и рекомендации:</h2>{" "}
+        <span>{lastCreatedIndicator?.notesRecommendations}</span>
+      </div>
       {lastCreatedIndicator && (
         <Link href={`/machines/indicators/${info?._id}`}>
-          <Button className="mb-4">Список показателей</Button>
+          <Button className="mb-4 mr-4">Список показателей</Button>
         </Link>
       )}
       {(session.data?.user.role === "ENGINEER" ||
-        session.data?.user.role === "SUPERADMIN") && (
+        session.data?.user.role === "SUPERADMIN" ||
+        session.data?.user.role === "INTERNAL_ENGINEER") && (
         <>
-          <CreateIndicatorsForm
+          <Link
+            href={`/machines/indicators/add/?id=${info?._id}`}
+            className="mr-4"
+          >
+            <Button className="mt-4">Внести показания</Button>
+          </Link>
+          {/* <CreateIndicatorsForm
             onIndicatorsCreateSuccess={onIndicatorsCreateSuccess}
-          />
+          /> */}
         </>
       )}
+      <Button onClick={downloadReport} className="mt-4">
+        Cкачать отчет
+      </Button>
+      <div className="buttons mt-4">
+        <Button className="mr-4" onClick={() => router.back()}>
+          Назад
+        </Button>
+        <Link href={"/dashboard"}>
+          <Button>Домой</Button>
+        </Link>
+      </div>
     </>
   );
 }

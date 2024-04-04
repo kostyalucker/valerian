@@ -1,5 +1,5 @@
-import { getSession, signOut, useSession } from "next-auth/react";
-import { baseApiUrl, baseUrl } from "@/config";
+import { getSession, useSession } from "next-auth/react";
+import { baseApiUrl } from "@/config";
 import Link from "next/link";
 import { ROLES } from "@/constants/users";
 export default function Dashboard(props) {
@@ -7,6 +7,8 @@ export default function Dashboard(props) {
     [ROLES.engineer]: "/customers",
     [ROLES.customer]: "/departments",
     [ROLES.superAdmin]: "/customers",
+    [ROLES.admin]: "/customers",
+    [ROLES.internalEngineer]: "/departments",
     default: "/customers",
   };
 

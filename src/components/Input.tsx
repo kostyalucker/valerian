@@ -9,17 +9,27 @@ type Props = {
   disabled?: boolean;
   value: any;
   inputref?: any;
-}
+  placeholder?: string;
+};
 
 function Input(props: Props) {
-  const classes = `text-black form-input px-4 py-3 mb-4 ${props.className || ''}`
-  const typeNumberAttr = props.type === 'number' ? { min: 0 } : {};
+  const classes = `text-black form-input px-4 py-3 mb-4 ${
+    props.className || ""
+  }`;
+  const typeNumberAttr = props.type === "number" ? { min: 0 } : {};
 
   return (
-    <input {...props} ref={props.inputref} type={props.type} className={classes} {...typeNumberAttr}></input>
+    <input
+      {...props}
+      ref={props.inputref}
+      type={props.type}
+      className={classes}
+      {...typeNumberAttr}
+      placeholder={props.placeholder}
+    ></input>
   );
 }
 
 export default React.forwardRef((props: Props, ref) => {
-  return <Input {...props} inputref={ref} />
+  return <Input {...props} inputref={ref} />;
 });

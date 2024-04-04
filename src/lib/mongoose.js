@@ -7,8 +7,6 @@ https://github.com/vercel/next.js/blob/canary/examples/with-mongodb-mongoose/uti
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-console.log(MONGODB_URI);
-
 if (!MONGODB_URI) {
   throw new Error(
     "Please define the MONGODB_URI environment variable inside .env.local"
@@ -31,10 +29,10 @@ async function dbConnect() {
     return cached.conn;
   }
 
-  console.log("mongo connected");
-
   if (!cached.promise) {
     try {
+      console.log("mongo connected");
+
       cached.promise = mongoose.connect(MONGODB_URI);
     } catch (error) {
       console.log(error);

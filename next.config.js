@@ -5,6 +5,13 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  env: {
+    baseUrl: "http://localhost:3000",
+    MONGODB_URI:
+      "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.0",
+    NEXTAUTH_SECRET: "SECRET",
+    NEXTAUTH_URL: "http://localhost:3000",
+  },
   async headers() {
     return [
       {
@@ -12,6 +19,7 @@ const nextConfig = {
         source: "/(.*)",
         headers: [
           { key: "Access-Control-Allow-Credentials", value: "true" },
+          // add dynamice allow origin by env
           { key: "Access-Control-Allow-Origin", value: "*" },
           {
             key: "Access-Control-Allow-Methods",

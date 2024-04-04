@@ -130,6 +130,22 @@ input[type="number"] {
 .col-name {
   margin-right: 5px;
 }
+
+.form-master--contact-name {
+  position: relative;
+}
+.form-master--contact-name::before {
+  content: "Контактная информация";
+  display: block;
+  margin-bottom: 10px;
+
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 700;
+}
+.with-error {
+  background-color: #610000 !important;
+}
 @media (prefers-color-scheme: dark) {
   /* html {
     color-scheme: dark;

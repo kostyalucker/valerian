@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import dbConnect from "../../lib/mongoose";
 
 export default async function handler(req: any, res: any) {
+  console.log('login', req.body);
   try {
     if (req.method !== "POST") {
       res.status(405).send({ message: "Only POST requests allowed" });
@@ -14,17 +15,18 @@ export default async function handler(req: any, res: any) {
 
     const body = JSON.parse(JSON.stringify(req.body));
     const users = await UserModel.find({});
+
     // await UserModel.collection.insertOne({
     //   email: "admin@mail.ru",
     //   password: "$2a$10$8N9DT9gWHhdU.L0LDtNRc.TtHCnlPD98RjUM5GWrWF5Zo0A2L0d7y",
+    //   role: "SUPERADMIN",
+    //   city: "",
+    //   region: "",
+    //   address: "",
     // });
 
-<<<<<<< Updated upstream
-    console.log(users);
-=======
     console.log(users, body);
 
->>>>>>> Stashed changes
     const user = users.find((user) => user.email === body.email);
 
     if (!user) {

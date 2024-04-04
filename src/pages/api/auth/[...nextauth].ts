@@ -24,7 +24,6 @@ export const authOptions = {
 
       async authorize(credentials: any, req) {
         const { email, password } = credentials;
-        console.log(credentials);
         const res = await fetch(`${baseApiUrl}/login`, {
           method: "POST",
           headers: {
@@ -36,7 +35,6 @@ export const authOptions = {
           }),
         });
         const user = await res.json();
-        console.log(user);
 
         if (res.ok && user) {
           return user;

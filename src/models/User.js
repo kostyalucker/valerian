@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema(
     city: String,
     region: String,
     address: String,
+    creator: String,
   },
   {
     timestamps: true,

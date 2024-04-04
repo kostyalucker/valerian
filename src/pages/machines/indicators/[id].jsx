@@ -5,6 +5,7 @@ import { baseApiUrl } from "@/config";
 import { getSession, useSession } from "next-auth/react";
 import { format } from "date-fns";
 
+import Button from "@/components/Button";
 export default function IndicatorsPage({ indicators }) {
   const router = useRouter();
   const session = useSession();
@@ -50,15 +51,12 @@ export default function IndicatorsPage({ indicators }) {
     "Дата",
     "Имя",
     "pH",
-    "Долив",
     "Концентрация",
     "Количество бактерий",
     "Электропроводность",
     "Грибки",
     "Долив",
-    "Постороннее масло",
     "Добавлено биоцида",
-    "Добавлено сервисных присадок",
   ];
 
   function pushToIndicator(link) {
@@ -91,7 +89,6 @@ export async function getServerSideProps(context) {
     }
 
     const indicators = await response.json();
-    console.log(indicators);
 
     return {
       props: {

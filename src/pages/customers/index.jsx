@@ -1,10 +1,11 @@
-import Link from "next/link";
 import { useState } from "react";
-import { getSession, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 import { baseApiUrl } from "@/config";
-import { useRouter, router } from "next/router";
-import ModalDeleteUser from "../../components/modals/DeleteUser";
+import { router } from "next/router";
+import DeleteDialog from "../../components/modals/Delete";
+
+import { dialog } from "../../constants/dialog";
 export default function CustomersPage({ customers, baseUrl }) {
   const [isLoading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
@@ -95,9 +96,14 @@ export default function CustomersPage({ customers, baseUrl }) {
   return (
     <>
       {isShowModalDelete && (
-        <ModalDeleteUser delete={deleteCustomer} cancel={cancel} />
+        <DeleteDialog
+          description={dialog.deleteCustomer()}
+          delete={deleteCustomer}
+          cancel={cancel}
+        />
       )}
       <p className="text-xl font-bold mb-4">Заказчики</p>
+      {/* TODO: new component create */}
       <div className="relative overflow-x-auto">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

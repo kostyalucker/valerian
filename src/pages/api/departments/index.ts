@@ -1,10 +1,10 @@
 import DepartmentModel from "@/models/Department";
 import { getServerSession } from "next-auth";
-import dbConnect from "../../lib/mongoose";
-import Department from "../../models/Department";
-import { authOptions } from "./auth/[...nextauth]";
+import dbConnect from "../../../lib/mongoose";
+import Department from "../../../models/Department";
+import { authOptions } from "../auth/[...nextauth]";
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
   try {
     await dbConnect();
 
