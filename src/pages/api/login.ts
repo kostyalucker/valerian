@@ -19,7 +19,12 @@ export default async function handler(req: any, res: any) {
     //   password: "$2a$10$8N9DT9gWHhdU.L0LDtNRc.TtHCnlPD98RjUM5GWrWF5Zo0A2L0d7y",
     // });
 
+<<<<<<< Updated upstream
     console.log(users);
+=======
+    console.log(users, body);
+
+>>>>>>> Stashed changes
     const user = users.find((user) => user.email === body.email);
 
     if (!user) {
