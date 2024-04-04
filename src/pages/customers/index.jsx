@@ -23,12 +23,9 @@ export default function CustomersPage({ customers, baseUrl }) {
   async function deleteCustomer(id) {
     try {
       setLoading(true);
-      const response = await fetch(
-        `${baseUrl}/api/users/${selectedCustomerId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`/api/users/${selectedCustomerId}`, {
+        method: "DELETE",
+      });
 
       if (response.status !== 200) {
         throw new Error("Delete customer error");

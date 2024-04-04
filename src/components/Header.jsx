@@ -1,7 +1,6 @@
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Button from "./Button";
-import { baseUrl } from "@/config";
 import Link from "next/link";
 
 function Header() {
@@ -58,7 +57,7 @@ function Header() {
               Список пользователей
             </Link>
           )}
-          {(!isCustomerPage && (isEngineer || isSuperAdmin || isAdmin)) && (
+          {!isCustomerPage && (isEngineer || isSuperAdmin || isAdmin) && (
             <Link className="text-blue-400 mb-2" href="/customers">
               Заказчики
             </Link>

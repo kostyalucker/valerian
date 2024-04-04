@@ -26,7 +26,7 @@ export default function MachinePage({ baseUrl }) {
         router.push("/machines");
       }
 
-      const response = await fetch(`${baseUrl}/api/machines/${id}`);
+      const response = await fetch(`/api/machines/${id}`);
       const data = await response.json();
 
       const TEMP_STANDARDS = {
