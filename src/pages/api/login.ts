@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import dbConnect from "../../lib/mongoose";
 
 export default async function handler(req: any, res: any) {
+  console.log('login', req.body);
   try {
     if (req.method !== "POST") {
       res.status(405).send({ message: "Only POST requests allowed" });
@@ -23,6 +24,8 @@ export default async function handler(req: any, res: any) {
     //   region: "",
     //   address: "",
     // });
+
+    console.log(users, body);
 
     const user = users.find((user) => user.email === body.email);
 
