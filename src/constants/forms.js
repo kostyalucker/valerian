@@ -116,7 +116,7 @@ export const createUserFieldsInternalEngineer = () => {
       options: [
         {
           value: "INTERNAL_ENGINEER",
-          label: "Интерн-Инженер",
+          label: "Внутренний инженер",
         },
       ],
     },
