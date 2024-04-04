@@ -34,7 +34,7 @@ export default function CreateUserPage() {
         values.creator = idActiveUser;
         values.password = "external_engineer_supreme";
       }
-      const response = await fetch(`${baseApiUrl}/users`, {
+      const response = await fetch(`/api/users`, {
         method: "POST",
         body: JSON.stringify(values),
       });
