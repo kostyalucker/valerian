@@ -18,7 +18,7 @@ export default function CreateMachinePage() {
       router.push("/machines");
     }
 
-    const response = await fetch(`${baseUrl}/api/machines/${idMachine}`);
+    const response = await fetch(`/api/machines/${idMachine}`);
     const data = await response.json();
 
     updateField(data.info);
