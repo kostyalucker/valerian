@@ -5,7 +5,7 @@ Source :
 https://github.com/vercel/next.js/blob/canary/examples/with-mongodb-mongoose/utils/dbConnect.js 
 **/
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB;
 
 if (!MONGODB_URI) {
   throw new Error(
@@ -32,7 +32,6 @@ async function dbConnect() {
   if (!cached.promise) {
     try {
       console.log("mongo connected");
-
       cached.promise = mongoose.connect(MONGODB_URI);
     } catch (error) {
       console.log(error);
