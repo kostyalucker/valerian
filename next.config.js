@@ -5,13 +5,12 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // env: {
-  //   baseUrl: "http://localhost:3000",
-  //   MONGODB_URI:
-  //     "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.0",
-  //   NEXTAUTH_SECRET: "SECRET",
-  //   NEXTAUTH_URL: "http://localhost:3000",
-  // },
+  env: {
+    baseUrl: process.env.BASE_URL,
+    MONGODB_URI: process.env.MONGODB,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+  },
   async headers() {
     return [
       {
