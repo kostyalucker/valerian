@@ -25,6 +25,7 @@ export default function DepartmentPage(props) {
 
   const isSuperAdmin = session?.data?.user?.role === "SUPERADMIN";
   const isEngineer = session?.data?.user?.role === "ENGINEER";
+  const isInterEngineer = session?.data?.user?.role === "INTERNAL_ENGINEER";
   const customerId = router.query.userId;
 
   const { customerInfo } = useCustomerInfo(customerId);
@@ -48,6 +49,7 @@ export default function DepartmentPage(props) {
   function openMachine(e, machine) {
     e.preventDefault();
     if (e.target.dataset.id === "edit") {
+      console.log(machine._id, customerId, "machine");
       router.push(
         `/machines/edit?machineId=${machine._id}&userId=${customerId}`
       );
@@ -90,6 +92,64 @@ export default function DepartmentPage(props) {
     } finally {
     }
   }
+
+  const downloadReport = async () => {
+    const indicators = machines.map((el, i) => {
+      return {
+        ...el.indicator,
+        type: el.type,
+        model: el.model,
+        oilName: el.oilName,
+        elNumber: i + 1,
+        recommendeConcentration: el.recommendeConcentration,
+        emulsionLevel: "-",
+        updatedAt: new Date(el.updatedAt).toDateString(),
+      };
+    });
+
+    const data = {
+      companyName: customerInfo?.name,
+      adress: customerInfo?.address,
+      departmentName: department?.name,
+      name: department?.contactName,
+      position: department?.position,
+      machineType: "Тип",
+      machineModel: "Модель",
+      machineNumber: "номер машины",
+      machineCapacity: "капасити",
+    };
+
+    try {
+      const response = await fetch("/api/generalReport", {
+        method: "POST",
+        body: JSON.stringify({
+          data: data,
+          indicators: indicators,
+          generalInformation: {
+            emulsionFillingDate: 22,
+            recommendeConcentration: 22,
+            refractionCoefficient: 22,
+            product: 22,
+          },
+        }),
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "generalReport.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } else {
+        console.error("An error occurred while filling the Excel template");
+      }
+    } catch (error) {
+      console.error("An error occurred while communicating with the server");
+    }
+  };
 
   useEffect(() => {
     getDepartmentInfo();
@@ -146,6 +206,11 @@ export default function DepartmentPage(props) {
       )}
       <div className="flex mb-4 items-center">
         <Title>Выберите станок</Title>
+        {machines.length && (
+          <Button onClick={downloadReport} className="ml-4">
+            Cкачать отчеты
+          </Button>
+        )}
         {accessToAdd && (
           <Link
             className="text-blue-400 ml-8"
@@ -216,12 +281,14 @@ export default function DepartmentPage(props) {
                     </td>
                   )}
                   <td className="text edit">
-                    <button
-                      className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
-                      data-id="edit"
-                    >
-                      Редактировать
-                    </button>
+                    {(isEngineer || isSuperAdmin || isInterEngineer) && (
+                      <button
+                        className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
+                        data-id="edit"
+                      >
+                        Редактировать
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))

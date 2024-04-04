@@ -14,7 +14,7 @@ import DeleteDialog from "../../components/modals/Delete";
 import { dialog } from "../../constants/dialog";
 import { useCustomerInfo } from "@/hooks/useCustomerInfo";
 export default function Departments(props) {
-  const { departments } = props;
+  const { departments, responseUserInfo, creatorOfCurrentUser } = props;
 
   const session = useSession();
   const router = useRouter();
@@ -23,27 +23,27 @@ export default function Departments(props) {
   const [isShowDelete, setIsShowDelete] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState({});
 
-  const customerId = router.query.userId || session.data.user.id;
+  const customerId = router.query.userId;
+
+  const user = session?.data?.user;
   const isSuperAdmin = session?.data?.user?.role === ROLES.superAdmin;
   const isEngineer = session?.data?.user?.role === ROLES.engineer;
-  const isCustomer = session?.data?.user?.role === ROLES.customer;
-
-  const createDepartmentLink = `/departments/create?userId=${customerId}`;
-
-  console.log(createDepartmentLink, session, customerId);
+  const isInternalEngineer =
+    session?.data?.user?.role === ROLES.internalEngineer;
 
   function openDepartment(e, id, department) {
     e.preventDefault();
     if (e.target.dataset.id === "edit") {
+      console.log(department._id, user.id);
       router.push(
-        `/departments/edit?departmentId=${department._id}&userId=${customerId}`
+        `/departments/edit?departmentId=${department._id}&userId=${user.id}`
       );
     } else if (e.target.dataset.id === "delete") {
       setSelectedDepartment(department);
 
       setIsShowDelete(true);
     } else {
-      router.push(`/departments/${department._id}?&userId=${customerId}`);
+      router.push(`/departments/${department._id}?&userId=${user.id}`);
     }
   }
 
@@ -91,17 +91,36 @@ export default function Departments(props) {
       )}
       {customerInfo && (
         <div className="mb-4">
-          <p className="mb-2">Предприятие: {customerInfo.name}</p>
+          <p className="mb-2">
+            Предприятие:{" "}
+            {creatorOfCurrentUser
+              ? creatorOfCurrentUser.name
+              : customerInfo.name}
+          </p>
           <p>
-            Адрес предприятия: {customerInfo.address}, {customerInfo.city}
+            Адрес предприятия:{" "}
+            {creatorOfCurrentUser
+              ? creatorOfCurrentUser.address
+              : customerInfo.address}
+            ,{" "}
+            {creatorOfCurrentUser
+              ? creatorOfCurrentUser.city
+              : customerInfo.city}
           </p>
         </div>
       )}
       <div className="title__container flex items-center mb-4">
-        <Title>Выберите цехх</Title>
-        <Link href={createDepartmentLink} className="ml-4 text-blue-400">
-          Добавить
-        </Link>
+        <Title>Выберите цех</Title>
+        {(router.query.userId && isSuperAdmin) ||
+        isEngineer ||
+        isInternalEngineer ? (
+          <Link
+            href={`/departments/create?userId=${router.query.userId}`}
+            className="ml-4 text-blue-400"
+          >
+            Добавить
+          </Link>
+        ) : null}
       </div>
       <ul></ul>
       <div className="relative overflow-x-auto">
@@ -160,13 +179,14 @@ export default function Departments(props) {
                       Удалить
                     </button>
                   ) : null}
-
-                  <button
-                    className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
-                    data-id="edit"
-                  >
-                    Редактировать
-                  </button>
+                  {(isEngineer || isSuperAdmin || isInternalEngineer) && (
+                    <button
+                      className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
+                      data-id="edit"
+                    >
+                      Редактировать
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -197,7 +217,17 @@ export async function getServerSideProps(context) {
   const { role, id } = session?.user;
   let url;
 
+  const resp = await fetch(`${baseApiUrl}/users/${id}`);
+
+  const activeUserInf = await resp.json();
+
   const isAdmin = role === "ADMIN" || role === "SUPERADMIN";
+
+  const respCreatorOfCurrentUser = await fetch(
+    `${baseApiUrl}/users/${activeUserInf.creator}`
+  );
+
+  const creatorOfCurrentUser = await respCreatorOfCurrentUser.json();
 
   if (role === "ENGINEER" || isAdmin) {
     const { userId } = query;
@@ -211,6 +241,8 @@ export async function getServerSideProps(context) {
     }
 
     url = `${baseApiUrl}/departments?userId=${userId}`;
+  } else if (role === "INTERNAL_ENGINEER") {
+    url = `${baseApiUrl}/departments?userId=${activeUserInf.creator}`;
   } else {
     url = `${baseApiUrl}/departments?userId=${id}`;
   }
@@ -226,6 +258,8 @@ export async function getServerSideProps(context) {
   return {
     props: {
       departments: response.departments,
+      responseUserInfo: activeUserInf,
+      creatorOfCurrentUser: creatorOfCurrentUser,
     },
   };
 }

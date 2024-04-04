@@ -5,6 +5,7 @@ import DepartmentModel from "@/models/Department";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 import UserModel from "@/models/User";
+import IndicatorsModel from "@/models/Indicators";
 
 async function validateMachine(machine: any) {
   const { machineNumber, model, department, machineCapacity } = machine;
@@ -49,7 +50,27 @@ export default async function handler(req, res) {
           },
         });
 
-        res.json(machines);
+        const result = machines.map(async (el) => {
+          const indicators = await IndicatorsModel.find({
+            machine: el._id,
+          }).sort({ createdAt: -1 });
+
+          return {
+            ...el,
+            indicator: indicators,
+          };
+        });
+
+        const resultPromise = await Promise.all(result).then((res) => {
+          return res.map((el: any) => {
+            return {
+              ...el["_doc"],
+              indicator: el.indicator[0],
+            };
+          });
+        });
+
+        res.json(resultPromise);
 
         return;
       }

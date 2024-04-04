@@ -76,12 +76,19 @@ export default async function handler(req, res) {
     await dbConnect();
 
     if (req.method === "GET") {
-      const users = await UserModel.find();
-
-      res.json(users);
+      const { userId, role } = req.query;
+      console.log(userId, role, "userId");
+      if (role === "CUSTOMER") {
+        const users = await UserModel.find({ creator: userId }).exec();
+        res.json(users);
+      } else {
+        const users = await UserModel.find();
+        res.json(users);
+      }
     } else if (req.method === "POST") {
       const session = await getServerSession(req, res, authOptions);
       const user = JSON.parse(req.body);
+
       const role = session?.user?.role;
 
       const isValidateUser =
@@ -96,7 +103,7 @@ export default async function handler(req, res) {
       };
 
       if (isValidateUser) {
-        role === "ENGINEER" || role === "SUPERADMIN"
+        role === "ENGINEER" || role === "SUPERADMIN" || role === "CUSTOMER"
           ? bcrypt.hash(user.password, SALT_ROUNDS, async function (err, hash) {
               if (err) {
                 throw new Error(err);
