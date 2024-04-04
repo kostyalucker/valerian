@@ -48,7 +48,7 @@ export default async function handler(req: any, res: any) {
         });
       });
     } catch (error) {
-      console.log("not connected");
+      console.log("not connected", error);
     }
   } catch (error) {
     res.status(405).send({ message: `${error}` });
