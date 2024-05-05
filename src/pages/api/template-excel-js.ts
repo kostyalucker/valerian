@@ -62,11 +62,13 @@ const rows = [
   //   id: 10,
   // },
   {
-    name: "machineNumber",
+    name: "machineType",
     id: 11,
+    label: "Тип оборудования",
   },
   {
-    name: "machineCapacity",
+    name: "machineModel",
+    label: "Модель",
     id: 12,
   },
 ]; // id = Номер строки, в которой вы хотите установить значение
@@ -90,7 +92,7 @@ const rowsGeneralInformations = [
   },
 ];
 const columnNameInf = "D";
-const columnGeneralInformations = "M";
+const columnGeneralInformations = "N";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -127,7 +129,15 @@ export default async function handler(
         rows.forEach((row) => {
           const adressCell = columnNameInf + row.id;
           // Обращение к нужной ячейке и установка значения
-          worksheet.getCell(adressCell).value = dataInf[row.name];
+          console.log(
+            dataInf[row.name],
+            dataInf,
+            row.name,
+            "dataInf[row.name]"
+          );
+          worksheet.getCell(adressCell).value = row.label
+            ? `${row.label}: ${dataInf[row.name]}`
+            : dataInf[row.name];
         });
 
         // Начать заполнение с 19 строки

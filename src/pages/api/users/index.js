@@ -77,7 +77,6 @@ export default async function handler(req, res) {
 
     if (req.method === "GET") {
       const { userId, role } = req.query;
-      console.log(userId, role, "userId");
       if (role === "CUSTOMER") {
         const users = await UserModel.find({ creator: userId }).exec();
         res.json(users);

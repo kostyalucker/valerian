@@ -30,6 +30,7 @@ export default function DepartmentPage(props) {
 
   const { customerInfo } = useCustomerInfo(customerId);
 
+
   const accessToAdd = true;
 
   async function getDepartmentInfo() {
@@ -49,7 +50,6 @@ export default function DepartmentPage(props) {
   function openMachine(e, machine) {
     e.preventDefault();
     if (e.target.dataset.id === "edit") {
-      console.log(machine._id, customerId, "machine");
       router.push(
         `/machines/edit?machineId=${machine._id}&userId=${customerId}`
       );
@@ -103,7 +103,7 @@ export default function DepartmentPage(props) {
         elNumber: i + 1,
         recommendeConcentration: el.recommendeConcentration,
         emulsionLevel: "-",
-        updatedAt: new Date(el.updatedAt).toDateString(),
+        updatedAt: new Date(el.updatedAt).toLocaleDateString(),
       };
     });
 
@@ -252,7 +252,7 @@ export default function DepartmentPage(props) {
                 <tr
                   className={[
                     `bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer ${
-                      machine.hasOwnProperty("valid") && !machine.valid
+                      machine.hasOwnProperty("valid") && machine.valid === false
                         ? "with-error"
                         : ""
                     }`,

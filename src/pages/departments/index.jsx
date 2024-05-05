@@ -34,7 +34,6 @@ export default function Departments(props) {
   function openDepartment(e, id, department) {
     e.preventDefault();
     if (e.target.dataset.id === "edit") {
-      console.log(department._id, user.id);
       router.push(
         `/departments/edit?departmentId=${department._id}&userId=${user.id}`
       );
@@ -43,7 +42,7 @@ export default function Departments(props) {
 
       setIsShowDelete(true);
     } else {
-      router.push(`/departments/${department._id}?&userId=${user.id}`);
+      router.push(`/departments/${department._id}?&userId=${customerId}&departmentId=${department._id}`);
     }
   }
 
@@ -92,20 +91,14 @@ export default function Departments(props) {
       {customerInfo && (
         <div className="mb-4">
           <p className="mb-2">
-            Предприятие:{" "}
-            {creatorOfCurrentUser
-              ? creatorOfCurrentUser.name
-              : customerInfo.name}
+            Предприятие:
+            {customerInfo.name}
           </p>
           <p>
             Адрес предприятия:{" "}
-            {creatorOfCurrentUser
-              ? creatorOfCurrentUser.address
-              : customerInfo.address}
+            {customerInfo.address}
             ,{" "}
-            {creatorOfCurrentUser
-              ? creatorOfCurrentUser.city
-              : customerInfo.city}
+            { customerInfo.city}
           </p>
         </div>
       )}
