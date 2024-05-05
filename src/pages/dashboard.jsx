@@ -25,7 +25,7 @@ export default function Dashboard(props) {
   return (
     <section className=" place-items-center">
       <Link className="text-blue-400 mb-2" href={getUrlCustomers()}>
-        <div className="text-white w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-center cursor-pointer">
+        <div className="text-white w-full p-6 border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 text-center cursor-pointer">
           Мониторинг показателей
         </div>
       </Link>

@@ -43,7 +43,7 @@ export default function Departments(props) {
 
       setIsShowDelete(true);
     } else {
-      router.push(`/departments/${department._id}?&userId=${user.id}`);
+      router.push(`/departments/${department._id}?&userId=${customerId}&departmentId=${department._id}`);
     }
   }
 
@@ -75,6 +75,7 @@ export default function Departments(props) {
   }
 
   const { customerInfo } = useCustomerInfo(customerId);
+  console.log(customerInfo, "customerInfo");
 
   function closeDeleteModal() {
     setIsShowDelete(false);
@@ -92,20 +93,14 @@ export default function Departments(props) {
       {customerInfo && (
         <div className="mb-4">
           <p className="mb-2">
-            Предприятие:{" "}
-            {creatorOfCurrentUser
-              ? creatorOfCurrentUser.name
-              : customerInfo.name}
+            Предприятие:
+            {customerInfo.name}
           </p>
           <p>
             Адрес предприятия:{" "}
-            {creatorOfCurrentUser
-              ? creatorOfCurrentUser.address
-              : customerInfo.address}
+            {customerInfo.address}
             ,{" "}
-            {creatorOfCurrentUser
-              ? creatorOfCurrentUser.city
-              : customerInfo.city}
+            { customerInfo.city}
           </p>
         </div>
       )}

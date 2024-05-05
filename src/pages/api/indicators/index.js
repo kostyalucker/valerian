@@ -42,6 +42,9 @@ export default async function handler(req, res) {
         valid: validPh && validConcetration ? true : false,
       });
 
+      const test = validPh && validConcetration ? true : false;
+
+      console.log(validPh, validConcetration, "validPh, 'validConcetration'");
       if (Number(indicator.addedOilAmount) > 0) {
         const updatedMachine = await MachineModel.findByIdAndUpdate(
           indicator.machine,

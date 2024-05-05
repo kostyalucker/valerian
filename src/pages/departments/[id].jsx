@@ -27,8 +27,11 @@ export default function DepartmentPage(props) {
   const isEngineer = session?.data?.user?.role === "ENGINEER";
   const isInterEngineer = session?.data?.user?.role === "INTERNAL_ENGINEER";
   const customerId = router.query.userId;
+  const departmentId = router.query.departmentId;
 
   const { customerInfo } = useCustomerInfo(customerId);
+
+  console.log(customerInfo, "customerInfo");
 
   const accessToAdd = true;
 
@@ -103,7 +106,7 @@ export default function DepartmentPage(props) {
         elNumber: i + 1,
         recommendeConcentration: el.recommendeConcentration,
         emulsionLevel: "-",
-        updatedAt: new Date(el.updatedAt).toDateString(),
+        updatedAt: new Date(el.updatedAt).toLocaleDateString(),
       };
     });
 
@@ -252,7 +255,7 @@ export default function DepartmentPage(props) {
                 <tr
                   className={[
                     `bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer ${
-                      machine.hasOwnProperty("valid") && !machine.valid
+                      machine.hasOwnProperty("valid") && machine.valid === false
                         ? "with-error"
                         : ""
                     }`,
