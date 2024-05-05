@@ -20,7 +20,6 @@ export default function CustomersPage({ customers, baseUrl }) {
   const [isShowModalDelete, setShowModalDelete] = useState(false);
   const [customersState, setCustomers] = useState(customers);
 
-  console.log(customersState, "customersState");
   async function deleteCustomer(id) {
     try {
       setLoading(true);

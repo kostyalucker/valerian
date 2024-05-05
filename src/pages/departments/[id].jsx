@@ -27,11 +27,9 @@ export default function DepartmentPage(props) {
   const isEngineer = session?.data?.user?.role === "ENGINEER";
   const isInterEngineer = session?.data?.user?.role === "INTERNAL_ENGINEER";
   const customerId = router.query.userId;
-  const departmentId = router.query.departmentId;
 
   const { customerInfo } = useCustomerInfo(customerId);
 
-  console.log(customerInfo, "customerInfo");
 
   const accessToAdd = true;
 
@@ -52,7 +50,6 @@ export default function DepartmentPage(props) {
   function openMachine(e, machine) {
     e.preventDefault();
     if (e.target.dataset.id === "edit") {
-      console.log(machine._id, customerId, "machine");
       router.push(
         `/machines/edit?machineId=${machine._id}&userId=${customerId}`
       );

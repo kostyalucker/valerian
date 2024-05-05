@@ -34,7 +34,6 @@ export default function Departments(props) {
   function openDepartment(e, id, department) {
     e.preventDefault();
     if (e.target.dataset.id === "edit") {
-      console.log(department._id, user.id);
       router.push(
         `/departments/edit?departmentId=${department._id}&userId=${user.id}`
       );
@@ -75,7 +74,6 @@ export default function Departments(props) {
   }
 
   const { customerInfo } = useCustomerInfo(customerId);
-  console.log(customerInfo, "customerInfo");
 
   function closeDeleteModal() {
     setIsShowDelete(false);
