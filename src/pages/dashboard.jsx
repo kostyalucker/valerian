@@ -22,6 +22,8 @@ export default function Dashboard(props) {
     return links[keyRole];
   }
 
+  console.log(user, "user object");
+
   return (
     <section className=" place-items-center">
       <Link className="text-blue-400 mb-2" href={getUrlCustomers()}>
