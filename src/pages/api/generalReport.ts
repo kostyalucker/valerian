@@ -74,7 +74,6 @@ export default async function handler(
 
       const indicators = parseBody.indicators;
       const dataInf: DataInf = parseBody.data;
-
       const fetchedWorkbook = await workbook.xlsx.readFile(filePath);
       let worksheet: Worksheet | undefined =
         fetchedWorkbook.getWorksheet("Общий по цеху");
@@ -95,15 +94,20 @@ export default async function handler(
         // Перебор вашего массива данных и запись в ячейки соответствующих данных
         indicators.forEach((itemData: any) => {
           headersMachine.forEach((headerMachine) => {
-            console.log(
-              itemData[headerMachine.id],
-              "itemData[headerMachine.id]"
-            );
+            const fieldType =
+              itemData["type"] +
+              "," +
+              itemData["model"] +
+              "," +
+              itemData["machineNumber"];
+
+            itemData.type = fieldType;
+            
             worksheet.getCell(currentColumn + currentRow).value = itemData[
               headerMachine.id
             ]
               ? String(itemData[headerMachine.id])
-              : "-"; // Установка значения в ячейку
+              : "-";
             if (
               [
                 "A",

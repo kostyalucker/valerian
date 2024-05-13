@@ -42,6 +42,7 @@ export default async function handler(req: any, res: any) {
       const { machineId } = req.query;
       const updateMachineParams = JSON.parse(req.body);
 
+
       const validateProperties = checkObjectProperties(updateMachineParams);
 
       if (validateProperties) {
