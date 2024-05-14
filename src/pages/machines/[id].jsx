@@ -35,8 +35,8 @@ export default function MachinePage({ baseUrl }) {
           max: data.info.phMax,
         },
         concentration: {
-          min: data.info.recommendedConcentration - 0.5,
-          max: data.info.recommendedConcentration + 1,
+          min: Number(data.info.recommendeConcentration) - 0.5,
+          max: Number(data.info.recommendeConcentration) + 1,
         },
       };
       setStandards(TEMP_STANDARDS);
@@ -195,7 +195,7 @@ export default function MachinePage({ baseUrl }) {
   const downloadReport = async () => {
     const data = {
       companyName: info?.department?.user?.name,
-      adress: info?.department?.user?.address,
+      adress: info?.department?.user?.address + " " + info?.department?.user?.city,
       departmentName: info?.department?.name,
       name: info?.department?.contactName,
       position: info?.department?.position,
@@ -276,10 +276,10 @@ export default function MachinePage({ baseUrl }) {
         <span className="font-bold">Рекомендуемая концентрация: </span>
         <span>{info.recommendeConcentration}%</span>
       </p>
-      {getFormattedDate(info?.emulsionFillingDate) && (
+      {getFormattedDate(info?.fillingDate) && (
         <div>
           <span className="font-bold">Дата заливки эмульсии:</span>{" "}
-          {getFormattedDate(info?.emulsionFillingDate)}
+          {getFormattedDate(info?.fillingDate)}
         </div>
       )}
       <p className="mb-4">
@@ -370,9 +370,11 @@ export default function MachinePage({ baseUrl }) {
           /> */}
         </>
       )}
-      <Button onClick={downloadReport} className="mt-4">
-        Cкачать отчет
-      </Button>
+      {lastCreatedIndicator && (
+        <Button onClick={downloadReport} className="mt-4">
+          Cкачать отчет
+        </Button>
+      )}
       <div className="buttons mt-4">
         <Button className="mr-4" onClick={() => router.back()}>
           Назад

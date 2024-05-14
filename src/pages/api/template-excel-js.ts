@@ -118,7 +118,7 @@ export default async function handler(
 
         rowsGeneralInformations.forEach((row) => {
           const adressCell = columnGeneralInformations + row.id;
-
+ 
           if (row.id === 3) {
             worksheet.getCell(adressCell).value = "Supreme Lubri";
           } else {

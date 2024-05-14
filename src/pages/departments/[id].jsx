@@ -30,7 +30,6 @@ export default function DepartmentPage(props) {
 
   const { customerInfo } = useCustomerInfo(customerId);
 
-
   const accessToAdd = true;
 
   async function getDepartmentInfo() {
@@ -100,6 +99,7 @@ export default function DepartmentPage(props) {
         type: el.type,
         model: el.model,
         oilName: el.oilName,
+        machineNumber: el.machineNumber,
         elNumber: i + 1,
         recommendeConcentration: el.recommendeConcentration,
         emulsionLevel: "-",
@@ -109,7 +109,7 @@ export default function DepartmentPage(props) {
 
     const data = {
       companyName: customerInfo?.name,
-      adress: customerInfo?.address,
+      adress: customerInfo?.address + " " + customerInfo?.city,
       departmentName: department?.name,
       name: department?.contactName,
       position: department?.position,
