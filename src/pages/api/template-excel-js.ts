@@ -71,6 +71,16 @@ const rows = [
     label: "Модель",
     id: 12,
   },
+  {
+    name: "machineNumber",
+    label: "Инвентарный номер",
+    id: 13,
+  },
+  {
+    name: "machineCapacity",
+    label: "Емкость системы СОЖ (л)",
+    id: 14,
+  },
 ]; // id = Номер строки, в которой вы хотите установить значение
 
 const rowsGeneralInformations = [
@@ -118,7 +128,7 @@ export default async function handler(
 
         rowsGeneralInformations.forEach((row) => {
           const adressCell = columnGeneralInformations + row.id;
- 
+
           if (row.id === 3) {
             worksheet.getCell(adressCell).value = "Supreme Lubri";
           } else {
