@@ -195,7 +195,8 @@ export default function MachinePage({ baseUrl }) {
   const downloadReport = async () => {
     const data = {
       companyName: info?.department?.user?.name,
-      adress: info?.department?.user?.address + " " + info?.department?.user?.city,
+      adress:
+        info?.department?.user?.address + " " + info?.department?.user?.city,
       departmentName: info?.department?.name,
       name: info?.department?.contactName,
       position: info?.department?.position,
@@ -213,6 +214,7 @@ export default function MachinePage({ baseUrl }) {
           data: data,
           indicators: indicators,
           generalInformation: {
+            fillingDate: info?.fillingDate,
             emulsionFillingDate: new Date(
               info?.emulsionFillingDate
             ).toLocaleString(),
