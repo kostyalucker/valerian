@@ -4,12 +4,37 @@ import stream from "stream";
 
 export const formatDateTime = (dateString: string) => {
   const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // +1 потому что нумерация месяцев начинается с 0
-  const day = date.getDate().toString().padStart(2, "0"); // Добавляем ведущий ноль, если нужно
-  const hours = date.getHours().toString().padStart(2, "0");
-  const minutes = date.getMinutes().toString().padStart(2, "0");
-  return `${year}-${month}-${day} ${hours + ":" + minutes}`;
+  // const year = date.getFullYear();
+  const months = [
+    "Январь",
+    "Февраль",
+    "Март",
+    "Апрель",
+    "Май",
+    "Июнь",
+    "Июль",
+    "Август",
+    "Сентябрь",
+    "Октябрь",
+    "Ноябрь",
+    "Декабрь",
+  ];
+  // const month = (date.getMonth() + 1).toString().padStart(2, "0"); // +1 потому что нумерация месяцев начинается с 0
+  // const day = date.getDate().toString().padStart(2, "0"); // Добавляем ведущий ноль, если нужно
+  // const hours = date.getHours().toString().padStart(2, "0");
+  // const minutes = date.getMinutes().toString().padStart(2, "0");
+  // Преобразование строки в объект Date
+
+  // Массив с названиями месяцев
+
+  // Получение дня, месяца и года
+  let day = date.getDate();
+  let month = months[date.getMonth()];
+  let year = date.getFullYear();
+
+  // Форматирование даты в строку "ЧИСЛО-МЕСЯЦ-ГОД"
+  let formattedDate = `${day}-${month}-${year}`;
+  return formattedDate;
 };
 
 interface DataInf {
@@ -85,7 +110,7 @@ const rows = [
 
 const rowsGeneralInformations = [
   {
-    name: "emulsionFillingDate",
+    name: "fillingDate",
     id: 1,
   },
   {
@@ -130,7 +155,7 @@ export default async function handler(
           const adressCell = columnGeneralInformations + row.id;
 
           if (row.id === 3) {
-            worksheet.getCell(adressCell).value = "Supreme Lubri";
+            worksheet.getCell(adressCell).value = generalInformation.product;
           } else {
             worksheet.getCell(adressCell).value = generalInformation[row.name];
           }

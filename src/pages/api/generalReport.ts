@@ -93,16 +93,16 @@ export default async function handler(
 
         // Перебор вашего массива данных и запись в ячейки соответствующих данных
         indicators.forEach((itemData: any) => {
-          headersMachine.forEach((headerMachine) => {
-            const fieldType =
-              itemData["type"] +
-              "," +
-              itemData["model"] +
-              "," +
-              itemData["machineNumber"];
+          const fieldType =
+            itemData["type"] +
+            "," +
+            itemData["model"] +
+            "," +
+            itemData["machineNumber"];
 
-            itemData.type = fieldType;
-            
+          itemData.type = fieldType;
+
+          headersMachine.forEach((headerMachine) => {
             worksheet.getCell(currentColumn + currentRow).value = itemData[
               headerMachine.id
             ]
